@@ -1,0 +1,36 @@
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+    <h1 th:text="#{label.form.title}">Register</h1>
+    <form action="/" th:object="${user}" method="POST" enctype="utf8">
+        <div>
+            <label th:text="#{label.user.firstName}">First Name</label>
+            <input th:field="*{firstName}"/>
+            <p th:each="error: ${#fields.errors('firstName')}" th:text="${error}">First name invalid</p>
+        </div>
+        <div>
+            <label th:text="#{label.user.lastName}">Last name</label>
+            <input th:field="*{lastName}"/>
+            <p th:each="error : ${#fields.errors('lastName')}" th:text="${error}"> Last name invalid </p>
+        </div>
+        <div>
+            <label th:text="#{label.user.email}">Email</label>
+            <input type="email" th:field="*{email}"/>
+            <p th:each="error : ${#fields.errors('email')}" th:text="${error}">Email invalid</p>
+        </div>
+        <div>
+            <label th:text="#{label.user.password}">Password</label>
+            <input type="password" th:field="*{password}" />
+            <p th:each="error : ${#fields.errors('password')}" th:text="${error}">Password invalid</p>
+        </div>
+        <div>
+            <label th:text="#{label.user.confirmPass}">Confirm password</label>
+            <input type="password" th:field="*{matchingPassword}" />
+        </div>
+        <button type="submit" th:text="#{label.form.submit}"> Register </button>
+    </form>
+</body>
+
+<a th:href="@{/user/login.html}" th:text="#{label.form.loginLink}" > I already have an account ! </a>
+
+</html>
