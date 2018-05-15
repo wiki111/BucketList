@@ -1,12 +1,15 @@
 package com.rawik.bucketlist.demo.dto;
 
+import com.rawik.bucketlist.demo.validation.PasswordMatches;
+import com.rawik.bucketlist.demo.validation.ValidEmail;
 import lombok.Data;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 @Data
-public class UserDTO {
+@PasswordMatches
+public class UserDto {
 
     @NotEmpty
     @NotNull
@@ -26,6 +29,7 @@ public class UserDTO {
 
     @NotEmpty
     @NotNull
+    @ValidEmail
     private String email;
 
 }

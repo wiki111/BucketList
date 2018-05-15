@@ -2,7 +2,7 @@
 
 <body>
     <h1 th:text="#{label.form.title}">Register</h1>
-    <form action="/" th:object="${user}" method="POST" enctype="utf8">
+    <form action="/register" th:object="${user}" method="POST" enctype="utf8">
         <div>
             <label th:text="#{label.user.firstName}">First Name</label>
             <input th:field="*{firstName}"/>
@@ -31,6 +31,6 @@
     </form>
 </body>
 
-<a th:href="@{/user/login.html}" th:text="#{label.form.loginLink}" > I already have an account ! </a>
+<a th:href="@{/login}" th:text="#{label.form.loginLink}" > I already have an account ! </a>
 
 </html>
