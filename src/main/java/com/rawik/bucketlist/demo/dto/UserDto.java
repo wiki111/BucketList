@@ -6,6 +6,7 @@ import lombok.Data;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.Set;
 
 @Data
 @PasswordMatches
@@ -31,5 +32,7 @@ public class UserDto {
     @NotNull
     @ValidEmail
     private String email;
+
+    private Set<BucketListDto> bucketlists;
 
 }

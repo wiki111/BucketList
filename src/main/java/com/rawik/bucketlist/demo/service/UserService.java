@@ -9,7 +9,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Arrays;
 
 @Service
 public class UserService implements IUserService {
@@ -29,11 +28,13 @@ public class UserService implements IUserService {
         }
 
         User user = new User();
+
         user.setFirstName(userDto.getFirstName());
         user.setLastName(userDto.getLastName());
         user.setEmail(userDto.getEmail());
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         user.setRole("ROLE_USER");
+
         return repository.save(user);
     }
 
