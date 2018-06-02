@@ -4,6 +4,7 @@ import com.rawik.bucketlist.demo.dto.BucketItemDto;
 import com.rawik.bucketlist.demo.dto.BucketListDto;
 import com.rawik.bucketlist.demo.model.BucketItem;
 import com.rawik.bucketlist.demo.model.BucketList;
+import com.rawik.bucketlist.demo.model.User;
 import org.springframework.stereotype.Component;
 
 import java.util.Set;
@@ -34,6 +35,27 @@ public class BucketListMapper {
         return dto;
     }
 
+    public BucketList dtoToBucketList(BucketListDto dto){
+        BucketList list = new BucketList();
 
+
+        list.setId(dto.getId());
+        list.setName(dto.getName());
+        list.setCreationDate(dto.getCreationDate());
+        list.setDescription(dto.getDescription());
+        list.setOpen(dto.getOpen());
+
+        if(dto.getUserId() != null){
+            User user = new User();
+            user.setUserId(dto.getUserId());
+            list.setUser(user);
+        }
+
+        dto.getItems().forEach(item ->
+                list.addItem(itemMapper.dtoToBucketItem(item))
+        );
+
+        return list;
+    }
 
 }

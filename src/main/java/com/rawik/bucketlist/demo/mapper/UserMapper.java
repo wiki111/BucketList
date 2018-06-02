@@ -7,6 +7,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserMapper {
 
+    BucketListMapper bucketListMapper;
+
+    public UserMapper(BucketListMapper bucketListMapper) {
+        this.bucketListMapper = bucketListMapper;
+    }
+
     public UserDto userToUserDto(User user){
         UserDto userDto = new UserDto();
 
@@ -17,8 +23,15 @@ public class UserMapper {
         userDto.setEmail(user.getEmail());
 
         if(user.getBucketLists() != null && user.getBucketLists().size() > 0){
-
+            user.getBucketLists()
+                    .forEach(list ->
+                            userDto.getBucketlists().add(
+                                    bucketListMapper.bucketListToDto(list)
+                            )
+                    );
         }
+
+        return userDto;
 
     }
 
