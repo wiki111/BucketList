@@ -81,7 +81,7 @@ public class PageRestrictionTests {
         userDto.setLastName("Daniels");
         userDto.setPassword("reter");
         userDto.setMatchingPassword("reter");
-        userDto.setEmail("matt@daniels.com");
+        userDto.setEmail("matt2@daniels.com");
 
         this.mockMvc
                 .perform(post("/register").flashAttr("user", userDto))
@@ -97,12 +97,12 @@ public class PageRestrictionTests {
         userDto.setLastName("Daniels");
         userDto.setPassword("reter");
         userDto.setMatchingPassword("reter");
-        userDto.setEmail("matt@daniels.com");
+        userDto.setEmail("matt2@daniels.com");
 
         User user = userService.registerNewUser(userDto);
 
         this.mockMvc.perform(formLogin("/login")
-                .user("matt@daniels.com")
+                .user("matt2@daniels.com")
                 .password("reter"))
             .andExpect(SecurityMockMvcResultMatchers.authenticated().withRoles("USER"))
             .andExpect(status().is3xxRedirection())

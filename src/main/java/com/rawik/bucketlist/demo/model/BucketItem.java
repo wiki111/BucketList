@@ -8,6 +8,7 @@ import java.util.Date;
 
 @Data
 @Entity
+@EqualsAndHashCode(exclude = {"bucketList"})
 public class BucketItem {
 
     @Id

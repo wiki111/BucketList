@@ -1,6 +1,7 @@
 package com.rawik.bucketlist.demo.model;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -10,13 +11,14 @@ import java.util.Set;
 
 @Data
 @Entity
+@EqualsAndHashCode(exclude = {"bucketLists"})
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL)
     private Set<BucketList> bucketLists = new HashSet<>();
 
     private String firstName;

@@ -30,7 +30,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/", "/homepage", "/register")
+                .antMatchers("/", "/homepage", "/register",     "/h2-console/**")
                 .permitAll().anyRequest().authenticated()
                 .and()
                 .formLogin()
@@ -40,6 +40,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
                 .permitAll()
                 .and()
                 .logout().logoutSuccessUrl("/login").permitAll();
+
+        http.headers().frameOptions().disable();
     }
 
     @Bean
