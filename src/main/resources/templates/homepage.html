@@ -1,13 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html layout:decorate= "~{fragments/main-layout}" lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
     <meta charset="UTF-8">
     <title>Home</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css}" />
+    <link rel="stylesheet" th:href="@{/css/main.css}"/>
+    <script th:src="@{/webjars/jquery/3.3.7-1/jquery.min.js}"></script>
+    <script th:src="@{/webjars/bootstrap/4.0.0-2/js/bootstrap.min.js}"></script>
 </head>
 <body>
-    <div>
-        <p>Welcome to BucketList</p>
-        <p>This is homepage.</p>
-    </div>
+        <div class="row">
+            <div layout:fragment="content">
+                <div class="col-8 offset-2 align-content-center text-center">
+                    <h1>Czym jest Bucketlist ?</h1>
+                    <p> Bucketlist jest aplikacją, dzięki której twoje prezenty będą zawsze trafione. Użytkownicy Bucketlist mogą
+                        dodawać listy pełne pomysłów na prezenty, które chcieli by otrzymać. Nie musisz się więcej zastanawiać,
+                        jaki prezent będzie najlepszy na urodziny twojego przyjaciela, albo jaki prezent kupić dla młodej pary
+                        , tak by był przydatny, a jednocześnie by nie otrzymali dziesiątek identycznych zestawów sztućców. Ułatw sobie
+                        życie i uniknij rozczarowań - zarejestruj się już dziś i zaproś znajomych !</p>
+                </div>
+            </div>
+        </div>
 </body>
 </html>

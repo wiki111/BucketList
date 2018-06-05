@@ -80,6 +80,11 @@ public class MainController {
         return registered;
     }
 
+    @GetMapping("/profile")
+    public String getProfile(){
+        return "user/profile";
+    }
+
 }
 
 

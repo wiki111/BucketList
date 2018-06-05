@@ -1,7 +1,6 @@
 package com.rawik.bucketlist.demo.security;
 
 import com.rawik.bucketlist.demo.service.UserDetailsService;
-import com.rawik.bucketlist.demo.validation.PasswordMatches;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,7 +29,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/", "/homepage", "/register",     "/h2-console/**")
+                .antMatchers("/",
+                        "/homepage",
+                        "/register",
+                        "/h2-console/**",
+                        "/webjars/**",
+                        "/img/**",
+                        "/css/**",
+                        "/js/**")
                 .permitAll().anyRequest().authenticated()
                 .and()
                 .formLogin()

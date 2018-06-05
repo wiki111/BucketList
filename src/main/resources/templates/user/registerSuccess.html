@@ -1,13 +1,23 @@
 <!DOCTYPE html>
-<html lang="en">
+<html layout:decorate= "~{fragments/main-layout}" lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <meta charset="UTF-8">
+    <title>Success!</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css}" />
+    <link rel="stylesheet" th:href="@{/css/main.css}"/>
+    <script th:src="@{/webjars/jquery/3.3.7-1/jquery.min.js}"></script>
+    <script th:src="@{/webjars/bootstrap/4.0.0-2/js/bootstrap.min.js}"></script>
+</head>
 <head>
     <meta charset="UTF-8">
     <title>Home</title>
 </head>
 <body>
+<div layout:fragment="content">
 <div>
     <p>Welcome to BucketList</p>
     <p>You registered successfully !</p>
+</div>
 </div>
 </body>
 </html>
