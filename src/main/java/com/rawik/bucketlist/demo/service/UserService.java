@@ -2,6 +2,7 @@ package com.rawik.bucketlist.demo.service;
 
 import com.rawik.bucketlist.demo.dto.UserDto;
 import com.rawik.bucketlist.demo.exceptions.EmailExistsException;
+import com.rawik.bucketlist.demo.mapper.UserMapper;
 import com.rawik.bucketlist.demo.model.User;
 import com.rawik.bucketlist.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ public class UserService implements IUserService {
     UserRepository repository;
 
     @Autowired
-    PasswordEncoder passwordEncoder;
+    UserMapper userMapper;
 
     @Transactional
     @Override
@@ -27,15 +28,29 @@ public class UserService implements IUserService {
             throw new EmailExistsException("There is an account with that email address : " + userDto.getEmail());
         }
 
-        User user = new User();
+        User user = userMapper.userDtoToUser(userDto);
+
+        return repository.save(user);
+    }
+
+    @Transactional
+    @Override
+    public User updateUserInfo(UserDto userDto) {
+        User user = repository.findByEmail(userDto.getEmail());
 
         user.setFirstName(userDto.getFirstName());
         user.setLastName(userDto.getLastName());
-        user.setEmail(userDto.getEmail());
-        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        user.setRole("ROLE_USER");
+        user.setNickname(userDto.getNickname());
+        user.setAddress(userDto.getAddress());
+        user.setPhone(userDto.getPhone());
+        user.setFacebookLink(userDto.getFacebookLink());
+        user.setGoogleLink(userDto.getGoogleLink());
+        user.setTwitterLink(userDto.getTwitterLink());
+        user.setBio(userDto.getBio());
+        user.setInterests(userDto.getInterests());
 
-        return repository.save(user);
+        repository.save(user);
+        return user;
     }
 
     private boolean emailExists(String email){
@@ -48,7 +63,7 @@ public class UserService implements IUserService {
 
     @Override
     public User findByUsername(String username) {
-        return null;
+        return repository.findByEmail(username);
     }
 
     @Override

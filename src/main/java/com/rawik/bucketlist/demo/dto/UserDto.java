@@ -36,4 +36,15 @@ public class UserDto {
 
     private Set<BucketListDto> bucketlists = new HashSet<>();
 
+    private String nickname;
+    private String phone;
+    private String address;
+
+    private String facebookLink;
+    private String googleLink;
+    private String twitterLink;
+
+    private String bio;
+    private String interests;
+
 }

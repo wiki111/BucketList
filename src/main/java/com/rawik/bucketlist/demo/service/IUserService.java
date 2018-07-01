@@ -6,6 +6,7 @@ import com.rawik.bucketlist.demo.model.User;
 
 public interface IUserService {
     User registerNewUser(UserDto userDto) throws EmailExistsException;
+    User updateUserInfo(UserDto userDto);
     User findByUsername(String username);
     User findById(Long id);
 }
