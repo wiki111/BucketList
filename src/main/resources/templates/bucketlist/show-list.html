@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html layout:decorate= "~{fragments/main-layout}" lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css}" />
+    <link rel="stylesheet" th:href="@{/css/main.css}"/>
+    <script th:src="@{/webjars/jquery/3.3.7-1/jquery.min.js}"></script>
+    <script th:src="@{/webjars/bootstrap/4.0.0-2/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/utility.js}"></script>
+</head>
+<body>
+<div layout:fragment="content">
+    <h1>Bucketlist <span th:text="${list.getName()}"></span>'s items</h1>
+
+    <div>
+        <h3>List info : </h3>
+        <p th:text="${list.getName()}"></p>
+        <p th:text="${list.getDescription()}"></p>
+        <p th:text="${list.getCreationDate()}"></p>
+        <p th:text="${list.getOpen()}"></p>
+    </div>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Image</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Price</th>
+            <th>Date added</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="item : ${list.getItems()}">
+            <td><img th:src="${item.getImage()}"> </td>
+            <td th:text="${item.getName()}"></td>
+            <td th:text="${item.getDescription()}"></td>
+            <td th:text="${item.getPrice()}"></td>
+            <td th:text="${item.getAddedDate()}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+
+    <form th:action="@{/addListItem}" method="POST" id="addnewitem">
+        <input type="hidden" name="listID" th:value="${list.getId()}">
+        <div>
+            <label>Name</label>
+            <input type="text" name="name"/>
+        </div>
+        <div>
+            <label>Description</label>
+            <input type="text" name="description"/>
+        </div>
+        <div>
+            <label>Price</label>
+            <input type="text" name="price"/>
+        </div>
+        <div>
+            <label>Image URL</label>
+            <input type="text" name="image"/>
+        </div>
+        <button type="submit" class="btn btn-primary">Add item</button>
+    </form>
+
+</div>
+</body>
+
+</html>

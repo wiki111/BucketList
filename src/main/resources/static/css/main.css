@@ -21,3 +21,9 @@ a.nav-link-color:hover{
     background-color: #47B58F;
     color: #EDEDED;
 }
+
+.clickable-row:hover{
+    cursor: pointer;
+    background: #4fB080;
+    color: #FFE000;
+}

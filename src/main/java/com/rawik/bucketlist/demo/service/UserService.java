@@ -53,6 +53,14 @@ public class UserService implements IUserService {
         return user;
     }
 
+    @Override
+    public User updateBucketLists(User user) {
+        User savedUser = repository.findByEmail(user.getEmail());
+        user.setBucketLists(user.getBucketLists());
+        repository.save(savedUser);
+        return savedUser;
+    }
+
     private boolean emailExists(String email){
         User user = repository.findByEmail(email);
         if(user != null){

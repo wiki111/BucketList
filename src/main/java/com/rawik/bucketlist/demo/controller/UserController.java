@@ -12,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
@@ -104,6 +105,19 @@ public class UserController {
         }
 
         return "redirect:/profile";
+    }
+
+    @GetMapping("/info/{email:.+}")
+    public String showUserInfo(@PathVariable String email, Model model, Principal principal){
+
+        UserDto userDto = userMapper.userToUserDto(
+                service.findByUsername(email)
+        );
+
+        model.addAttribute("user", userDto);
+
+        return "user/info";
+
     }
 
 }

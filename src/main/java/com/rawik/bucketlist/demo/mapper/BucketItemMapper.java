@@ -21,6 +21,7 @@ public class BucketItemMapper {
         dto.setDescription(item.getDescription());
         dto.setPrice(item.getPrice());
         dto.setAddedDate(item.getAddedDate());
+        dto.setImage(item.getImage());
 
         return dto;
 

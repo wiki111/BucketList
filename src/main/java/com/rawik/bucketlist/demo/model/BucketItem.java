@@ -24,4 +24,6 @@ public class BucketItem {
     private String image;
     private Date addedDate;
 
+
+
 }

@@ -54,6 +54,7 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
             testItem.setName("TestItem");
             testItem.setAddedDate(new Date());
             testItem.setPrice(10L);
+            testItem.setImage("image");
 
             BucketListDto listDto = new BucketListDto();
             listDto.setUserId(user.getUserId());

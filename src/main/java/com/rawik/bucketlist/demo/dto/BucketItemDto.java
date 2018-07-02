@@ -15,4 +15,8 @@ public class BucketItemDto {
     private String image;
     private Date addedDate;
 
+    public String getImage(){
+        return this.image;
+    }
+
 }
