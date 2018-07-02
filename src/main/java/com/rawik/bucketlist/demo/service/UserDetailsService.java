@@ -21,7 +21,7 @@ public class UserDetailsService implements org.springframework.security.core.use
     private UserRepository repository;
 
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        com.rawik.bucketlist.demo.model.User user = repository.findByEmail(email);
+        com.rawik.bucketlist.demo.model.User user = repository.findByEmail(email).get();
         if(user == null){
             throw new UsernameNotFoundException("No user found with email " + email);
         }

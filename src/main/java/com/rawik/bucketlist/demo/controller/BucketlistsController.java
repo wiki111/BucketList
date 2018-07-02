@@ -2,6 +2,7 @@ package com.rawik.bucketlist.demo.controller;
 
 import com.rawik.bucketlist.demo.dto.BucketItemDto;
 import com.rawik.bucketlist.demo.dto.BucketListDto;
+import com.rawik.bucketlist.demo.dto.UserDto;
 import com.rawik.bucketlist.demo.mapper.BucketItemMapper;
 import com.rawik.bucketlist.demo.mapper.BucketListMapper;
 import com.rawik.bucketlist.demo.model.BucketList;
@@ -14,61 +15,37 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
-
-import javax.jws.WebResult;
-import javax.mail.Multipart;
-import javax.servlet.http.HttpServletRequest;
-import java.io.File;
-import java.io.IOException;
 import java.security.Principal;
 import java.util.Date;
 import java.util.Optional;
-import java.util.UUID;
 
 @Controller
 public class BucketlistsController {
 
-    @Autowired
-    UserService userService;
+    private UserService userService;
+    private BucketListService bucketListService;
+    private BucketListMapper bucketListMapper;
+    private BucketItemMapper bucketItemMapper;
 
-    @Autowired
-    BucketListService bucketListService;
-
-    @Autowired
-    BucketListMapper bucketListMapper;
-
-    @Autowired
-    BucketItemMapper bucketItemMapper;
-
-    @Autowired
-    private HttpServletRequest servletRequest;
+    public BucketlistsController(UserService userService, BucketListService bucketListService, BucketListMapper bucketListMapper, BucketItemMapper bucketItemMapper) {
+        this.userService = userService;
+        this.bucketListService = bucketListService;
+        this.bucketListMapper = bucketListMapper;
+        this.bucketItemMapper = bucketItemMapper;
+    }
 
     @GetMapping("/bucketlists")
     public String manageBucketlists(Model model, Principal principal){
 
-        User user = userService.findByUsername(principal.getName());
-
-        model.addAttribute("lists", user.getBucketLists());
+        model.addAttribute("lists", userService.getUserLists(principal.getName()));
 
         return "bucketlist/manage-bucketlists";
     }
 
-    @PostMapping("/bucketlists")
-    public String saveBucketlist(@ModelAttribute("list") BucketListDto listDto){
+    @GetMapping("/bucketlist/manage/{id}")
+    public String showBucketlist(@ModelAttribute("id") Long id, Model model, Principal principal){
 
-        bucketListService.saveList(listDto);
-
-        return "redirect:/bucketlists";
-    }
-
-    @GetMapping("/bucketlist/{id}")
-    public String showBucketlist(@ModelAttribute("id") Long id, Model model){
-
-        BucketListDto listDto = bucketListMapper.bucketListToDto(
-                bucketListService.getListById(id)
-        );
+        BucketListDto listDto = userService.getUsersListById(id, principal.getName());
 
         model.addAttribute("list", listDto);
 
