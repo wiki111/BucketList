@@ -24,11 +24,13 @@ import java.security.Principal;
 @Controller
 public class UserController {
 
-    @Autowired
-    UserService service;
+    private UserService service;
+    private UserMapper userMapper;
 
-    @Autowired
-    UserMapper userMapper;
+    public UserController(UserService service, UserMapper userMapper) {
+        this.service = service;
+        this.userMapper = userMapper;
+    }
 
     @GetMapping("/login")
     public String getLogin(){
@@ -108,7 +110,7 @@ public class UserController {
     }
 
     @GetMapping("/info/{email:.+}")
-    public String showUserInfo(@PathVariable String email, Model model, Principal principal){
+    public String showUserInfo(@PathVariable String email, Model model){
 
         UserDto userDto = userMapper.userToUserDto(
                 service.findByUsername(email)

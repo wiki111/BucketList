@@ -2,15 +2,12 @@ package com.rawik.bucketlist.demo.controller;
 
 import com.rawik.bucketlist.demo.dto.BucketItemDto;
 import com.rawik.bucketlist.demo.dto.BucketListDto;
-import com.rawik.bucketlist.demo.dto.UserDto;
 import com.rawik.bucketlist.demo.mapper.BucketItemMapper;
 import com.rawik.bucketlist.demo.mapper.BucketListMapper;
 import com.rawik.bucketlist.demo.model.BucketList;
 import com.rawik.bucketlist.demo.model.User;
-import com.rawik.bucketlist.demo.repository.UserRepository;
 import com.rawik.bucketlist.demo.service.BucketListService;
 import com.rawik.bucketlist.demo.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -76,7 +73,7 @@ public class BucketlistsController {
 
         userService.updateBucketLists(user);
 
-        return "redirect:/bucketlist/" + itemDto.getListId();
+        return "redirect:/bucketlist/manage/" + itemDto.getListId();
     }
 
 }

@@ -17,8 +17,11 @@ import java.util.List;
 @Transactional
 public class UserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService {
 
-    @Autowired
     private UserRepository repository;
+
+    public UserDetailsService(UserRepository repository) {
+        this.repository = repository;
+    }
 
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         com.rawik.bucketlist.demo.model.User user = repository.findByEmail(email).get();

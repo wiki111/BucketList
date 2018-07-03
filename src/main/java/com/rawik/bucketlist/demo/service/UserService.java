@@ -20,15 +20,15 @@ import java.util.Set;
 @Service
 public class UserService implements IUserService {
 
-
-    @Autowired
     UserRepository repository;
-
-    @Autowired
     UserMapper userMapper;
-
-    @Autowired
     BucketListMapper bucketListMapper;
+
+    public UserService(UserRepository repository, UserMapper userMapper, BucketListMapper bucketListMapper) {
+        this.repository = repository;
+        this.userMapper = userMapper;
+        this.bucketListMapper = bucketListMapper;
+    }
 
     @Transactional
     @Override
@@ -59,13 +59,14 @@ public class UserService implements IUserService {
         user.setInterests(userDto.getInterests());
 
         repository.save(user);
+
         return user;
     }
 
     @Override
     public User updateBucketLists(User user) {
         User savedUser = repository.findByEmail(user.getEmail()).get();
-        user.setBucketLists(user.getBucketLists());
+        savedUser.setBucketLists(user.getBucketLists());
         repository.save(savedUser);
         return savedUser;
     }
@@ -81,11 +82,6 @@ public class UserService implements IUserService {
     @Override
     public User findByUsername(String username) {
         return repository.findByEmail(username).get();
-    }
-
-    @Override
-    public User findById(Long id) {
-        return null;
     }
 
     @Override

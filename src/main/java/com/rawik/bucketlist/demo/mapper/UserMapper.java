@@ -10,12 +10,11 @@ import org.springframework.stereotype.Component;
 public class UserMapper {
 
     BucketListMapper bucketListMapper;
-
-    @Autowired
     PasswordEncoder passwordEncoder;
 
-    public UserMapper(BucketListMapper bucketListMapper) {
+    public UserMapper(BucketListMapper bucketListMapper, PasswordEncoder passwordEncoder) {
         this.bucketListMapper = bucketListMapper;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public UserDto userToUserDto(User user){
