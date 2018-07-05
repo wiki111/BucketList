@@ -4,9 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Data
 @Entity
@@ -28,6 +26,9 @@ public class BucketList {
     private Date creationDate;
     private Boolean open;
     private Boolean isPrivate;
+
+    @ElementCollection
+    private List<String> tags = new ArrayList<>();
 
     public void addItem(BucketItem item){
         item.setBucketlist(this);
