@@ -27,6 +27,7 @@ public class BucketList {
     private String description;
     private Date creationDate;
     private Boolean open;
+    private Boolean isPrivate;
 
     public void addItem(BucketItem item){
         item.setBucketlist(this);

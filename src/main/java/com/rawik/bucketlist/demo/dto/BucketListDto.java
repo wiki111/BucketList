@@ -17,5 +17,6 @@ public class BucketListDto {
     private String description;
     private Date creationDate;
     private Boolean open;
+    private Boolean isPrivate;
 
 }

@@ -27,6 +27,7 @@ public class BucketListMapper {
         dto.setDescription(list.getDescription());
         dto.setCreationDate(list.getCreationDate());
         dto.setOpen(list.getOpen());
+        dto.setIsPrivate(list.getIsPrivate());
 
         if(list.getItems() != null){
             list.getItems().forEach(item -> dto.getItems().add(itemMapper.bucketItemToDto(item)));
@@ -44,6 +45,7 @@ public class BucketListMapper {
         list.setCreationDate(dto.getCreationDate());
         list.setDescription(dto.getDescription());
         list.setOpen(dto.getOpen());
+        list.setIsPrivate(dto.getIsPrivate());
 
         if(dto.getUserId() != null){
             User user = new User();
