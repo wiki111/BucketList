@@ -76,4 +76,13 @@ public class BucketlistsController {
         return "redirect:/bucketlist/manage/" + itemDto.getListId();
     }
 
+    @PostMapping("/bucketlist/manage/{listid}/edit")
+    public String editBucketlist(@ModelAttribute("bucketlistdto") BucketListDto bucketListDto, Model model, Principal principal){
+
+        bucketListService.updateList(bucketListDto);
+
+        return "redirect:/bucketlist/show-list";
+
+    }
+
 }

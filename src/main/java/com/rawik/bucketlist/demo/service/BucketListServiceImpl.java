@@ -60,10 +60,27 @@ public class BucketListServiceImpl implements BucketListService{
     @Override
     public BucketList updateList(BucketListDto dto) {
 
-        BucketList listToSave = listMapper.dtoToBucketList(dto);
-        BucketList savedList = listRepository.save(listToSave);
+        Optional<BucketList> listToSaveOpt = listRepository.findById(dto.getId());
 
-        return savedList;
+        if(listToSaveOpt.isPresent()){
+
+            BucketList listToSave = listToSaveOpt.get();
+
+            listToSave.setName(dto.getName());
+            listToSave.setDescription(dto.getDescription());
+            listToSave.setOpen(dto.getOpen());
+            listToSave.setIsPrivate(dto.getIsPrivate());
+            listToSave.setTags(dto.getTags());
+
+            listRepository.save(listToSave);
+
+            return listToSave;
+
+        }else{
+            //todo handle error
+        }
+
+        return null;
     }
 
     @Override

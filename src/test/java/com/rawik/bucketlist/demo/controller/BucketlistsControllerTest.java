@@ -55,7 +55,7 @@ public class BucketlistsControllerTest {
 
 
     @Before
-    public void setUp() throws Exception{
+    public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         bucketlistsController =
                 new BucketlistsController(userService, bucketListService, bucketListMapper, bucketItemMapper);
@@ -138,4 +138,6 @@ public class BucketlistsControllerTest {
 
         assertEquals("redirect:/bucketlist/manage/1", view);
     }
+
+
 }
