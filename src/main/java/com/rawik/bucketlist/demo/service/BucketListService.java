@@ -10,6 +10,6 @@ public interface BucketListService {
     BucketList getListById(Long id);
     BucketList saveList(BucketListDto dto);
     BucketList updateList(BucketListDto dto);
-    void dropList(Long id);
+    void dropList(Long id, String user);
 
 }

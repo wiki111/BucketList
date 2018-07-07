@@ -96,9 +96,4 @@ public class BucketListServiceImplTest {
 
     }
 
-    @Test
-    public void dropList() {
-        bucketListService.dropList(1L);
-        verify(listRepository, times(1)).deleteById(anyLong());
-    }
 }

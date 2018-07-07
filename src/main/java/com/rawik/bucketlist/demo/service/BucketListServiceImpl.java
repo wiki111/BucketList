@@ -84,7 +84,27 @@ public class BucketListServiceImpl implements BucketListService{
     }
 
     @Override
-    public void dropList(Long id) {
-        listRepository.deleteById(id);
+    public void dropList(Long id, String user) {
+
+        Optional<User> userOptional = userRepository.findByEmail(user);
+
+        if(userOptional.isPresent()){
+
+            User foundUser = userOptional.get();
+
+            Optional<BucketList> bucketListOptional =
+                    foundUser.getBucketLists()
+                            .stream()
+                            .filter(list -> list.getId() == id)
+                            .findFirst();
+
+            if(bucketListOptional.isPresent()){
+                BucketList bucketListToDelete = bucketListOptional.get();
+                bucketListToDelete.setUser(null);
+                foundUser.getBucketLists().remove(bucketListOptional.get());
+                userRepository.save(foundUser);
+            }
+        }
+
     }
 }

@@ -20,6 +20,7 @@
         <p th:text="${list.getCreationDate()}"></p>
         <p th:text="${list.getOpen()}"></p>
         <a class="btn btn-primary" th:href="@{'/bucketlist/manage/'+${list.getId()}+'/edit'}">Edit</a>
+        <a class="btn btn-primary" th:href="@{'/bucketlist/delete/'+${list.getId()}}">Delete</a>
     </div>
 
     <table class="table">

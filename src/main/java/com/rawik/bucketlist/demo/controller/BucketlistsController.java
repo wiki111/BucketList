@@ -100,4 +100,10 @@ public class BucketlistsController {
 
     }
 
+    @GetMapping("/bucketlist/delete/{id}")
+    public String deleteBucketlist(@PathVariable Long id, Principal principal){
+        bucketListService.dropList(id, principal.getName());
+        return "redirect:/bucketlists";
+    }
+
 }
