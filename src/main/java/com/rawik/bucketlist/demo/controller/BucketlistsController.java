@@ -9,6 +9,7 @@ import com.rawik.bucketlist.demo.model.User;
 import com.rawik.bucketlist.demo.service.BucketListService;
 import com.rawik.bucketlist.demo.service.UserService;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -55,11 +56,16 @@ public class BucketlistsController {
     public String addListItem(WebRequest request, Principal principal){
 
         BucketItemDto itemDto = new BucketItemDto();
-
         itemDto.setListId(Long.valueOf(request.getParameter("listID")));
         itemDto.setName(request.getParameter("name"));
         itemDto.setDescription(request.getParameter("description"));
-        itemDto.setPrice(Long.valueOf(request.getParameter("price")));
+
+        try{
+            itemDto.setPrice(Long.valueOf(request.getParameter("price")));
+        }catch (NumberFormatException e){
+            itemDto.setPrice(0L);
+        }
+
         itemDto.setAddedDate(new Date());
         itemDto.setImage(request.getParameter("image"));
 
@@ -106,4 +112,9 @@ public class BucketlistsController {
         return "redirect:/bucketlists";
     }
 
+    @GetMapping("/bucketlist/{listid}/item/{itemid}/delete")
+    public String deleteBucketlistItem(@PathVariable Long listid, @PathVariable Long itemid, Principal principal){
+        bucketListService.dropListItem(listid, itemid, principal.getName());
+        return "redirect:/bucketlist/manage/" + listid;
+    }
 }

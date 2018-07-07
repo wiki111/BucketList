@@ -40,6 +40,7 @@
             <td th:text="${item.getDescription()}"></td>
             <td th:text="${item.getPrice()}"></td>
             <td th:text="${item.getAddedDate()}"></td>
+            <td><a class="btn btn-primary" th:href="@{'/bucketlist/' + ${list.getId()} + '/item/' + ${item.getId()} + '/delete'}">Delete</a></td>
         </tr>
         </tbody>
     </table>

@@ -11,5 +11,6 @@ public interface BucketListService {
     BucketList saveList(BucketListDto dto);
     BucketList updateList(BucketListDto dto);
     void dropList(Long id, String user);
+    void dropListItem(Long listid, Long itemid, String user);
 
 }

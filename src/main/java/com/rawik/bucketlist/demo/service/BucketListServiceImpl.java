@@ -2,6 +2,7 @@ package com.rawik.bucketlist.demo.service;
 
 import com.rawik.bucketlist.demo.dto.BucketListDto;
 import com.rawik.bucketlist.demo.mapper.BucketListMapper;
+import com.rawik.bucketlist.demo.model.BucketItem;
 import com.rawik.bucketlist.demo.model.BucketList;
 import com.rawik.bucketlist.demo.model.User;
 import com.rawik.bucketlist.demo.repository.BucketListRepository;
@@ -106,5 +107,38 @@ public class BucketListServiceImpl implements BucketListService{
             }
         }
 
+    }
+
+    @Override
+    public void dropListItem(Long listid, Long itemid, String user) {
+
+        Optional<User> userOptional = userRepository.findByEmail(user);
+
+        if(userOptional.isPresent()){
+
+            User foundUser = userOptional.get();
+
+            Optional<BucketList> bucketListOptional =
+                    foundUser.getBucketLists()
+                            .stream()
+                            .filter(list -> list.getId() == listid)
+                            .findFirst();
+
+            if(bucketListOptional.isPresent()){
+                BucketList foundBucketlist = bucketListOptional.get();
+
+                Optional<BucketItem> bucketItemOptional = foundBucketlist.getItems()
+                        .stream()
+                        .filter(item -> item.getId() == itemid)
+                        .findFirst();
+
+                if(bucketItemOptional.isPresent()){
+                    BucketItem foundItem = bucketItemOptional.get();
+                    foundItem.setBucketlist(null);
+                    foundBucketlist.getItems().remove(bucketItemOptional.get());
+                    listRepository.save(foundBucketlist);
+                }
+            }
+        }
     }
 }
