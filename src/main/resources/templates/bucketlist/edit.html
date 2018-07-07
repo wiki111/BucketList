@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html layout:decorate= "~{fragments/main-layout}" lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit bucketlist</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css}" />
+    <link rel="stylesheet" th:href="@{/css/main.css}"/>
+    <script th:src="@{/webjars/jquery/3.3.7-1/jquery.min.js}"></script>
+    <script th:src="@{/webjars/bootstrap/4.0.0-2/js/bootstrap.min.js}"></script>
+</head>
+<body>
+<div layout:fragment="content">
+    <h1>Bucketlist info form</h1>
+
+    <form th:action="@{'/bucketlist/manage/' + ${list.getId()} + '/edit'}" th:object="${list}" method="POST" enctype="utf8">
+        <input type="hidden" th:field="*{id}">
+        <div>
+            <label>Name</label>
+            <input th:field="*{name}" th:default="${list.getName()}"/>
+        </div>
+        <div>
+            <label>Description</label>
+            <input th:field="*{description}" th:default="${list.getDescription()}"/>
+        </div>
+        <div>
+            <label>Open</label>
+            <input type="checkbox" th:field="*{open}" th:value="true" th:checked="${list.getOpen() == 'true'}?'checked'"/>
+        </div>
+        <div>
+            <label>Private</label>
+            <input type="checkbox" th:field="*{isPrivate}" th:value="true" th:checked="${list.getIsPrivate() == 'true'}?'checked'"/>
+        </div>
+        <div>
+            <label>Tags</label>
+            <input type="text" th:field="*{tags}" th:default="${list.getTags()}"/>
+        </div>
+        <button type="submit"> Save </button>
+    </form>
+</div>
+</body>
+
+<a th:href="@{/login}" th:text="#{label.form.loginLink}" > I already have an account ! </a>
+
+</html>

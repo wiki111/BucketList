@@ -62,10 +62,9 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
             listDto.setId(1L);
             listDto.setCreationDate(new Date());
             listDto.setDescription("Desc");
-            listDto.setOpen(true);
+            listDto.setOpen("true");
             listDto.getItems().add(testItem);
-            listDto.getTags().add("sample");
-            listDto.getTags().add("test");
+            listDto.setTags("taggy,little taggy");
 
             listService.saveList(listDto);
 

@@ -7,6 +7,8 @@ import com.rawik.bucketlist.demo.model.BucketList;
 import com.rawik.bucketlist.demo.model.User;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Component
@@ -26,9 +28,9 @@ public class BucketListMapper {
         dto.setName(list.getName());
         dto.setDescription(list.getDescription());
         dto.setCreationDate(list.getCreationDate());
-        dto.setOpen(list.getOpen());
-        dto.setIsPrivate(list.getIsPrivate());
-        dto.setTags(list.getTags());
+        dto.setOpen(String.valueOf(list.getOpen()));
+        dto.setIsPrivate(String.valueOf(list.getIsPrivate()));
+        dto.setTags(tagListToString(list.getTags()));
 
         if(list.getItems() != null){
             list.getItems().forEach(item -> dto.getItems().add(itemMapper.bucketItemToDto(item)));
@@ -40,14 +42,13 @@ public class BucketListMapper {
     public BucketList dtoToBucketList(BucketListDto dto){
         BucketList list = new BucketList();
 
-
         list.setId(dto.getId());
         list.setName(dto.getName());
         list.setCreationDate(dto.getCreationDate());
         list.setDescription(dto.getDescription());
-        list.setOpen(dto.getOpen());
-        list.setIsPrivate(dto.getIsPrivate());
-        list.setTags(dto.getTags());
+        list.setOpen(stringToBoolean(dto.getOpen()));
+        list.setIsPrivate(stringToBoolean(dto.getIsPrivate()));
+        list.setTags(tagStringToList(dto.getTags()));
 
         if(dto.getUserId() != null){
             User user = new User();
@@ -60,6 +61,47 @@ public class BucketListMapper {
         );
 
         return list;
+    }
+
+    public List<String> tagStringToList(String tags){
+        ArrayList<String> tagList = new ArrayList<>();
+
+        if(tags != null){
+            String[] tagArray = tags.replaceAll("\\s+","").split(",");
+
+            for (String tag : tagArray) {
+                tagList.add(tag);
+            }
+        }
+
+        return tagList;
+    }
+
+    public String tagListToString(List<String> tagList){
+
+        StringBuilder tagString =  new StringBuilder();
+
+        for (String tag: tagList) {
+            tagString.append(tag + ", ");
+        }
+
+        if(tagString.length() > 1){
+            tagString.setCharAt(tagString.length() - 1, ' ');
+        }
+
+        return tagString.toString();
+
+    }
+
+    public Boolean stringToBoolean(String text){
+
+        if(text != null){
+            if(text.toLowerCase().equals("true")){
+                return true;
+            }
+        }
+
+        return false;
     }
 
 }

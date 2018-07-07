@@ -14,8 +14,8 @@ public class BucketListDto {
     private String name;
     private String description;
     private Date creationDate;
-    private Boolean open;
-    private Boolean isPrivate;
-    private List<String> tags = new ArrayList<>();
+    private String open;
+    private String isPrivate;
+    private String tags;
 
 }

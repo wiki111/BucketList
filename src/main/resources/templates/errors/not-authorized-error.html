@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html layout:decorate= "~{fragments/main-layout}" lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <meta charset="UTF-8">
+    <title>Not Authorized Error</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css}" />
+    <link rel="stylesheet" th:href="@{/css/main.css}"/>
+    <script th:src="@{/webjars/jquery/3.3.7-1/jquery.min.js}"></script>
+    <script th:src="@{/webjars/bootstrap/4.0.0-2/js/bootstrap.min.js}"></script>
+</head>
+<body>
+<div layout:fragment="content">
+    <h1>Error</h1>
+
+    <div>
+        <p>
+            You are not authorized to make this request.
+        </p>
+    </div>
+
+</div>
+</body>
+
+</html>

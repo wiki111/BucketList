@@ -11,7 +11,12 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.context.support.WithUserDetails;
+import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -27,12 +32,13 @@ import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.springframework.security.test.web.reactive.server.SecurityMockServerConfigurers.springSecurity;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@WebAppConfiguration
+@RunWith(SpringRunner.class)
 @SpringBootTest
 public class BucketlistControllerIntegrationTest {
 
@@ -46,12 +52,14 @@ public class BucketlistControllerIntegrationTest {
 
     @Before
     public void setUp() {
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
+        mockMvc = MockMvcBuilders
+                .webAppContextSetup(wac)
+                .build();
     }
 
     @Test
     @Transactional
-    public void testEditBucketlist() throws Exception {
+    public void testPostEditBucketlist() throws Exception {
 
         MultiValueMap<String, String> formParams = new LinkedMultiValueMap<>();
 
@@ -65,7 +73,7 @@ public class BucketlistControllerIntegrationTest {
         this.mockMvc.perform(post("/bucketlist/manage/1/edit")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .params(formParams)).andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/bucketlist/show-list"));
+                .andExpect(view().name("redirect:/bucketlist/manage/1"));
 
         Optional<BucketList> bucketlistOpt = bucketListRepository.findById(1L);
 
@@ -74,8 +82,8 @@ public class BucketlistControllerIntegrationTest {
 
             assertEquals(savedBucketlist.getName(), "another name");
             assertEquals(savedBucketlist.getDescription(), "some other desc");
-            assertTrue(savedBucketlist.getTags().contains("another tag"));
-            assertTrue(savedBucketlist.getTags().contains("yet another tag"));
+            assertTrue(savedBucketlist.getTags().contains("anothertag"));
+            assertTrue(savedBucketlist.getTags().contains("yetanothertag"));
             assertTrue(savedBucketlist.getTags().size() == 2);
 
         }

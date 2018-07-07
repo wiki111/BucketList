@@ -68,9 +68,9 @@ public class BucketListServiceImpl implements BucketListService{
 
             listToSave.setName(dto.getName());
             listToSave.setDescription(dto.getDescription());
-            listToSave.setOpen(dto.getOpen());
-            listToSave.setIsPrivate(dto.getIsPrivate());
-            listToSave.setTags(dto.getTags());
+            listToSave.setOpen(listMapper.stringToBoolean(dto.getOpen()));
+            listToSave.setIsPrivate(listMapper.stringToBoolean(dto.getIsPrivate()));
+            listToSave.setTags(listMapper.tagStringToList(dto.getTags()));
 
             listRepository.save(listToSave);
 

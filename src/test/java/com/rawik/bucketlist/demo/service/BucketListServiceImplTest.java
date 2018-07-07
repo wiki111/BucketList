@@ -11,6 +11,8 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.Optional;
+
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -84,6 +86,7 @@ public class BucketListServiceImplTest {
         list.setId(1L);
 
         when(mapper.dtoToBucketList(any(BucketListDto.class))).thenReturn(list);
+        when(listRepository.findById(anyLong())).thenReturn(Optional.of(list));
         when(listRepository.save(any(BucketList.class))).thenReturn(list);
 
         BucketList savedList = bucketListService.updateList(dto);

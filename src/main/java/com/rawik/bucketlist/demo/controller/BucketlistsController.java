@@ -8,6 +8,7 @@ import com.rawik.bucketlist.demo.model.BucketList;
 import com.rawik.bucketlist.demo.model.User;
 import com.rawik.bucketlist.demo.service.BucketListService;
 import com.rawik.bucketlist.demo.service.UserService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -76,12 +77,26 @@ public class BucketlistsController {
         return "redirect:/bucketlist/manage/" + itemDto.getListId();
     }
 
+    @GetMapping("/bucketlist/manage/{listid}/edit")
+    public String editBucketlist(@PathVariable Long listid, Model model, Principal principal){
+
+        BucketList bucketList = bucketListService.getListById(listid);
+
+        if(bucketList.getUser().getEmail() == principal.getName()){
+            BucketListDto bucketListDto = bucketListMapper.bucketListToDto(bucketList);
+            model.addAttribute("list", bucketListDto);
+            return "bucketlist/edit";
+        }
+
+        return "errors/not-authorized-error";
+    }
+
     @PostMapping("/bucketlist/manage/{listid}/edit")
     public String editBucketlist(@ModelAttribute("bucketlistdto") BucketListDto bucketListDto, Model model, Principal principal){
 
         bucketListService.updateList(bucketListDto);
 
-        return "redirect:/bucketlist/show-list";
+        return "redirect:/bucketlist/manage/" + bucketListDto.getId();
 
     }
 
