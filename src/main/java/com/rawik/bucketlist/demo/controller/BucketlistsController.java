@@ -26,6 +26,8 @@ public class BucketlistsController {
     private BucketListMapper bucketListMapper;
     private BucketItemMapper bucketItemMapper;
 
+    private static final String MANAGE_LIST_LINK = "/user/bucketlist/manage/";
+
     public BucketlistsController(UserService userService, BucketListService bucketListService, BucketListMapper bucketListMapper, BucketItemMapper bucketItemMapper) {
         this.userService = userService;
         this.bucketListService = bucketListService;
@@ -100,10 +102,10 @@ public class BucketlistsController {
 
         userService.updateBucketLists(user);
 
-        return "redirect:/bucketlist/manage/" + itemDto.getListId();
+        return "redirect:/user/bucketlist/manage/" + itemDto.getListId();
     }
 
-    @GetMapping("/bucketlist/manage/{listid}/edit")
+    @GetMapping("/user/bucketlist/manage/{listid}/edit")
     public String editBucketlist(@PathVariable Long listid, Model model, Principal principal){
 
         BucketList bucketList = bucketListService.getListById(listid);
@@ -117,12 +119,12 @@ public class BucketlistsController {
         return "errors/not-authorized-error";
     }
 
-    @PostMapping("/bucketlist/manage/{listid}/edit")
+    @PostMapping( MANAGE_LIST_LINK + "{listid}/edit")
     public String editBucketlist(@ModelAttribute("bucketlistdto") BucketListDto bucketListDto, Model model, Principal principal){
 
         bucketListService.updateList(bucketListDto);
 
-        return "redirect:/bucketlist/manage/" + bucketListDto.getId();
+        return "redirect:" + MANAGE_LIST_LINK + bucketListDto.getId();
 
     }
 
@@ -132,9 +134,9 @@ public class BucketlistsController {
         return "redirect:/bucketlists";
     }
 
-    @GetMapping("/bucketlist/{listid}/item/{itemid}/delete")
+    @GetMapping("/user/bucketlist/{listid}/item/{itemid}/delete")
     public String deleteBucketlistItem(@PathVariable Long listid, @PathVariable Long itemid, Principal principal){
         bucketListService.dropListItem(listid, itemid, principal.getName());
-        return "redirect:/bucketlist/manage/" + listid;
+        return "redirect:" + MANAGE_LIST_LINK + listid;
     }
 }

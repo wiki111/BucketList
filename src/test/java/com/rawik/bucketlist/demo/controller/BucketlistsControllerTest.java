@@ -73,7 +73,7 @@ public class BucketlistsControllerTest {
 
         String view = bucketlistsController.manageBucketlists(model, principal);
 
-        assertEquals("bucketlist/manage-bucketlists", view);
+        assertEquals("bucketlist/show-bucketlists", view);
         verify(model, times(1)).addAttribute(eq("lists"), listCaptor.capture());
         assertEquals(lists, listCaptor.getValue());
 
@@ -136,7 +136,7 @@ public class BucketlistsControllerTest {
         assertEquals(bucketitem.getPrice(), Long.valueOf(10));
         assertEquals(bucketitem.getImage(), "https://someimage.com");
 
-        assertEquals("redirect:/bucketlist/manage/1", view);
+        assertEquals("redirect:/user/bucketlist/manage/1", view);
     }
 
 

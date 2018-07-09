@@ -70,10 +70,10 @@ public class BucketlistControllerIntegrationTest {
         formParams.add("tags", "another tag");
         formParams.add("tags", "yet another tag");
 
-        this.mockMvc.perform(post("/bucketlist/manage/1/edit")
+        this.mockMvc.perform(post("/user/bucketlist/manage/1/edit")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .params(formParams)).andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/bucketlist/manage/1"));
+                .andExpect(view().name("redirect:/user/bucketlist/manage/1"));
 
         Optional<BucketList> bucketlistOpt = bucketListRepository.findById(1L);
 

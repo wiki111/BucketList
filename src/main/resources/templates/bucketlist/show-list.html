@@ -19,8 +19,8 @@
         <p th:text="${list.getDescription()}"></p>
         <p th:text="${list.getCreationDate()}"></p>
         <p th:text="${list.getOpen()}"></p>
-        <a class="btn btn-primary" th:href="@{'/bucketlist/manage/'+${list.getId()}+'/edit'}">Edit</a>
-        <a class="btn btn-primary" th:href="@{'/bucketlist/delete/'+${list.getId()}}">Delete</a>
+        <a class="btn btn-primary" th:href="@{'/user/bucketlist/manage/'+${list.getId()}+'/edit'}">Edit</a>
+        <a class="btn btn-primary" th:href="@{'/user/bucketlist/delete/'+${list.getId()}}">Delete</a>
     </div>
 
     <table class="table">
@@ -40,7 +40,7 @@
             <td th:text="${item.getDescription()}"></td>
             <td th:text="${item.getPrice()}"></td>
             <td th:text="${item.getAddedDate()}"></td>
-            <td><a class="btn btn-primary" th:href="@{'/bucketlist/' + ${list.getId()} + '/item/' + ${item.getId()} + '/delete'}">Delete</a></td>
+            <td><a class="btn btn-primary" th:href="@{'/user/bucketlist/' + ${list.getId()} + '/item/' + ${item.getId()} + '/delete'}">Delete</a></td>
         </tr>
         </tbody>
     </table>
