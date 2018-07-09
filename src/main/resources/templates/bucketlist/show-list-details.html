@@ -11,24 +11,36 @@
 </head>
 <body>
 <div layout:fragment="content">
-    <h1>Your bucketlists</h1>
+    <h1>Bucketlist <span th:text="${list.getName()}"></span>'s items</h1>
+
+    <div>
+        <h3>List info : </h3>
+        <p th:text="${list.getName()}"></p>
+        <p th:text="${list.getDescription()}"></p>
+        <p th:text="${list.getCreationDate()}"></p>
+        <p th:text="${list.getOpen()}"></p>
+        <h3>User</h3>
+        <p th:text="${username}"></p>
+    </div>
 
     <table class="table">
         <thead>
         <tr>
+            <th>Image</th>
             <th>Name</th>
             <th>Description</th>
-            <th>Creation Date</th>
-            <th>Open</th>
+            <th>Price</th>
+            <th>Date added</th>
         </tr>
         </thead>
         <tbody>
-            <tr class="clickable-row" th:each="list : ${lists}" th:onclick="'javascript:showBucketList(\'' + ${list.getId()} + '\');'">
-                <td th:text="${list.getName()}"></td>
-                <td th:text="${list.getDescription()}"></td>
-                <td th:text="${list.getCreationDate()}"></td>
-                <td th:text="${list.getOpen()}"></td>
-            </tr>
+        <tr th:each="item : ${list.getItems()}">
+            <td><img th:src="${item.getImage()}"> </td>
+            <td th:text="${item.getName()}"></td>
+            <td th:text="${item.getDescription()}"></td>
+            <td th:text="${item.getPrice()}"></td>
+            <td th:text="${item.getAddedDate()}"></td>
+        </tr>
         </tbody>
     </table>
 

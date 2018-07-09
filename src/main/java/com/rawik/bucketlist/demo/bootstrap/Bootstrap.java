@@ -4,6 +4,7 @@ import com.rawik.bucketlist.demo.dto.BucketItemDto;
 import com.rawik.bucketlist.demo.dto.BucketListDto;
 import com.rawik.bucketlist.demo.dto.UserDto;
 import com.rawik.bucketlist.demo.exceptions.EmailExistsException;
+import com.rawik.bucketlist.demo.model.BucketList;
 import com.rawik.bucketlist.demo.model.User;
 import com.rawik.bucketlist.demo.repository.BucketListRepository;
 import com.rawik.bucketlist.demo.repository.UserRepository;
@@ -63,10 +64,19 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
             listDto.setCreationDate(new Date());
             listDto.setDescription("Desc");
             listDto.setOpen("true");
+            listDto.setIsPrivate("false");
             listDto.getItems().add(testItem);
             listDto.setTags("taggy,little taggy");
 
+            BucketListDto listDto2 = new BucketListDto();
+            listDto2.setUserId(user.getUserId());
+            listDto2.setName("List 2");
+            listDto2.setId(2L);
+            listDto2.setTags("anothertaggy, taggy");
+            listDto2.setIsPrivate("true");
+
             listService.saveList(listDto);
+            listService.saveList(listDto2);
 
             listDto.setName("Updated");
             listService.updateList(listDto);

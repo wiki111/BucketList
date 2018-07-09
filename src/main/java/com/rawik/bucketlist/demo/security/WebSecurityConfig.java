@@ -31,6 +31,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
                 .authorizeRequests()
                 .antMatchers("/",
                         "/homepage",
+                        "/bucketlists",
+                        "/bucketlist/details/*",
                         "/register",
                         "/h2-console/**",
                         "/webjars/**",

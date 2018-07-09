@@ -2,20 +2,20 @@ package com.rawik.bucketlist.demo.controller;
 
 import com.rawik.bucketlist.demo.dto.BucketItemDto;
 import com.rawik.bucketlist.demo.dto.BucketListDto;
+import com.rawik.bucketlist.demo.dto.UserDto;
 import com.rawik.bucketlist.demo.mapper.BucketItemMapper;
 import com.rawik.bucketlist.demo.mapper.BucketListMapper;
 import com.rawik.bucketlist.demo.model.BucketList;
 import com.rawik.bucketlist.demo.model.User;
 import com.rawik.bucketlist.demo.service.BucketListService;
 import com.rawik.bucketlist.demo.service.UserService;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 import java.security.Principal;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -33,15 +33,21 @@ public class BucketlistsController {
         this.bucketItemMapper = bucketItemMapper;
     }
 
-    @GetMapping("/bucketlists")
+    @GetMapping("/user/bucketlists")
     public String manageBucketlists(Model model, Principal principal){
 
         model.addAttribute("lists", userService.getUserLists(principal.getName()));
 
-        return "bucketlist/manage-bucketlists";
+        return "bucketlist/show-bucketlists";
     }
 
-    @GetMapping("/bucketlist/manage/{id}")
+    @GetMapping("/bucketlists")
+    public String showBucketlists(Model model){
+        model.addAttribute("lists", bucketListService.getPublicBucketlists());
+        return "bucketlist/show-bucketlists";
+    }
+
+    @GetMapping("/user/bucketlist/manage/{id}")
     public String showBucketlist(@ModelAttribute("id") Long id, Model model, Principal principal){
 
         BucketListDto listDto = userService.getUsersListById(id, principal.getName());
@@ -49,6 +55,20 @@ public class BucketlistsController {
         model.addAttribute("list", listDto);
 
         return "bucketlist/show-list";
+
+    }
+
+    @GetMapping("/bucketlist/details/{id}")
+    public String showBucketlistDetails(@PathVariable("id") Long id, Model model){
+
+        BucketList bucketList = bucketListService.getListById(id);
+        BucketListDto bucketListDto = bucketListMapper.bucketListToDto(bucketList);
+        model.addAttribute("list", bucketListDto);
+
+        UserDto user = userService.findByUserId(bucketListDto.getUserId());
+        model.addAttribute("username", user.getEmail());
+
+        return "bucketlist/show-list-details";
 
     }
 

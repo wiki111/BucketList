@@ -9,9 +9,7 @@ import com.rawik.bucketlist.demo.repository.BucketListRepository;
 import com.rawik.bucketlist.demo.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class BucketListServiceImpl implements BucketListService{
@@ -140,5 +138,24 @@ public class BucketListServiceImpl implements BucketListService{
                 }
             }
         }
+    }
+
+    @Override
+    public List<BucketListDto> getPublicBucketlists() {
+
+        List<BucketList> bucketLists = listRepository.findBucketListByIsPrivateIsFalse();
+
+        List<BucketListDto> bucketListDtos = new ArrayList<>();
+
+        for (BucketList list : bucketLists) {
+            bucketListDtos.add(listMapper.bucketListToDto(list));
+        }
+
+        return bucketListDtos;
+    }
+
+    @Override
+    public List<BucketListDto> getPublicBucketlistsByTag(List<String> tags) {
+        return null;
     }
 }

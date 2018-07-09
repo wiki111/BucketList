@@ -85,6 +85,18 @@ public class UserService implements IUserService {
     }
 
     @Override
+    public UserDto findByUserId(Long id) {
+
+        Optional<User> userOpt = repository.findById(id);
+
+        if(userOpt.isPresent()){
+            return userMapper.userToUserDto(userOpt.get());
+        }
+
+        return null;
+    }
+
+    @Override
     public BucketListDto getUsersListById(Long listId, String username) {
 
         Optional<User> userOpt = repository.findByEmail(username);
@@ -113,4 +125,6 @@ public class UserService implements IUserService {
 
         return null;
     }
+
+
 }
