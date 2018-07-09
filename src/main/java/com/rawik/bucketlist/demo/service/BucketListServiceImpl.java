@@ -156,6 +156,14 @@ public class BucketListServiceImpl implements BucketListService{
 
     @Override
     public List<BucketListDto> getPublicBucketlistsByTag(List<String> tags) {
-        return null;
+
+        List<BucketListDto> bucketListDtos = new ArrayList<>();
+
+        for (BucketList list : listRepository.findBucketListByIsPrivateIsFalseAndTagsIn(tags)) {
+            BucketListDto bucketListDto = listMapper.bucketListToDto(list);
+            bucketListDtos.add(bucketListDto);
+        }
+
+        return bucketListDtos;
     }
 }

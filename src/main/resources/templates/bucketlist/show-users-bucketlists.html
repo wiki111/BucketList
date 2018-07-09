@@ -14,19 +14,6 @@
     <h1 sec:authorize="isAuthenticated()">Your bucketlists</h1>
     <h1 sec:authorize="isAnonymous()">Public bucketlists</h1>
 
-    <div>
-        <h3>Search</h3>
-        <form th:action="@{'/search'}" method="POST">
-            <label>Tags (separate each tag with comma) : </label>
-            <input th:name="query">
-            <button type="submit">Go !</button>
-        </form>
-    </div>
-
-    <div>
-        <a class="btn btn-primary" th:href="@{'/bucketlists'}">Show all</a>
-    </div>
-
     <table class="table">
         <thead>
         <tr>
@@ -37,13 +24,19 @@
         </tr>
         </thead>
         <tbody>
+        <tr class="clickable-row" sec:authorize="isAnonymous()" th:each="list : ${lists}" th:onclick="'javascript:showBucketListWithoutEditingOptions(\'' + ${list.getId()} + '\');'">
+            <td th:text="${list.getName()}"></td>
+            <td th:text="${list.getDescription()}"></td>
+            <td th:text="${list.getCreationDate()}"></td>
+            <td th:text="${list.getOpen()}"></td>
+        </tr>
 
-            <tr class="clickable-row" th:each="list : ${lists}" th:onclick="'javascript:showBucketListWithoutEditingOptions(\'' + ${list.getId()} + '\');'">
-                <td th:text="${list.getName()}"></td>
-                <td th:text="${list.getDescription()}"></td>
-                <td th:text="${list.getCreationDate()}"></td>
-                <td th:text="${list.getOpen()}"></td>
-            </tr>
+        <tr class="clickable-row" sec:authorize="isAuthenticated()" th:each="list : ${lists}" th:onclick="'javascript:showBucketList(\'' + ${list.getId()} + '\');'">
+            <td th:text="${list.getName()}"></td>
+            <td th:text="${list.getDescription()}"></td>
+            <td th:text="${list.getCreationDate()}"></td>
+            <td th:text="${list.getOpen()}"></td>
+        </tr>
         </tbody>
     </table>
 

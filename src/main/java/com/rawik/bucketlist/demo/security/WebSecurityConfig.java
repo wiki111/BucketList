@@ -32,6 +32,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
                 .antMatchers("/",
                         "/homepage",
                         "/bucketlists",
+                        "/search",
                         "/bucketlist/details/*",
                         "/register",
                         "/h2-console/**",

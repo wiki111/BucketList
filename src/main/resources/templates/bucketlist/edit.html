@@ -12,7 +12,7 @@
 <div layout:fragment="content">
     <h1>Bucketlist info form</h1>
 
-    <form th:action="@{'/bucketlist/manage/' + ${list.getId()} + '/edit'}" th:object="${list}" method="POST" enctype="utf8">
+    <form th:action="@{'/user/bucketlist/manage/' + ${list.getId()} + '/edit'}" th:object="${list}" method="POST" enctype="utf8">
         <input type="hidden" th:field="*{id}">
         <div>
             <label>Name</label>

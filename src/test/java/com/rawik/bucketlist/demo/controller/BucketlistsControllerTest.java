@@ -62,7 +62,7 @@ public class BucketlistsControllerTest {
     }
 
     @Test
-    public void manageBucketlists() {
+    public void showUsersBucketlistsTest() {
 
         Set<BucketListDto> lists = new HashSet<>();
 
@@ -71,16 +71,16 @@ public class BucketlistsControllerTest {
 
         ArgumentCaptor<Set<BucketListDto>> listCaptor = ArgumentCaptor.forClass(Set.class);
 
-        String view = bucketlistsController.manageBucketlists(model, principal);
+        String view = bucketlistsController.showUsersBucketlists(model, principal);
 
-        assertEquals("bucketlist/show-bucketlists", view);
+        assertEquals("bucketlist/show-users-bucketlists", view);
         verify(model, times(1)).addAttribute(eq("lists"), listCaptor.capture());
         assertEquals(lists, listCaptor.getValue());
 
     }
 
     @Test
-    public void showBucketlist() {
+    public void showBucketlistForManagementTest() {
 
         Long id = 1L;
         BucketListDto listDto = new BucketListDto();
@@ -89,9 +89,9 @@ public class BucketlistsControllerTest {
         when(principal.getName()).thenReturn("test");
         when(userService.getUsersListById(anyLong(), anyString())).thenReturn(listDto);
 
-        String view = bucketlistsController.showBucketlist(id, model, principal);
+        String view = bucketlistsController.showBucketlistForManagement(id, model, principal);
 
-        assertEquals("bucketlist/show-list", view);
+        assertEquals("bucketlist/show-list-details-manage", view);
         verify(model, times(1)).addAttribute(eq("list"), listCaptor.capture());
         assertEquals(listDto, listCaptor.getValue());
     }

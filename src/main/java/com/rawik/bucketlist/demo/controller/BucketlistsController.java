@@ -27,6 +27,8 @@ public class BucketlistsController {
     private BucketItemMapper bucketItemMapper;
 
     private static final String MANAGE_LIST_LINK = "/user/bucketlist/manage/";
+    private static final String SHOW_USERS_BUCKETLISTS = "bucketlist/show-users-bucketlists";
+    private static final String SHOW_BUCKETLISTS = "bucketlist/show-bucketlists";
 
     public BucketlistsController(UserService userService, BucketListService bucketListService, BucketListMapper bucketListMapper, BucketItemMapper bucketItemMapper) {
         this.userService = userService;
@@ -36,27 +38,27 @@ public class BucketlistsController {
     }
 
     @GetMapping("/user/bucketlists")
-    public String manageBucketlists(Model model, Principal principal){
+    public String showUsersBucketlists(Model model, Principal principal){
 
         model.addAttribute("lists", userService.getUserLists(principal.getName()));
 
-        return "bucketlist/show-bucketlists";
+        return SHOW_USERS_BUCKETLISTS;
     }
 
     @GetMapping("/bucketlists")
     public String showBucketlists(Model model){
         model.addAttribute("lists", bucketListService.getPublicBucketlists());
-        return "bucketlist/show-bucketlists";
+        return SHOW_BUCKETLISTS;
     }
 
-    @GetMapping("/user/bucketlist/manage/{id}")
-    public String showBucketlist(@ModelAttribute("id") Long id, Model model, Principal principal){
+    @GetMapping(MANAGE_LIST_LINK + "{id}")
+    public String showBucketlistForManagement(@ModelAttribute("id") Long id, Model model, Principal principal){
 
         BucketListDto listDto = userService.getUsersListById(id, principal.getName());
 
         model.addAttribute("list", listDto);
 
-        return "bucketlist/show-list";
+        return "bucketlist/show-list-details-manage";
 
     }
 
@@ -102,10 +104,10 @@ public class BucketlistsController {
 
         userService.updateBucketLists(user);
 
-        return "redirect:/user/bucketlist/manage/" + itemDto.getListId();
+        return "redirect:" + MANAGE_LIST_LINK + itemDto.getListId();
     }
 
-    @GetMapping("/user/bucketlist/manage/{listid}/edit")
+    @GetMapping( MANAGE_LIST_LINK + "{listid}/edit" )
     public String editBucketlist(@PathVariable Long listid, Model model, Principal principal){
 
         BucketList bucketList = bucketListService.getListById(listid);
@@ -138,5 +140,14 @@ public class BucketlistsController {
     public String deleteBucketlistItem(@PathVariable Long listid, @PathVariable Long itemid, Principal principal){
         bucketListService.dropListItem(listid, itemid, principal.getName());
         return "redirect:" + MANAGE_LIST_LINK + listid;
+    }
+
+    @PostMapping("/search")
+    public String showPublicBucketlistsByTags(@RequestParam("query") String query, Model model){
+
+        List<String> tags = bucketListMapper.tagStringToList(query);
+        model.addAttribute("lists", bucketListService.getPublicBucketlistsByTag(tags));
+
+        return SHOW_BUCKETLISTS;
     }
 }

@@ -75,8 +75,16 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
             listDto2.setTags("anothertaggy, taggy");
             listDto2.setIsPrivate("true");
 
+            BucketListDto listDto3 = new BucketListDto();
+            listDto3.setUserId(user.getUserId());
+            listDto3.setName("List 3");
+            listDto3.setId(3L);
+            listDto3.setTags("theonlyone");
+            listDto3.setIsPrivate("false");
+
             listService.saveList(listDto);
             listService.saveList(listDto2);
+            listService.saveList(listDto3);
 
             listDto.setName("Updated");
             listService.updateList(listDto);
