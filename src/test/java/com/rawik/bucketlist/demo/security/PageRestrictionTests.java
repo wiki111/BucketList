@@ -4,6 +4,7 @@ import com.rawik.bucketlist.demo.dto.UserDto;
 import static  org.hamcrest.CoreMatchers.*;
 
 import com.rawik.bucketlist.demo.exceptions.EmailExistsException;
+import com.rawik.bucketlist.demo.exceptions.NicknameExistsException;
 import com.rawik.bucketlist.demo.model.User;
 import com.rawik.bucketlist.demo.service.UserService;
 import org.junit.Before;
@@ -77,8 +78,7 @@ public class PageRestrictionTests {
     public void testPostRegistration() throws Exception{
 
         UserDto userDto = new UserDto();
-        userDto.setFirstName("Matt");
-        userDto.setLastName("Daniels");
+        userDto.setNickname("wikita");
         userDto.setPassword("reter");
         userDto.setMatchingPassword("reter");
         userDto.setEmail("matt2@daniels.com");
@@ -91,10 +91,9 @@ public class PageRestrictionTests {
 
     @Test
     @DirtiesContext
-    public void testRegisterAndLoginUser() throws Exception, EmailExistsException {
+    public void testRegisterAndLoginUser() throws Exception, EmailExistsException, NicknameExistsException {
         UserDto userDto = new UserDto();
-        userDto.setFirstName("Matt");
-        userDto.setLastName("Daniels");
+        userDto.setNickname("wikima");
         userDto.setPassword("reter");
         userDto.setMatchingPassword("reter");
         userDto.setEmail("matt2@daniels.com");

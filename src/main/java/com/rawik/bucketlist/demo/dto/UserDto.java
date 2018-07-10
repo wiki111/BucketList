@@ -15,13 +15,7 @@ public class UserDto {
 
     @NotEmpty
     @NotNull
-    private String firstName;
-
-
-    @NotEmpty
-    @NotNull
-    private String lastName;
-
+    private String nickname;
 
     @NotEmpty
     @NotNull
@@ -36,7 +30,9 @@ public class UserDto {
 
     private Set<BucketListDto> bucketlists = new HashSet<>();
 
-    private String nickname;
+
+    private String firstName;
+    private String lastName;
     private String phone;
     private String address;
 

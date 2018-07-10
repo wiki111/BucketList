@@ -3,6 +3,7 @@ package com.rawik.bucketlist.demo.service;
 import com.rawik.bucketlist.demo.dto.BucketListDto;
 import com.rawik.bucketlist.demo.dto.UserDto;
 import com.rawik.bucketlist.demo.exceptions.EmailExistsException;
+import com.rawik.bucketlist.demo.exceptions.NicknameExistsException;
 import com.rawik.bucketlist.demo.mapper.BucketListMapper;
 import com.rawik.bucketlist.demo.mapper.UserMapper;
 import com.rawik.bucketlist.demo.model.BucketList;
@@ -60,6 +61,8 @@ public class UserServiceTest {
             assertEquals(returnedUser, user);
         } catch (EmailExistsException e) {
             e.printStackTrace();
+        }catch (NicknameExistsException e){
+
         }
 
     }

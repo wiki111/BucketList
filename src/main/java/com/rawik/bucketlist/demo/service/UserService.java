@@ -3,6 +3,7 @@ package com.rawik.bucketlist.demo.service;
 import com.rawik.bucketlist.demo.dto.BucketListDto;
 import com.rawik.bucketlist.demo.dto.UserDto;
 import com.rawik.bucketlist.demo.exceptions.EmailExistsException;
+import com.rawik.bucketlist.demo.exceptions.NicknameExistsException;
 import com.rawik.bucketlist.demo.mapper.BucketListMapper;
 import com.rawik.bucketlist.demo.mapper.UserMapper;
 import com.rawik.bucketlist.demo.model.BucketList;
@@ -32,9 +33,13 @@ public class UserService implements IUserService {
 
     @Transactional
     @Override
-    public User registerNewUser(UserDto userDto) throws EmailExistsException{
+    public User registerNewUser(UserDto userDto) throws EmailExistsException, NicknameExistsException{
         if(emailExists(userDto.getEmail())){
             throw new EmailExistsException("There is an account with that email address : " + userDto.getEmail());
+        }
+
+        if(nicknameExists(userDto.getNickname())){
+            throw new NicknameExistsException("There is an account with that nickname - please choose another.");
         }
 
         User user = userMapper.userDtoToUser(userDto);
@@ -77,6 +82,15 @@ public class UserService implements IUserService {
             return true;
         }
         return false;
+    }
+
+    private boolean nicknameExists(String nickname){
+        Optional<User> user = repository.findByNickname(nickname);
+        if(user.isPresent()){
+            return true;
+        }else{
+            return false;
+        }
     }
 
     @Override

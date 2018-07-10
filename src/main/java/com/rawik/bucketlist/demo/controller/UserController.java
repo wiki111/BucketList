@@ -2,6 +2,7 @@ package com.rawik.bucketlist.demo.controller;
 
 import com.rawik.bucketlist.demo.dto.UserDto;
 import com.rawik.bucketlist.demo.exceptions.EmailExistsException;
+import com.rawik.bucketlist.demo.exceptions.NicknameExistsException;
 import com.rawik.bucketlist.demo.mapper.UserMapper;
 import com.rawik.bucketlist.demo.model.User;
 import com.rawik.bucketlist.demo.service.UserService;
@@ -77,6 +78,8 @@ public class UserController {
         try{
             registered = service.registerNewUser(accountDto);
         }catch (EmailExistsException e){
+            return null;
+        }catch (NicknameExistsException e){
             return null;
         }
 

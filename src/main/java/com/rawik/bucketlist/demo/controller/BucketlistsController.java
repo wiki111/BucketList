@@ -70,7 +70,7 @@ public class BucketlistsController {
         model.addAttribute("list", bucketListDto);
 
         UserDto user = userService.findByUserId(bucketListDto.getUserId());
-        model.addAttribute("username", user.getEmail());
+        model.addAttribute("username", user.getNickname());
 
         return "bucketlist/show-list-details";
 

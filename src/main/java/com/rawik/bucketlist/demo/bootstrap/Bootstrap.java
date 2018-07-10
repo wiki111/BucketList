@@ -4,6 +4,7 @@ import com.rawik.bucketlist.demo.dto.BucketItemDto;
 import com.rawik.bucketlist.demo.dto.BucketListDto;
 import com.rawik.bucketlist.demo.dto.UserDto;
 import com.rawik.bucketlist.demo.exceptions.EmailExistsException;
+import com.rawik.bucketlist.demo.exceptions.NicknameExistsException;
 import com.rawik.bucketlist.demo.model.BucketList;
 import com.rawik.bucketlist.demo.model.User;
 import com.rawik.bucketlist.demo.repository.BucketListRepository;
@@ -43,8 +44,7 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
         userDto.setEmail("matt@daniels.com");
         userDto.setPassword("reter");
         userDto.setMatchingPassword("reter");
-        userDto.setFirstName("Matt");
-        userDto.setLastName("Daniels");
+        userDto.setNickname("wiki");
         User user;
         try{
             user = userService.registerNewUser(userDto);
@@ -90,6 +90,8 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
             listService.updateList(listDto);
 
         }catch (EmailExistsException e){
+
+        }catch (NicknameExistsException e){
 
         }
 

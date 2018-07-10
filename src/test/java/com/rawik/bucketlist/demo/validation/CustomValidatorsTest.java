@@ -26,8 +26,7 @@ public class CustomValidatorsTest {
     @Before
     public void setUp(){
         user = new UserDto();
-        user.setFirstName("Matt");
-        user.setLastName("Daniels");
+        user.setNickname("wiki");
         user.setPassword("password");
         user.setMatchingPassword("password");
         user.setEmail("matt@daniels.com");
