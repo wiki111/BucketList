@@ -10,6 +10,7 @@ import com.rawik.bucketlist.demo.model.User;
 import com.rawik.bucketlist.demo.repository.BucketListRepository;
 import com.rawik.bucketlist.demo.repository.UserRepository;
 import com.rawik.bucketlist.demo.service.BucketListService;
+import com.rawik.bucketlist.demo.service.MessageService;
 import com.rawik.bucketlist.demo.service.UserService;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -24,12 +25,14 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
     private final UserService userService;
     private final BucketListRepository listRepository;
     private final BucketListService listService;
+    private final MessageService messageService;
 
-    public Bootstrap(UserRepository userRepository, UserService userService, BucketListRepository listRepository, BucketListService listService) {
+    public Bootstrap(UserRepository userRepository, UserService userService, BucketListRepository listRepository, BucketListService listService, MessageService messageService) {
         this.userRepository = userRepository;
         this.userService = userService;
         this.listRepository = listRepository;
         this.listService = listService;
+        this.messageService = messageService;
     }
 
     @Override
@@ -45,9 +48,17 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
         userDto.setPassword("reter");
         userDto.setMatchingPassword("reter");
         userDto.setNickname("wiki");
+
+        UserDto userDto2 = new UserDto();
+        userDto2.setEmail("matt3@daniels.com");
+        userDto2.setPassword("ravix");
+        userDto2.setMatchingPassword("ravix");
+        userDto2.setNickname("ravi");
         User user;
+
         try{
             user = userService.registerNewUser(userDto);
+            userService.registerNewUser(userDto2);
 
             BucketItemDto testItem = new BucketItemDto();
             testItem.setId(1L);
@@ -88,6 +99,9 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
 
             listDto.setName("Updated");
             listService.updateList(listDto);
+
+            messageService.sendMessage("wiki", "ravi", "test message");
+            messageService.sendMessage("ravi", "wiki", "another test message");
 
         }catch (EmailExistsException e){
 

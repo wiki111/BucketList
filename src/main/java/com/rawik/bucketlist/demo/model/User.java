@@ -11,7 +11,7 @@ import java.util.Set;
 
 @Data
 @Entity
-@EqualsAndHashCode(exclude = {"bucketLists"})
+@EqualsAndHashCode(exclude = {"bucketLists", "messagesSent", "messagesReceived"})
 public class User {
 
     @Id
@@ -20,6 +20,12 @@ public class User {
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL)
     private Set<BucketList> bucketLists = new HashSet<>();
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "sender", cascade = CascadeType.ALL)
+    private Set<Message> messagesSent = new HashSet<>();
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "receiver", cascade = CascadeType.ALL)
+    private Set<Message> messagesReceived = new HashSet<>();
 
     private String firstName;
     private String lastName;

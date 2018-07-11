@@ -10,10 +10,12 @@ import org.springframework.stereotype.Component;
 public class UserMapper {
 
     BucketListMapper bucketListMapper;
+    MessageMapper messageMapper;
     PasswordEncoder passwordEncoder;
 
-    public UserMapper(BucketListMapper bucketListMapper, PasswordEncoder passwordEncoder) {
+    public UserMapper(BucketListMapper bucketListMapper, MessageMapper messageMapper,PasswordEncoder passwordEncoder) {
         this.bucketListMapper = bucketListMapper;
+        this.messageMapper = messageMapper;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -35,7 +37,22 @@ public class UserMapper {
                     );
         }
 
-        if(user.getNickname() != null){
+        if(user.getMessagesSent() != null & user.getMessagesSent().size() > 0){
+            user.getMessagesSent()
+                    .forEach(message -> userDto.getMessagesSent().add(
+                            messageMapper.messageToDto(message)
+                    ));
+        }
+
+        if(user.getMessagesReceived() != null & user.getMessagesReceived().size() > 0) {
+            user.getMessagesReceived()
+                    .forEach(message -> userDto.getMessagesReceived().add(
+                            messageMapper.messageToDto(message)
+                    ));
+
+        }
+
+            if(user.getNickname() != null){
             userDto.setNickname(user.getNickname());
         }
 
@@ -85,6 +102,21 @@ public class UserMapper {
             userDto.getBucketlists().forEach(bucketlist -> user.getBucketLists().add(
                     bucketListMapper.dtoToBucketList(bucketlist)
             ));
+        }
+
+        if(userDto.getMessagesSent() != null && userDto.getMessagesSent().size() > 0){
+            userDto.getMessagesSent()
+                    .forEach(messageDto ->  user.getMessagesSent().add(
+                            messageMapper.dtoToMessage(messageDto)
+                    ));
+        }
+
+
+        if(userDto.getMessagesReceived() != null && userDto.getMessagesReceived().size() > 0){
+            userDto.getMessagesReceived()
+                    .forEach(messageDto ->  user.getMessagesReceived().add(
+                            messageMapper.dtoToMessage(messageDto)
+                    ));
         }
 
         if(userDto.getNickname() != null){

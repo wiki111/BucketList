@@ -26,6 +26,9 @@ public class UserMapperTest {
     BucketListMapper bucketListMapper;
 
     @Mock
+    MessageMapper messageMapper;
+
+    @Mock
     PasswordEncoder passwordEncoder;
 
     UserMapper userMapper;
@@ -33,7 +36,7 @@ public class UserMapperTest {
     @Before
     public void setUp(){
         MockitoAnnotations.initMocks(this);
-        userMapper = new UserMapper(bucketListMapper, passwordEncoder);
+        userMapper = new UserMapper(bucketListMapper, messageMapper, passwordEncoder);
     }
 
     @Test

@@ -1,5 +1,6 @@
 package com.rawik.bucketlist.demo.dto;
 
+import com.rawik.bucketlist.demo.model.Message;
 import com.rawik.bucketlist.demo.validation.PasswordMatches;
 import com.rawik.bucketlist.demo.validation.ValidEmail;
 import lombok.Data;
@@ -30,6 +31,8 @@ public class UserDto {
 
     private Set<BucketListDto> bucketlists = new HashSet<>();
 
+    private Set<MessageDto> messagesSent = new HashSet<>();
+    private Set<MessageDto> messagesReceived = new HashSet<>();
 
     private String firstName;
     private String lastName;
