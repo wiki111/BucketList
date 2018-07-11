@@ -100,8 +100,12 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
             listDto.setName("Updated");
             listService.updateList(listDto);
 
-            messageService.sendMessage("wiki", "ravi", "test message");
-            messageService.sendMessage("ravi", "wiki", "another test message");
+            messageService.sendMessage("matt@daniels.com", "ravi", "test message");
+            messageService.sendMessage("matt@daniels.com", "ravi", "test message 2");
+            messageService.sendMessage("matt@daniels.com", "ravi", "test message 3");
+            messageService.sendMessage("matt3@daniels.com", "wiki", "another test message");
+            messageService.sendMessage("matt3@daniels.com", "wiki", "another test message 2");
+            messageService.sendMessage("matt3@daniels.com", "wiki", "another test message 3");
 
         }catch (EmailExistsException e){
 

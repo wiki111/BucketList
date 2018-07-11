@@ -27,11 +27,11 @@ public class MessageServiceImpl implements MessageService {
     MessageMapper messageMapper;
 
     @Override
-    public void sendMessage(String senderNickname, String receiverNickname, String message) {
+    public void sendMessage(String senderEmail, String receiverNickname, String message) {
 
         Message messageObj = new Message();
 
-        Optional<User> sender = userRepository.findByNickname(senderNickname);
+        Optional<User> sender = userRepository.findByEmail(senderEmail);
         Optional<User> receiver = userRepository.findByNickname(receiverNickname);
 
         if(sender.isPresent() && receiver.isPresent()){
@@ -47,9 +47,43 @@ public class MessageServiceImpl implements MessageService {
             receiverObj.getMessagesReceived().add(messageObj);
             senderObj.getMessagesSent().add(messageObj);
 
-            userRepository.save(senderObj);
-            userRepository.save(receiverObj);
+            messageRepository.save(messageObj);
 
         }
+    }
+
+    @Override
+    public List<MessageDto> getReceivedMessages(String email) {
+
+        List<MessageDto> messages = new ArrayList<>();
+
+        Optional<List<Message>> savedMessagesOptional = messageRepository.findAllByReceiverEmail(email);
+        if(savedMessagesOptional.isPresent()){
+            for (Message message : savedMessagesOptional.get()) {
+                messages.add(messageMapper.messageToDto(message));
+            }
+
+            return messages;
+        }
+
+        return null;
+    }
+
+    @Override
+    public List<MessageDto> getSentMessages(String email) {
+
+        List<MessageDto> messages = new ArrayList<>();
+
+        Optional<List<Message>> savedMessagesOptional = messageRepository.findAllBySenderEmail(email);
+        if(savedMessagesOptional.isPresent()){
+
+            for (Message message : savedMessagesOptional.get()) {
+                messages.add(messageMapper.messageToDto(message));
+            }
+
+            return messages;
+        }
+
+        return null;
     }
 }

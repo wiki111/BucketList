@@ -9,4 +9,7 @@ import java.util.Optional;
 
 public interface MessageRepository extends CrudRepository<Message, Long> {
 
+    Optional<List<Message>> findAllBySenderEmail(String email);
+    Optional<List<Message>> findAllByReceiverEmail(String email);
+
 }

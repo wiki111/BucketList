@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html layout:decorate= "~{fragments/main-layout}" lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css}" />
+    <link rel="stylesheet" th:href="@{/css/main.css}"/>
+    <script th:src="@{/webjars/jquery/3.3.7-1/jquery.min.js}"></script>
+    <script th:src="@{/webjars/bootstrap/4.0.0-2/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/utility.js}"></script>
+</head>
+<body>
+<div layout:fragment="content">
+
+    <h1 th:if="${showReceived}" th:text="'Messages Received'">Messages</h1>
+    <h1 th:unless="${sh owReceived}" th:text="'Messages Sent'">Messages</h1>
+
+    <div th:each="message : ${messages}">
+        <div class="border border-primary">
+            <p th:if = "${showReceived}" th:text="'Sent by ' +  ${message.getSenderNickname()}"></p>
+            <p th:unless = "${showReceived}" th:text="'Sent to ' +  ${message.getReceiverNickname()}"></p>
+            <p th:text="'Date : ' +  ${message.getDateSent()}"></p>
+            <p th:text="${message.getMessage()}"></p>
+        </div>
+    </div>
+
+</div>
+</body>
+
+</html>

@@ -6,6 +6,8 @@ import java.util.List;
 
 public interface MessageService {
 
-    void sendMessage(String senderNickname, String receiverNickname, String message);
+    void sendMessage(String senderEmail, String receiverNickname, String message);
+    List<MessageDto> getReceivedMessages(String email);
+    List<MessageDto> getSentMessages(String email);
 
 }
