@@ -16,4 +16,5 @@ public interface IUserService {
     UserDto findByUserId(Long id);
     BucketListDto getUsersListById(Long listId, String us);
     Set<BucketListDto> getUserLists(String email);
+    UserDto getUserByNickname(String nickname);
 }

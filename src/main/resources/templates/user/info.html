@@ -7,18 +7,24 @@
     <link rel="stylesheet" th:href="@{/css/main.css}"/>
     <script th:src="@{/webjars/jquery/3.3.7-1/jquery.min.js}"></script>
     <script th:src="@{/webjars/bootstrap/4.0.0-2/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/utility.js}"></script>
 </head>
 <body>
-<div layout:fragment="content">
-    <h1><span th:text="${user.getEmail()}"></span> - user info</h1>
-    <p th:text="${user.getFirstName()}"></p>
-    <p th:text="${user.getLastName()}"></p>
-    <p th:text="${user.getNickname()}"></p>
-    <p th:text="${user.getAddress()}"></p>
-    <p th:text="${user.getPhone()}"></p>
-    <p th:text="${user.getBio()}"></p>
-    <p th:text="${user.getInterests()}"></p>
-</div>
+    <div layout:fragment="content">
+        <h1><span th:text="${user.getEmail()}"></span> - user info</h1>
+        <p th:text="${user.getFirstName()}"></p>
+        <p th:text="${user.getLastName()}"></p>
+        <p th:text="${user.getNickname()}"></p>
+        <p th:text="${user.getAddress()}"></p>
+        <p th:text="${user.getPhone()}"></p>
+        <p th:text="${user.getBio()}"></p>
+        <p th:text="${user.getInterests()}"></p>
+
+        <div th:replace="fragments/table :: bucketlists-table">
+            ...
+        </div>
+
+    </div>
 </body>
 
 </html>

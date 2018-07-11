@@ -33,6 +33,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
                         "/homepage",
                         "/bucketlists",
                         "/search",
+                        "/find-user",
                         "/bucketlist/details/*",
                         "/register",
                         "/h2-console/**",

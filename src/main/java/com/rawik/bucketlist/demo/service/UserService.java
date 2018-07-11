@@ -140,5 +140,15 @@ public class UserService implements IUserService {
         return null;
     }
 
+    @Override
+    public UserDto getUserByNickname(String nickname) {
+        Optional<User> userOptional = repository.findByNickname(nickname);
+        if(userOptional.isPresent()){
+            return userMapper.userToUserDto(userOptional.get());
+        }
+        
+        return null;
+    }
+
 
 }
