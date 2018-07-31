@@ -35,10 +35,9 @@ public class MessageController {
     @GetMapping("/user/sent")
     public String getSentMessages(Principal principal, Model model){
 
-
-        model.addAttribute("messages", messageService.getSentMessages(principal.getName()));
+        model.addAttribute("messages", messageService
+                .getSentMessages(principal.getName()));
         model.addAttribute("showReceived", false);
-
 
         return "user/show-messages";
 
@@ -47,9 +46,9 @@ public class MessageController {
     @GetMapping("/user/received")
     public String getReceivedMessages(Principal principal, Model model){
 
-        model.addAttribute("messages", messageService.getReceivedMessages(principal.getName()));
+        model.addAttribute("messages", messageService
+                .getReceivedMessages(principal.getName()));
         model.addAttribute("showReceived", true);
-
 
         return "user/show-messages";
 

@@ -11,4 +11,5 @@ public interface BucketListRepository extends CrudRepository<BucketList, Long> {
 
     List<BucketList> findBucketListByIsPrivateIsFalseAndTagsIn(List<String> tags);
     List<BucketList> findBucketListByIsPrivateIsFalse();
+
 }

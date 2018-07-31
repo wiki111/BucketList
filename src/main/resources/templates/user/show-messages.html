@@ -13,7 +13,7 @@
 <div layout:fragment="content">
 
     <h1 th:if="${showReceived}" th:text="'Messages Received'">Messages</h1>
-    <h1 th:unless="${sh owReceived}" th:text="'Messages Sent'">Messages</h1>
+    <h1 th:unless="${showReceived}" th:text="'Messages Sent'">Messages</h1>
 
     <div th:each="message : ${messages}">
         <div class="border border-primary">

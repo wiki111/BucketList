@@ -69,11 +69,21 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public User updateBucketLists(User user) {
-        User savedUser = repository.findByEmail(user.getEmail()).get();
-        savedUser.setBucketLists(user.getBucketLists());
+    public void updateBucketLists(BucketList bucketList) {
+        User savedUser = repository.findById(bucketList.getUser().getUserId()).get();
+        Optional<BucketList> usersBucketlist = savedUser.getBucketLists()
+                .stream()
+                .filter(list -> list.getId() == bucketList.getId())
+                .findFirst();
+
+        if(usersBucketlist.isPresent()){
+            savedUser.getBucketLists().remove(usersBucketlist.get());
+            savedUser.getBucketLists().add(bucketList);
+        }else {
+            savedUser.getBucketLists().add(bucketList);
+        }
+
         repository.save(savedUser);
-        return savedUser;
     }
 
     private boolean emailExists(String email){

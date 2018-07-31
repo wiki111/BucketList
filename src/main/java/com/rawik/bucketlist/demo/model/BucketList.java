@@ -2,6 +2,8 @@ package com.rawik.bucketlist.demo.model;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import org.springframework.data.repository.cdi.Eager;
 
 import javax.persistence.*;
 import java.util.*;
@@ -9,6 +11,7 @@ import java.util.*;
 @Data
 @Entity
 @EqualsAndHashCode(exclude = {"items", "user"})
+@ToString(exclude = {"items", "user"})
 public class BucketList {
 
     @Id
@@ -27,7 +30,7 @@ public class BucketList {
     private Boolean open;
     private Boolean isPrivate;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     private List<String> tags = new ArrayList<>();
 
     public void addItem(BucketItem item){

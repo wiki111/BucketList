@@ -1,6 +1,7 @@
 package com.rawik.bucketlist.demo.service;
 
 import com.rawik.bucketlist.demo.dto.BucketListDto;
+import com.rawik.bucketlist.demo.mapper.BucketItemMapper;
 import com.rawik.bucketlist.demo.mapper.BucketListMapper;
 import com.rawik.bucketlist.demo.model.BucketList;
 import com.rawik.bucketlist.demo.model.User;
@@ -29,12 +30,53 @@ public class BucketListServiceImplTest {
     BucketListRepository listRepository;
 
     @Mock
-    BucketListMapper mapper;
+    BucketListMapper listMapper;
+
+    @Mock
+    UserService userService;
+
+    @Mock
+    BucketItemMapper itemMapper;
 
     @Before
     public void setUp(){
         MockitoAnnotations.initMocks(this);
-        bucketListService = new BucketListServiceImpl(listRepository, userRepository, mapper);
+        bucketListService = new BucketListServiceImpl(
+                listRepository,
+                userRepository,
+                listMapper,
+                userService,
+                itemMapper);
+    }
+
+    @Test
+    public void getUsersListByIdTest(){
+
+        Long id = 1L;
+        String username = "username";
+
+        User user = new User();
+        user.setEmail(username);
+
+        BucketList bucketList = new BucketList();
+        bucketList.setId(1L);
+        bucketList.setUser(user);
+
+        Optional<BucketList> optional = Optional.of(bucketList);
+
+        BucketListDto dto = new BucketListDto();
+        dto.setId(id);
+        dto.setUserId(id);
+
+        when(listRepository.findById(id)).thenReturn(optional);
+        when(listMapper.bucketListToDto(any(BucketList.class))).thenReturn(dto);
+
+        BucketListDto returnedDto = bucketListService.getUsersListById(id, username);
+
+        assertEquals(returnedDto.getId(), id);
+        verify(listRepository, times(1)).findById(id);
+        verify(listMapper, times(1)).bucketListToDto(any(BucketList.class));
+
     }
 
     @Test
@@ -43,9 +85,13 @@ public class BucketListServiceImplTest {
         BucketList list = new BucketList();
         list.setId(1L);
 
-        when(listRepository.findById(anyLong())).thenReturn(java.util.Optional.ofNullable(list));
+        BucketListDto bucketListDto = new BucketListDto();
+        bucketListDto.setId(1L);
 
-        BucketList returnedList = bucketListService.getListById(1L);
+        when(listRepository.findById(anyLong())).thenReturn(java.util.Optional.ofNullable(list));
+        when(listMapper.bucketListToDto(any(BucketList.class))).thenReturn(bucketListDto);
+
+        BucketListDto returnedList = bucketListService.getListById(1L);
 
         assertNotNull("List is null", returnedList);
         verify(listRepository, times(1)).findById(anyLong());
@@ -68,7 +114,7 @@ public class BucketListServiceImplTest {
 
 
         when(userRepository.findById(anyLong())).thenReturn(java.util.Optional.ofNullable(user));
-        when(mapper.dtoToBucketList(any(BucketListDto.class))).thenReturn(list);
+        when(listMapper.dtoToBucketList(any(BucketListDto.class))).thenReturn(list);
 
         BucketList savedList = bucketListService.saveList(dto);
 
@@ -85,7 +131,7 @@ public class BucketListServiceImplTest {
         BucketList list = new BucketList();
         list.setId(1L);
 
-        when(mapper.dtoToBucketList(any(BucketListDto.class))).thenReturn(list);
+        when(listMapper.dtoToBucketList(any(BucketListDto.class))).thenReturn(list);
         when(listRepository.findById(anyLong())).thenReturn(Optional.of(list));
         when(listRepository.save(any(BucketList.class))).thenReturn(list);
 

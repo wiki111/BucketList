@@ -63,9 +63,11 @@ public class UserController {
         }
 
         if(result.hasErrors()){
-            return new ModelAndView("/user/register", "user", userAccount);
+            return new ModelAndView("/user/register",
+                    "user", userAccount);
         }else {
-            return new ModelAndView("/user/registerSuccess", "user", userAccount);
+            return new ModelAndView("/user/registerSuccess",
+                    "user", userAccount);
         }
 
     }

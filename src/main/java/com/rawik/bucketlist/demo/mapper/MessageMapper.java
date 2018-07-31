@@ -12,8 +12,11 @@ import java.util.Optional;
 @Component
 public class MessageMapper {
 
-    @Autowired
     private UserRepository userRepository;
+
+    public MessageMapper(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     public MessageDto messageToDto(Message message){
 

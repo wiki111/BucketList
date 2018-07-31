@@ -1,12 +1,15 @@
 package com.rawik.bucketlist.demo.service;
 
+import com.rawik.bucketlist.demo.dto.BucketItemDto;
 import com.rawik.bucketlist.demo.dto.BucketListDto;
+import com.rawik.bucketlist.demo.mapper.BucketItemMapper;
 import com.rawik.bucketlist.demo.mapper.BucketListMapper;
 import com.rawik.bucketlist.demo.model.BucketItem;
 import com.rawik.bucketlist.demo.model.BucketList;
 import com.rawik.bucketlist.demo.model.User;
 import com.rawik.bucketlist.demo.repository.BucketListRepository;
 import com.rawik.bucketlist.demo.repository.UserRepository;
+import org.springframework.boot.autoconfigure.couchbase.CouchbaseProperties;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -17,23 +20,50 @@ public class BucketListServiceImpl implements BucketListService{
     private BucketListRepository listRepository;
     private UserRepository userRepository;
     private BucketListMapper listMapper;
+    private UserService userService;
+    private BucketItemMapper itemMapper;
 
-    public BucketListServiceImpl(BucketListRepository listRepository, UserRepository userRepository, BucketListMapper listMapper) {
+    public BucketListServiceImpl(BucketListRepository listRepository,
+                                 UserRepository userRepository,
+                                 BucketListMapper listMapper,
+                                 UserService userService,
+                                 BucketItemMapper itemMapper) {
         this.listRepository = listRepository;
         this.userRepository = userRepository;
         this.listMapper = listMapper;
+        this.userService = userService;
+        this.itemMapper = itemMapper;
     }
 
     @Override
-    public BucketList getListById(Long id) {
-
+    public BucketListDto getUsersListById(Long id, String username) {
         Optional<BucketList> optional = listRepository.findById(id);
         if(!optional.isPresent()){
             //todo better exception handling
             throw new RuntimeException();
-        }
+        }else {
+            BucketList bucketList = optional.get();
+            if(bucketList.getUser().getEmail().equals(username)){
+                BucketListDto bucketListDto = listMapper.bucketListToDto(optional.get());
+                return bucketListDto;
+            }else{
+                //todo handle user not authorized to access bucketlist
+                return null;
+            }
 
-        return optional.get();
+        }
+    }
+
+    @Override
+    public BucketListDto getListById(Long id) {
+        Optional<BucketList> optional = listRepository.findById(id);
+        if(!optional.isPresent()){
+            //todo better exception handling
+            throw new RuntimeException();
+        }else {
+            BucketListDto bucketListDto = listMapper.bucketListToDto(optional.get());
+            return bucketListDto;
+        }
     }
 
     @Override
@@ -51,9 +81,18 @@ public class BucketListServiceImpl implements BucketListService{
 
         user.getBucketLists().add(list);
 
-        userRepository.save(user);
+        User savedUser = userRepository.save(user);
 
-        return list;
+        Optional<BucketList> savedBucketlist = savedUser.getBucketLists()
+                .stream().filter(
+                        list1 -> list1.getCreationDate().equals(dto.getCreationDate()))
+                .findFirst();
+
+        if(savedBucketlist.isPresent()){
+            return savedBucketlist.get();
+        }else{
+            return null;
+        }
     }
 
     @Override
@@ -155,15 +194,48 @@ public class BucketListServiceImpl implements BucketListService{
     }
 
     @Override
-    public List<BucketListDto> getPublicBucketlistsByTag(List<String> tags) {
+    public List<BucketListDto> getPublicBucketlistsByTag(String tags) {
 
         List<BucketListDto> bucketListDtos = new ArrayList<>();
+        List<String> tagList = listMapper.tagStringToList(tags);
 
-        for (BucketList list : listRepository.findBucketListByIsPrivateIsFalseAndTagsIn(tags)) {
+        for (BucketList list : listRepository.findBucketListByIsPrivateIsFalseAndTagsIn(tagList)) {
             BucketListDto bucketListDto = listMapper.bucketListToDto(list);
             bucketListDtos.add(bucketListDto);
         }
 
         return bucketListDtos;
+    }
+
+    @Override
+    public boolean addItemToList(BucketItemDto itemDto, String username) {
+
+        User user = userService.findByUsername(username);
+        BucketList bucketList = searchUsersListsForId(user, itemDto.getListId());
+
+        if(bucketList != null){
+            bucketList.getItems().add(itemMapper.dtoToBucketItem(itemDto));
+            userService.updateBucketLists(bucketList);
+            return true;
+        }else{
+            //todo handle bucketlist doesn't exist
+            return false;
+        }
+    }
+
+
+    private BucketList searchUsersListsForId(User user, Long listId){
+        Optional<BucketList> bucketListOptional =
+                user.getBucketLists()
+                        .stream()
+                        .filter(list -> list.getId()
+                                .equals(listId))
+                        .findFirst();
+
+        if(bucketListOptional.isPresent()){
+            return bucketListOptional.get();
+        }else {
+            return null;
+        }
     }
 }

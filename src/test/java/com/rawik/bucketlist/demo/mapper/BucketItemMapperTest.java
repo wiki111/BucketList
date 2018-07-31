@@ -19,7 +19,6 @@ public class BucketItemMapperTest {
         BucketItemMapper mapper = new BucketItemMapper();
 
         //given
-
         BucketList bucketList = new BucketList();
         bucketList.setId(1L);
 
