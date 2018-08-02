@@ -7,13 +7,11 @@ import com.rawik.bucketlist.demo.exceptions.EmailExistsException;
 import com.rawik.bucketlist.demo.exceptions.NicknameExistsException;
 import com.rawik.bucketlist.demo.mapper.BucketItemMapper;
 import com.rawik.bucketlist.demo.mapper.BucketListMapper;
-import com.rawik.bucketlist.demo.model.BucketItem;
 import com.rawik.bucketlist.demo.model.BucketList;
 import com.rawik.bucketlist.demo.model.User;
 import com.rawik.bucketlist.demo.repository.BucketListRepository;
 import com.rawik.bucketlist.demo.repository.UserRepository;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +20,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
@@ -55,8 +54,12 @@ public class BucketListServiceImplIntegrationTest {
 
     String testListName = "testListName";
 
-    Long testListId = 999L;
+    Long testListId;
     Long testUserId;
+    Long testListItemId;
+
+    BucketListDto testListDto;
+    BucketItemDto testListItemDto;
 
     @Before
     public void setUp(){
@@ -113,12 +116,14 @@ public class BucketListServiceImplIntegrationTest {
         testItem.setAddedDate(new Date());
         testItem.setListId(testListId);
         testItem.setId(999L);
+        testListItemDto = testItem;
 
         bucketListDto.getItems().add(testItem);
+        testListDto = bucketListDto;
 
         BucketList savedBucketlist = bucketListService.saveList(bucketListDto);
         testListId = savedBucketlist.getId();
-        Optional<BucketList> test = bucketListRepository.findById(999L);
+        testListItemId = savedBucketlist.getItems().stream().findFirst().get().getId();
     }
 
     @Test
@@ -129,6 +134,90 @@ public class BucketListServiceImplIntegrationTest {
         assertEquals(returnedListDto.getId(), testListId);
         assertEquals(returnedListDto.getName(), testListName);
         assertEquals(returnedListDto.getUserId(), testUserId);
+
+    }
+
+    @Test
+    public void getListByIdTest(){
+
+        BucketListDto listDto = bucketListService.getListById(testListId);
+
+        assertEquals(testListName, listDto.getName());
+        assertEquals(testListId, listDto.getId());
+
+    }
+
+    @Test
+    @DirtiesContext
+    public void saveListTest(){
+        BucketList listObj = bucketListService.saveList(testListDto);
+
+        assertEquals(listObj.getName(), testListDto.getName());
+        assertFalse(listObj.getTags().isEmpty());
+        assertFalse(listObj.getItems().isEmpty());
+
+        Optional<BucketList> bucketListOpt = bucketListRepository.findById(listObj.getId());
+        assertTrue(bucketListOpt.isPresent());
+
+        Optional<User> userOpt = userRepository.findById(bucketListOpt.get().getUser().getUserId());
+        assertTrue(userOpt.isPresent());
+        assertTrue(userOpt.get().getBucketLists()
+                .stream()
+                .filter(list -> list.getId()
+                        .equals(bucketListOpt.get().getId()))
+                .findFirst() != null);
+    }
+
+    @Test
+    @DirtiesContext
+    public void dropListTest(){
+        bucketListService.dropList(testListId, testUserEmail);
+
+        Optional<User> userOpt = userRepository.findByEmail(testUserEmail);
+
+        Optional<BucketList> bucketListOptional = bucketListRepository.findById(testListId);
+        assertFalse(bucketListOptional.isPresent());
+    }
+
+    @Test
+    public void dropListItemTest(){
+        bucketListService.dropListItem(testListId, testListItemId, testUserEmail);
+        Optional<BucketList> bucketlistOpt = bucketListRepository.findById(testListId);
+        assertTrue(bucketlistOpt.isPresent());
+        BucketList bucketList = bucketlistOpt.get();
+        assertTrue(bucketList.getItems().isEmpty());
+    }
+
+    @Test
+    public void getPublicBucketlistsTest() {
+        List<BucketListDto> bucketlists = bucketListService.getPublicBucketlists();
+        for (BucketListDto listDto : bucketlists) {
+            assertTrue(listDto.getIsPrivate().equals("false"));
+        }
+    }
+
+    @Test
+    public void getPublicBucketlistsByTagTest(){
+        List<BucketListDto> listDtos = bucketListService.getPublicBucketlistsByTag("testTag1");
+        for (BucketListDto list : listDtos) {
+            assertTrue(list.getTags().contains("testTag1"));
+            assertTrue(list.getIsPrivate().equals("false"));
+        }
+    }
+
+    @Test
+    public void addItemToListTest() {
+        testListItemDto.setListId(testListId);
+        testListItemDto.setName("addItemTestItem");
+        boolean isSuccessful = bucketListService.addItemToList(testListItemDto, testUserEmail);
+        assertTrue(isSuccessful);
+        Optional<BucketList> bucketlistOpt = bucketListRepository.findById(testListId);
+        assertTrue(bucketlistOpt.isPresent());
+        assertTrue(
+                bucketlistOpt.get().getItems()
+                        .stream()
+                        .filter(list -> list.getName().equals("addItemTestItem"))
+                        .findFirst() != null);
 
     }
 

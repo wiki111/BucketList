@@ -141,6 +141,8 @@ public class BucketListServiceImpl implements BucketListService{
                 bucketListToDelete.setUser(null);
                 foundUser.getBucketLists().remove(bucketListOptional.get());
                 userRepository.save(foundUser);
+                listRepository.save(bucketListToDelete);
+                listRepository.deleteById(bucketListToDelete.getId());
             }
         }
 
