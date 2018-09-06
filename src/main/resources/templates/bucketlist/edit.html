@@ -34,6 +34,11 @@
             <label>Tags</label>
             <input type="text" th:field="*{tags}" th:default="${list.getTags()}"/>
         </div>
+        <div>
+            <label>Authorized users</label>
+            <p>Put here usernames of users that you wish had access to this bucketlist, even if it's private</p>
+            <input th:type="text" th:field="*{authorizedUsers}" th:default="${list.getAuthorizedUsers()}">
+        </div>
         <button type="submit"> Save </button>
     </form>
 </div>

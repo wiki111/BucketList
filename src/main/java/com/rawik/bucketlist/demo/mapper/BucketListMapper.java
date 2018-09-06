@@ -31,6 +31,7 @@ public class BucketListMapper {
         dto.setOpen(String.valueOf(list.getOpen()));
         dto.setIsPrivate(String.valueOf(list.getIsPrivate()));
         dto.setTags(tagListToString(list.getTags()));
+        dto.setAuthorizedUsers(authorizedListToString(list.getAuthorizedUsers()));
 
         if(list.getItems() != null){
             list.getItems().forEach(item -> dto.getItems().add(itemMapper.bucketItemToDto(item)));
@@ -49,6 +50,7 @@ public class BucketListMapper {
         list.setOpen(stringToBoolean(dto.getOpen()));
         list.setIsPrivate(stringToBoolean(dto.getIsPrivate()));
         list.setTags(tagStringToList(dto.getTags()));
+        list.setAuthorizedUsers(authorizedStringToList(dto.getAuthorizedUsers()));
 
         if(dto.getUserId() != null){
             User user = new User();
@@ -104,4 +106,31 @@ public class BucketListMapper {
         return false;
     }
 
+    public String authorizedListToString(List<String> userList){
+        StringBuilder userString = new StringBuilder();
+
+        for (String username : userList){
+            userString.append(username + ", ");
+        }
+
+        if(userString.length() > 1){
+            userString.setCharAt(userString.length() - 1, ' ');
+        }
+
+        return userList.toString();
+    }
+
+    public List<String> authorizedStringToList(String userString){
+        ArrayList<String> userList = new ArrayList<>();
+
+        if(userString != null){
+            String[] userArr = userString.replaceAll("\\s+", "").split(",");
+
+            for(String user : userArr){
+                userList.add(user);
+            }
+        }
+
+        return userList;
+    }
 }

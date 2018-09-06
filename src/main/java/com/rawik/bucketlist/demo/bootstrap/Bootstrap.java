@@ -105,6 +105,7 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
         listDto2.setTags("anothertaggy, taggy");
         listDto2.setIsPrivate("true");
         listDto2.setCreationDate(new Date());
+        listDto2.setAuthorizedUsers("matt3@daniels.com");
 
         BucketListDto listDto3 = new BucketListDto();
         listDto3.setUserId(user.getUserId());

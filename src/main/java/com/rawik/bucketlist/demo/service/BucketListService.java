@@ -18,5 +18,6 @@ public interface BucketListService {
     List<BucketListDto> getPublicBucketlists();
     List<BucketListDto> getPublicBucketlistsByTag(String tags);
     boolean addItemToList(BucketItemDto itemDto, String username);
+    List<BucketListDto> getBucketlistsAvailableForUser(String username);
 
 }

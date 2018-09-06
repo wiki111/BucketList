@@ -9,61 +9,40 @@
     <script th:src="@{/webjars/bootstrap/4.0.0-2/js/bootstrap.min.js}"></script>
 </head>
 
-    <body>
-    <div layout:fragment="content">
+<body>
+<div layout:fragment="content">
+    <div>
+        <h1> Profile info </h1>
+
         <div>
-            <h1> Profile info </h1>
+
+            <p>First name <span th:text="${user.getFirstName()}"></span> </p>
+            <p>Last name <span th:text="${user.getLastName()}"></span> </p>
+            <p>Nickname <span th:text="${user.getNickname()}"></span> </p>
+            <p>Phone <span th:text="${user.getPhone()}"></span> </p>
+            <p>Address <span th:text="${user.getAddress()}"></span> </p>
+            <p>Bio <span th:text="${user.getBio()}"></span> </p>
+            <p>Interests <span th:text="${user.getInterests()}"></span> </p>
+            <p>Facebook <span th:text="${user.getFacebookLink()}"></span> </p>
+            <p>Google <span th:text="${user.getGoogleLink()}"></span> </p>
+            <p>Twitter <span th:text="${user.getTwitterLink()}"></span> </p>
+
+            <a class="btn btn-primary" th:href="@{/editprofile}">Edit profile</a>
         </div>
 
-        <form th:action="@{/updateUserInfo}" th:object="${user}" method="POST" enctype="utf8">
-            <input type="hidden" th:field="*{email}">
-            <div>
-                <label>First name</label>
-                <input th:field="*{firstName}" th:default="${user.getFirstName()}"/>
-            </div>
-            <div>
-                <label>Last name</label>
-                <input th:field="*{lastName}" th:default="${user.getLastName()}"/>
-            </div>
-            <div>
-                <label>Nickname</label>
-                <input th:field="*{nickname}" th:default="${user.getNickname()}"/>
-            </div>
-            <div>
-                <label>Phone</label>
-                <input th:field="*{phone}" th:default="${user.getPhone()}"/>
-            </div>
-            <div>
-                <label>Address</label>
-                <input th:field="*{address}" th:default="${user.getAddress()}"/>
-            </div>
-            <div>
-                <label>Bio</label>
-                <input th:field="*{bio}" th:default="${user.getBio()}"/>
-            </div>
-            <div>
-                <label>Interests</label>
-                <input th:field="*{interests}" th:default="${user.getInterests()}"/>
-            </div>
-            <div>
-                <label>Facebook</label>
-                <input th:field="*{facebookLink}" th:default="${user.getFacebookLink()}"/>
-            </div>
-            <div>
-                <label>Google</label>
-                <input th:field="*{googleLink}" th:default="${user.getGoogleLink()}"/>
-            </div>
-            <div>
-                <label>Twitter</label>
-                <input th:field="*{twitterLink}" th:default="${user.getTwitterLink()}"/>
-            </div>
-            <button type="submit" class="btn btn-primary">Update Info</button>
-        </form>
+        <div>
+
+            <h2>Shared lists</h2>
+            <a class="btn btn-primary" th:href="@{/showsharedlists}">Show shared lists</a>
+
+        </div>
 
     </div>
 
+</div>
 
 
-    </body>
+
+</body>
 
 </html>

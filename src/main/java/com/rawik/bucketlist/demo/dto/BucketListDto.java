@@ -17,5 +17,6 @@ public class BucketListDto {
     private String open;
     private String isPrivate;
     private String tags;
+    private String authorizedUsers;
 
 }

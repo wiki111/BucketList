@@ -109,6 +109,7 @@ public class BucketListServiceImpl implements BucketListService{
             listToSave.setOpen(listMapper.stringToBoolean(dto.getOpen()));
             listToSave.setIsPrivate(listMapper.stringToBoolean(dto.getIsPrivate()));
             listToSave.setTags(listMapper.tagStringToList(dto.getTags()));
+            listToSave.setAuthorizedUsers(listMapper.authorizedStringToList(dto.getAuthorizedUsers()));
 
             listRepository.save(listToSave);
 
@@ -223,6 +224,19 @@ public class BucketListServiceImpl implements BucketListService{
             //todo handle bucketlist doesn't exist
             return false;
         }
+    }
+
+    @Override
+    public List<BucketListDto> getBucketlistsAvailableForUser(String username) {
+
+        List<BucketListDto> availableBucketlists = new ArrayList<>();
+
+        for(BucketList list : listRepository.findBucketListsByAuthorizedUsersIn(username)){
+            BucketListDto listDto = listMapper.bucketListToDto(list);
+            availableBucketlists.add(listDto);
+        }
+
+        return availableBucketlists;
     }
 
 

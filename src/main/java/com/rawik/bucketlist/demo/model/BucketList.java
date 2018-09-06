@@ -3,6 +3,9 @@ package com.rawik.bucketlist.demo.model;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+import org.hibernate.engine.profile.Fetch;
 import org.springframework.data.repository.cdi.Eager;
 
 import javax.persistence.*;
@@ -32,6 +35,10 @@ public class BucketList {
 
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> tags = new ArrayList<>();
+
+    @ElementCollection
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<String> authorizedUsers = new ArrayList<>();
 
     public void addItem(BucketItem item){
         item.setBucketlist(this);

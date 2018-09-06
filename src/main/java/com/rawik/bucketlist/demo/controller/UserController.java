@@ -99,6 +99,16 @@ public class UserController {
         return "user/profile";
     }
 
+    @GetMapping("/editprofile")
+    public String getEditProfile(Model model, Principal principal){
+
+        UserDto dto = userMapper.userToUserDto(service.findByUsername(principal.getName()));
+        model.addAttribute("user", dto);
+
+        return "user/editprofile";
+
+    }
+
     @PostMapping("/updateUserInfo")
     public String updateUserInfo(
         @ModelAttribute("user") UserDto userDto,
@@ -108,7 +118,7 @@ public class UserController {
             service.updateUserInfo(userDto);
         }
 
-        return "redirect:/profile";
+        return "redirect:/editprofile";
     }
 
     @GetMapping("/info/{email:.+}")

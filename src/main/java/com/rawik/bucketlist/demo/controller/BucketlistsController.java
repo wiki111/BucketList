@@ -154,4 +154,14 @@ public class BucketlistsController {
 
         return SHOW_BUCKETLISTS;
     }
+
+
+    @GetMapping("/showsharedlists")
+    public String showSharedListsForUser(Model model, Principal principal){
+
+        model.addAttribute("lists", bucketListService.getBucketlistsAvailableForUser(principal.getName()));
+
+        return SHOW_BUCKETLISTS;
+
+    }
 }
