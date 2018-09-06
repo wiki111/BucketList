@@ -6,6 +6,7 @@ import com.rawik.bucketlist.demo.model.Message;
 import com.rawik.bucketlist.demo.model.User;
 import com.rawik.bucketlist.demo.repository.MessageRepository;
 import com.rawik.bucketlist.demo.repository.UserRepository;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -39,6 +40,8 @@ public class MessageServiceImplIntegrationTest {
     User testReceiver;
     User testSender;
 
+    private static boolean messagesPrepared = false;
+
     @Before
     public void setUp(){
         setUpReceiver();
@@ -57,8 +60,10 @@ public class MessageServiceImplIntegrationTest {
         user.setPassword("testpass");
         user.setNickname("testReceiverNick");
         user.setRole("USER");
-        userRepository.save(user);
         testReceiver = user;
+        if(!messagesPrepared){
+            userRepository.save(user);
+        }
     }
 
     private void setUpSender(){
@@ -67,8 +72,10 @@ public class MessageServiceImplIntegrationTest {
         user.setPassword("testpass");
         user.setNickname("testSenderNick");
         user.setRole("USER");
-        userRepository.save(user);
         testSender = user;
+        if(!messagesPrepared){
+            userRepository.save(user);
+        }
     }
 
     private void setUpMessages(){
@@ -77,7 +84,10 @@ public class MessageServiceImplIntegrationTest {
         message.setReceiver(testReceiver);
         message.setDateSent(new Date());
         message.setMessage("pre sent test message");
-        messageRepository.save(message);
+        if(!messagesPrepared){
+            messageRepository.save(message);
+            messagesPrepared = true;
+        }
     }
 
     @Test

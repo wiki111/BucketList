@@ -48,14 +48,12 @@ public class BucketListServiceImplIntegrationTest {
 
     BucketListService bucketListService;
 
-    String testUserNickname = "testNickname";
-    String testUserEmail = "test@email.com";
+    String testUserEmail = "newtestemail@email.com";
     String testPassword = "testPass";
 
     String testListName = "testListName";
 
     Long testListId;
-    Long testUserId;
     Long testListItemId;
 
     BucketListDto testListDto;
@@ -63,14 +61,14 @@ public class BucketListServiceImplIntegrationTest {
 
     @Before
     public void setUp(){
-        bucketListService = new BucketListServiceImpl(
-                bucketListRepository,
-                userRepository,
-                bucketListMapper,
-                userService,
-                itemMapper);
+            bucketListService = new BucketListServiceImpl(
+                    bucketListRepository,
+                    userRepository,
+                    bucketListMapper,
+                    userService,
+                    itemMapper);
 
-        setUpTestEntities();
+            setUpTestEntities();
     }
 
     private void setUpTestEntities(){
@@ -87,14 +85,15 @@ public class BucketListServiceImplIntegrationTest {
         User savedTestUser;
 
         try {
-            savedTestUser = userService.registerNewUser(testUser);
-            testUserId = savedTestUser.getUserId();
-            setUpTestBucketlists(savedTestUser);
+                savedTestUser = userService.registerNewUser(testUser);
         }catch (NicknameExistsException e){
 
         } catch (EmailExistsException e) {
             e.printStackTrace();
         }
+
+        savedTestUser = userService.findByUsername(testUserEmail);
+        setUpTestBucketlists(savedTestUser);
     }
 
     private void setUpTestBucketlists(User user){
@@ -133,7 +132,6 @@ public class BucketListServiceImplIntegrationTest {
         assertFalse(returnedListDto.getItems().isEmpty());
         assertEquals(returnedListDto.getId(), testListId);
         assertEquals(returnedListDto.getName(), testListName);
-        assertEquals(returnedListDto.getUserId(), testUserId);
 
     }
 

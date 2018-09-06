@@ -12,6 +12,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.Date;
 import java.util.Optional;
 
 import static org.hamcrest.core.IsEqual.equalTo;
@@ -103,10 +104,12 @@ public class BucketListServiceImplTest {
 
         BucketList list = new BucketList();
         list.setId(1L);
+        list.setCreationDate(new Date());
 
         BucketListDto dto = new BucketListDto();
         dto.setId(1L);
         dto.setUserId(1L);
+        dto.setCreationDate(list.getCreationDate());
 
         User user = new User();
         user.setUserId(1L);
@@ -115,6 +118,7 @@ public class BucketListServiceImplTest {
 
         when(userRepository.findById(anyLong())).thenReturn(java.util.Optional.ofNullable(user));
         when(listMapper.dtoToBucketList(any(BucketListDto.class))).thenReturn(list);
+        when(userRepository.save(any(User.class))).thenReturn(user);
 
         BucketList savedList = bucketListService.saveList(dto);
 
