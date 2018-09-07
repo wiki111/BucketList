@@ -8,11 +8,15 @@ import com.rawik.bucketlist.demo.mapper.BucketListMapper;
 import com.rawik.bucketlist.demo.model.BucketList;
 import com.rawik.bucketlist.demo.model.User;
 import com.rawik.bucketlist.demo.service.BucketListService;
+import com.rawik.bucketlist.demo.service.StorageService;
 import com.rawik.bucketlist.demo.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import java.security.Principal;
 import java.util.Date;
 import java.util.List;
@@ -164,4 +168,6 @@ public class BucketlistsController {
         return SHOW_BUCKETLISTS;
 
     }
+
+
 }

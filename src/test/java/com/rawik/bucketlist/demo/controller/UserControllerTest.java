@@ -5,6 +5,7 @@ import com.rawik.bucketlist.demo.exceptions.EmailExistsException;
 import com.rawik.bucketlist.demo.exceptions.NicknameExistsException;
 import com.rawik.bucketlist.demo.mapper.UserMapper;
 import com.rawik.bucketlist.demo.model.User;
+import com.rawik.bucketlist.demo.service.StorageService;
 import com.rawik.bucketlist.demo.service.UserService;
 import org.junit.Before;
 import org.junit.Test;
@@ -38,6 +39,9 @@ public class UserControllerTest {
     BindingResult bindingResult;
 
     @Mock
+    StorageService storageService;
+
+    @Mock
     Model model;
 
     @Mock
@@ -48,7 +52,7 @@ public class UserControllerTest {
     @Before
     public void setUp(){
         MockitoAnnotations.initMocks(this);
-        userController = new UserController(userService, userMapper);
+        userController = new UserController(userService, userMapper, storageService);
     }
 
     @Test

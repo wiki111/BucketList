@@ -17,6 +17,7 @@
 
         <form th:action="@{/updateUserInfo}" th:object="${user}" method="POST" enctype="utf8">
             <input type="hidden" th:field="*{email}">
+
             <div>
                 <label>First name</label>
                 <input th:field="*{firstName}" th:default="${user.getFirstName()}"/>
@@ -58,6 +59,14 @@
                 <input th:field="*{twitterLink}" th:default="${user.getTwitterLink()}"/>
             </div>
             <button type="submit" class="btn btn-primary">Update Info</button>
+        </form>
+
+
+        <h1>Change Avatar</h1>
+        <form method="POST" enctype="multipart/form-data" th:action="@{/updateAvatar}">
+            <label>Upload avatar file :</label>
+            <input th:type="file" name="avatarFile">
+            <input type="submit" th:value="Upload">
         </form>
 
     </div>

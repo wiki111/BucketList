@@ -15,6 +15,10 @@
         <h1> Profile info </h1>
 
         <div>
+            <img th:src="@{'/getAvatar/' + ${user.getEmail()}}" alt="avatar">
+        </div>
+
+        <div>
 
             <p>First name <span th:text="${user.getFirstName()}"></span> </p>
             <p>Last name <span th:text="${user.getLastName()}"></span> </p>
@@ -32,9 +36,14 @@
 
         <div>
 
-            <h2>Shared lists</h2>
+            <h2>Shared bucketlistslists</h2>
             <a class="btn btn-primary" th:href="@{/showsharedlists}">Show shared lists</a>
 
+        </div>
+
+        <div>
+            <h2>My bucketlists</h2>
+            <a class="btn btn-primary" th:href="@{/user/bucketlists}">Show shared lists</a>
         </div>
 
     </div>

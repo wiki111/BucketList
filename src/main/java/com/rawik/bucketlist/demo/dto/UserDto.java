@@ -38,6 +38,7 @@ public class UserDto {
     private String lastName;
     private String phone;
     private String address;
+    private String avatarPath;
 
     private String facebookLink;
     private String googleLink;

@@ -3,19 +3,28 @@ package com.rawik.bucketlist.demo.controller;
 import com.rawik.bucketlist.demo.dto.UserDto;
 import com.rawik.bucketlist.demo.exceptions.EmailExistsException;
 import com.rawik.bucketlist.demo.exceptions.NicknameExistsException;
+import com.rawik.bucketlist.demo.exceptions.StorageException;
 import com.rawik.bucketlist.demo.mapper.UserMapper;
 import com.rawik.bucketlist.demo.model.User;
+import com.rawik.bucketlist.demo.service.StorageService;
 import com.rawik.bucketlist.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.mongo.embedded.EmbeddedMongoProperties;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.security.Principal;
 
 
@@ -24,10 +33,12 @@ public class UserController {
 
     private UserService service;
     private UserMapper userMapper;
+    private StorageService storageService;
 
-    public UserController(UserService service, UserMapper userMapper) {
+    public UserController(UserService service, UserMapper userMapper, StorageService storageService) {
         this.service = service;
         this.userMapper = userMapper;
+        this.storageService = storageService;
     }
 
     @GetMapping("/login")
@@ -141,6 +152,29 @@ public class UserController {
 
         return "user/info";
 
+    }
+
+    @PostMapping("/updateAvatar")
+    public String handleAvatarUpload(@RequestParam("avatarFile") MultipartFile avatarFile,
+                                     RedirectAttributes redirectAttributes, Principal principal){
+        String avatarFilename = storageService.store(avatarFile);
+        service.updateAvatar(avatarFilename, principal.getName());
+
+        return "redirect:" + "/profile";
+    }
+
+    @RequestMapping(value = "/getAvatar/{username:.+}")
+    @ResponseBody
+    public byte[] getAvatar(@PathVariable String username, HttpServletRequest request){
+
+        String avatarFilename = service.getAvatarFilename(username);
+        Path path = storageService.load(avatarFilename);
+        try{
+            byte[] avatarData = Files.readAllBytes(path);
+            return avatarData;
+        }catch (IOException e){
+            throw new StorageException("Trouble serving content..." + e);
+        }
     }
 
 }

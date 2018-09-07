@@ -27,6 +27,7 @@ public class UserMapper {
         userDto.setPassword(user.getPassword());
         userDto.setMatchingPassword(user.getPassword());
         userDto.setEmail(user.getEmail());
+        userDto.setAvatarPath(user.getAvatarPath());
 
         if(user.getBucketLists() != null && user.getBucketLists().size() > 0){
             user.getBucketLists()
@@ -97,6 +98,7 @@ public class UserMapper {
         user.setEmail(userDto.getEmail());
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         user.setRole("ROLE_USER");
+        user.setAvatarPath(userDto.getAvatarPath());
 
         if(userDto.getBucketlists() != null && userDto.getBucketlists().size() > 0){
             userDto.getBucketlists().forEach(bucketlist -> user.getBucketLists().add(

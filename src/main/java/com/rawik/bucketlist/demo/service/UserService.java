@@ -160,5 +160,31 @@ public class UserService implements IUserService {
         return null;
     }
 
+    @Override
+    public void updateAvatar(String avatarFilename, String username) {
+
+        Optional<User> user = repository.findByEmail(username);
+
+        if(user.isPresent()){
+            User userObj = user.get();
+            userObj.setAvatarPath(avatarFilename);
+            repository.save(userObj);
+        }
+
+    }
+
+    @Override
+    public String getAvatarFilename(String username) {
+
+        Optional<User> userOpt = repository.findByEmail(username);
+
+        if(userOpt.isPresent()){
+            User user = userOpt.get();
+            return user.getAvatarPath();
+        }
+
+        return "";
+    }
+
 
 }

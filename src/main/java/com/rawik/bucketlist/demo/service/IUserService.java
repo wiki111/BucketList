@@ -18,4 +18,6 @@ public interface IUserService {
     BucketListDto getUsersListById(Long listId, String us);
     Set<BucketListDto> getUserLists(String email);
     UserDto getUserByNickname(String nickname);
+    void updateAvatar(String avatarFilename, String username);
+    String getAvatarFilename(String username);
 }
