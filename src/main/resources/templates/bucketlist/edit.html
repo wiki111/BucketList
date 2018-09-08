@@ -12,7 +12,7 @@
 <div layout:fragment="content">
     <h1>Bucketlist info form</h1>
 
-    <form th:action="@{'/user/bucketlist/manage/' + ${list.getId()} + '/edit'}" th:object="${list}" method="POST" enctype="utf8">
+    <form th:action="@{'/user/bucketlist/manage/' + ${list.getId()} + '/edit'}" th:object="${list}" method="POST" enctype="multipart/form-data" >
         <input type="hidden" th:field="*{id}">
         <div>
             <label>Name</label>
@@ -38,6 +38,10 @@
             <label>Authorized users</label>
             <p>Put here usernames of users that you wish had access to this bucketlist, even if it's private</p>
             <input th:type="text" th:field="*{authorizedUsers}" th:default="${list.getAuthorizedUsers()}">
+        </div>
+        <div>
+            <label>Image</label>
+            <input th:type="file" th:name="imagefile">
         </div>
         <button type="submit"> Save </button>
     </form>

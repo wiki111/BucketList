@@ -32,6 +32,7 @@ public class BucketListMapper {
         dto.setIsPrivate(String.valueOf(list.getIsPrivate()));
         dto.setTags(tagListToString(list.getTags()));
         dto.setAuthorizedUsers(authorizedListToString(list.getAuthorizedUsers()));
+        dto.setPhotoPath(list.getPhotoPath());
 
         if(list.getItems() != null){
             list.getItems().forEach(item -> dto.getItems().add(itemMapper.bucketItemToDto(item)));
@@ -51,6 +52,7 @@ public class BucketListMapper {
         list.setIsPrivate(stringToBoolean(dto.getIsPrivate()));
         list.setTags(tagStringToList(dto.getTags()));
         list.setAuthorizedUsers(authorizedStringToList(dto.getAuthorizedUsers()));
+        list.setPhotoPath(dto.getPhotoPath());
 
         if(dto.getUserId() != null){
             User user = new User();

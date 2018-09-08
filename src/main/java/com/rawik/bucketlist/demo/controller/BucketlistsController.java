@@ -3,6 +3,7 @@ package com.rawik.bucketlist.demo.controller;
 import com.rawik.bucketlist.demo.dto.BucketItemDto;
 import com.rawik.bucketlist.demo.dto.BucketListDto;
 import com.rawik.bucketlist.demo.dto.UserDto;
+import com.rawik.bucketlist.demo.exceptions.StorageException;
 import com.rawik.bucketlist.demo.mapper.BucketItemMapper;
 import com.rawik.bucketlist.demo.mapper.BucketListMapper;
 import com.rawik.bucketlist.demo.model.BucketList;
@@ -17,6 +18,10 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.xml.ws.WebEndpoint;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.security.Principal;
 import java.util.Date;
 import java.util.List;
@@ -27,15 +32,18 @@ public class BucketlistsController {
 
     private UserService userService;
     private BucketListService bucketListService;
+    private StorageService storageService;
 
     private static final String MANAGE_LIST_LINK = "/user/bucketlist/manage/";
     private static final String SHOW_USERS_BUCKETLISTS = "bucketlist/show-users-bucketlists";
     private static final String SHOW_BUCKETLISTS = "bucketlist/show-bucketlists";
 
     public BucketlistsController(UserService userService,
-                                 BucketListService bucketListService) {
+                                 BucketListService bucketListService,
+                                 StorageService storageService) {
         this.userService = userService;
         this.bucketListService = bucketListService;
+        this.storageService = storageService;
     }
 
     @GetMapping("/user/bucketlists")
@@ -61,6 +69,7 @@ public class BucketlistsController {
         BucketListDto listDto = userService
                 .getUsersListById(id, principal.getName());
         model.addAttribute("list", listDto);
+        model.addAttribute("username", principal.getName());
 
         return "bucketlist/show-list-details-manage";
     }
@@ -126,9 +135,14 @@ public class BucketlistsController {
     @PostMapping( MANAGE_LIST_LINK + "{listid}/edit")
     public String editBucketlist(
             @ModelAttribute("bucketlistdto") BucketListDto bucketListDto,
-            Principal principal){
+            Principal principal, @RequestParam("imagefile") MultipartFile multipartFile){
 
+        if(!multipartFile.isEmpty()){
+            String imageFilename = storageService.store(multipartFile, principal.getName());
+            bucketListDto.setPhotoPath(imageFilename);
+        }
         bucketListService.updateList(bucketListDto);
+
 
         return "redirect:" + MANAGE_LIST_LINK + bucketListDto.getId();
     }
@@ -167,6 +181,28 @@ public class BucketlistsController {
 
         return SHOW_BUCKETLISTS;
 
+    }
+
+    @RequestMapping(value = "/getBucketlistImage/{nickname}/{listid}")
+    @ResponseBody
+    public byte[] getBucketlistImage(@PathVariable Long listid, @PathVariable String nickname){
+        String filename = bucketListService.getImageForListId(listid);
+
+        Path imagePath;
+
+        if(!nickname.contains("@")){
+            UserDto user = userService.getUserByNickname(nickname);
+            imagePath = storageService.load(filename, user.getEmail());
+        }else {
+            imagePath = storageService.load(filename, nickname);
+        }
+
+        try{
+            byte[] imageData = Files.readAllBytes(imagePath);
+            return imageData;
+        }catch (IOException e){
+            throw new StorageException("Trouble serving content..." + e);
+        }
     }
 
 

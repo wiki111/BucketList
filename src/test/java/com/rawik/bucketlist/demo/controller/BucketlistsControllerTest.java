@@ -8,6 +8,7 @@ import com.rawik.bucketlist.demo.model.BucketItem;
 import com.rawik.bucketlist.demo.model.BucketList;
 import com.rawik.bucketlist.demo.model.User;
 import com.rawik.bucketlist.demo.service.BucketListService;
+import com.rawik.bucketlist.demo.service.StorageService;
 import com.rawik.bucketlist.demo.service.UserService;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -38,6 +39,9 @@ public class BucketlistsControllerTest {
     BucketListService bucketListService;
 
     @Mock
+    StorageService storageService;
+
+    @Mock
     BucketListMapper bucketListMapper;
 
     @Mock
@@ -59,7 +63,7 @@ public class BucketlistsControllerTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         bucketlistsController =
-                new BucketlistsController(userService, bucketListService);
+                new BucketlistsController(userService, bucketListService, storageService);
     }
 
     @Test

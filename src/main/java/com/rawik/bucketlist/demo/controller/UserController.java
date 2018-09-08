@@ -157,7 +157,7 @@ public class UserController {
     @PostMapping("/updateAvatar")
     public String handleAvatarUpload(@RequestParam("avatarFile") MultipartFile avatarFile,
                                      RedirectAttributes redirectAttributes, Principal principal){
-        String avatarFilename = storageService.store(avatarFile);
+        String avatarFilename = storageService.store(avatarFile, principal.getName());
         service.updateAvatar(avatarFilename, principal.getName());
 
         return "redirect:" + "/profile";
@@ -168,7 +168,7 @@ public class UserController {
     public byte[] getAvatar(@PathVariable String username, HttpServletRequest request){
 
         String avatarFilename = service.getAvatarFilename(username);
-        Path path = storageService.load(avatarFilename);
+        Path path = storageService.load(avatarFilename, username);
         try{
             byte[] avatarData = Files.readAllBytes(path);
             return avatarData;

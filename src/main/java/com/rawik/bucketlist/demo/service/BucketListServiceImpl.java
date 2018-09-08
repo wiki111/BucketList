@@ -110,6 +110,11 @@ public class BucketListServiceImpl implements BucketListService{
             listToSave.setIsPrivate(listMapper.stringToBoolean(dto.getIsPrivate()));
             listToSave.setTags(listMapper.tagStringToList(dto.getTags()));
             listToSave.setAuthorizedUsers(listMapper.authorizedStringToList(dto.getAuthorizedUsers()));
+            if(dto.getPhotoPath() != null){
+                if(!dto.getPhotoPath().isEmpty()){
+                    listToSave.setPhotoPath(dto.getPhotoPath());
+                }
+            }
 
             listRepository.save(listToSave);
 
@@ -237,6 +242,19 @@ public class BucketListServiceImpl implements BucketListService{
         }
 
         return availableBucketlists;
+    }
+
+    @Override
+    public String getImageForListId(Long listid) {
+
+        Optional<BucketList> bucketOpt = listRepository.findById(listid);
+
+        if(bucketOpt.isPresent()){
+            BucketList bucketList = bucketOpt.get();
+            return bucketList.getPhotoPath();
+        }
+
+        return "";
     }
 
 

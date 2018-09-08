@@ -40,7 +40,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
                         "/webjars/**",
                         "/img/**",
                         "/css/**",
-                        "/js/**")
+                        "/js/**",
+                        "/getBucketlistImage/**",
+                        "/getAvatar/**")
                 .permitAll().anyRequest().authenticated()
                 .and()
                 .formLogin()

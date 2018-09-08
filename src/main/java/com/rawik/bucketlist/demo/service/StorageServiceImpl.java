@@ -1,8 +1,6 @@
 package com.rawik.bucketlist.demo.service;
 
-import com.rawik.bucketlist.demo.config.StorageProperties;
 import com.rawik.bucketlist.demo.exceptions.StorageException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -35,9 +33,11 @@ public class StorageServiceImpl implements StorageService{
     }
 
     @Override
-    public String store(MultipartFile file) {
+    public String store(MultipartFile file, String username) {
 
         String filename = StringUtils.cleanPath(file.getOriginalFilename());
+
+        Path usersDirectory = getDirectoryForUser(username);
 
         try{
             if(file.isEmpty()){
@@ -47,7 +47,7 @@ public class StorageServiceImpl implements StorageService{
                 throw new StorageException("Cannot store file with relative path outside current directory " + filename);
             }
             try(InputStream inputStream = file.getInputStream()){
-                Files.copy(inputStream, this.rootLocation.resolve(filename), StandardCopyOption.REPLACE_EXISTING);
+                Files.copy(inputStream, usersDirectory.resolve(filename), StandardCopyOption.REPLACE_EXISTING);
             }
         }catch (IOException e){
             throw new StorageException("Failed to store file " + filename, e);
@@ -56,14 +56,34 @@ public class StorageServiceImpl implements StorageService{
         return filename;
     }
 
+    private Path getDirectoryForUser(String username){
+
+        String usersDirName = username.split("@")[0];
+        Path usersDir = rootLocation.resolve(usersDirName);
+
+        if(Files.exists(usersDir)){
+            return usersDir;
+        }else {
+            try{
+                Files.createDirectory(usersDir);
+                return usersDir;
+            }catch (IOException e){
+                throw new RuntimeException();
+                //todo handle error
+            }
+        }
+    }
+
     @Override
     public Stream<Path> loadAll() {
         return null;
     }
 
     @Override
-    public Path load(String filename) {
-        return rootLocation.resolve(filename);
+    public Path load(String filename, String username) {
+
+        Path location = getDirectoryForUser(username);
+        return location.resolve(filename);
     }
 
     @Override

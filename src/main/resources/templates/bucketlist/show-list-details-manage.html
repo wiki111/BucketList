@@ -14,6 +14,10 @@
     <h1>Bucketlist <span th:text="${list.getName()}"></span>'s items</h1>
 
     <div>
+        <img th:src="@{'/getBucketlistImage/' + ${username} + '/' + ${list.getId()}}" alt="image">
+    </div>
+
+    <div>
         <h3>List info : </h3>
         <p th:text="${list.getName()}"></p>
         <p th:text="${list.getDescription()}"></p>
