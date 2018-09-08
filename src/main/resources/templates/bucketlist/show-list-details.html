@@ -16,7 +16,7 @@
     <div>
         <h3>List info : </h3>
         <div>
-            <img th:src="@{'/getBucketlistImage/' + ${username} + '/' + ${list.getId()}}" alt="image">
+            <img th:src="@{'/getBucketlistImage/' + ${username} + '/' + ${list.getPhotoPath()}}" alt="image">
         </div>
         <p th:text="${list.getName()}"></p>
         <p th:text="${list.getDescription()}"></p>
@@ -38,7 +38,7 @@
         </thead>
         <tbody>
         <tr th:each="item : ${list.getItems()}">
-            <td><img th:src="${item.getImage()}"> </td>
+            <td><img th:src="@{'/getItemImage/' + ${username} + '/' + ${item.getImage()}}"> </td>
             <td th:text="${item.getName()}"></td>
             <td th:text="${item.getDescription()}"></td>
             <td th:text="${item.getPrice()}"></td>

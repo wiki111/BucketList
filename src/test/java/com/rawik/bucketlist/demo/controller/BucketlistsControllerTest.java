@@ -100,30 +100,29 @@ public class BucketlistsControllerTest {
         verify(model, times(1)).addAttribute(eq("list"), listCaptor.capture());
         assertEquals(listDto, listCaptor.getValue());
     }
-
-    @Test
-    @Ignore
-    public void addListItem() {
-
-        when(request.getParameter("listID")).thenReturn("1");
-        when(request.getParameter("name")).thenReturn("Name");
-        when(request.getParameter("description")).thenReturn("Some desc");
-        when(request.getParameter("price")).thenReturn("10");
-        when(request.getParameter("image")).thenReturn("https://someimage.com");
-
-        when(principal.getName()).thenReturn("Name");
-
-        String view = bucketlistsController.addListItem(request, principal);
-
-        ArgumentCaptor<BucketItemDto> bucketItemDtoCaptor = ArgumentCaptor.forClass(BucketItemDto.class);
-        verify(bucketListService, times(1)).addItemToList(bucketItemDtoCaptor.capture(), anyString());
-
-        BucketItemDto itemDto = bucketItemDtoCaptor.getValue();
-        assertEquals("Name", itemDto.getName());
-        assertEquals("Some desc", itemDto.getDescription());
-        assertEquals((Long) 10L, (Long) itemDto.getPrice());
-        assertEquals("https://someimage.com", itemDto.getImage());
-    }
+//    @Test
+//    @Ignore
+//    public void addListItem() {
+//
+//        when(request.getParameter("listID")).thenReturn("1");
+//        when(request.getParameter("name")).thenReturn("Name");
+//        when(request.getParameter("description")).thenReturn("Some desc");
+//        when(request.getParameter("price")).thenReturn("10");
+//        when(request.getParameter("image")).thenReturn("https://someimage.com");
+//
+//        when(principal.getName()).thenReturn("Name");
+//
+//        String view = bucketlistsController.addListItem(request, principal);
+//
+//        ArgumentCaptor<BucketItemDto> bucketItemDtoCaptor = ArgumentCaptor.forClass(BucketItemDto.class);
+//        verify(bucketListService, times(1)).addItemToList(bucketItemDtoCaptor.capture(), anyString());
+//
+//        BucketItemDto itemDto = bucketItemDtoCaptor.getValue();
+//        assertEquals("Name", itemDto.getName());
+//        assertEquals("Some desc", itemDto.getDescription());
+//        assertEquals((Long) 10L, (Long) itemDto.getPrice());
+//        assertEquals("https://someimage.com", itemDto.getImage());
+//    }
 
 
 }

@@ -88,15 +88,16 @@ public class BucketlistsController {
     }
 
     @PostMapping("/addListItem")
-    public String addListItem(WebRequest request, Principal principal){
+    public String addListItem(WebRequest request, Principal principal, @RequestParam("image") MultipartFile multipartFile){
 
+        String imagePath = storageService.store(multipartFile, principal.getName());
         bucketListService.addItemToList(
-                setUpBucketItemDto(request), principal.getName());
+                setUpBucketItemDto(request, imagePath), principal.getName());
 
         return "redirect:" + MANAGE_LIST_LINK + request.getParameter("listID");
     }
 
-    private BucketItemDto setUpBucketItemDto(WebRequest request){
+    private BucketItemDto setUpBucketItemDto(WebRequest request, String imagePath){
 
         BucketItemDto itemDto = new BucketItemDto();
         itemDto.setListId(Long.valueOf(request.getParameter("listID")));
@@ -110,7 +111,7 @@ public class BucketlistsController {
         }
 
         itemDto.setAddedDate(new Date());
-        itemDto.setImage(request.getParameter("image"));
+        itemDto.setImage(imagePath);
 
         return itemDto;
     }
@@ -183,11 +184,36 @@ public class BucketlistsController {
 
     }
 
-    @RequestMapping(value = "/getBucketlistImage/{nickname}/{listid}")
-    @ResponseBody
-    public byte[] getBucketlistImage(@PathVariable Long listid, @PathVariable String nickname){
-        String filename = bucketListService.getImageForListId(listid);
+    //todo refactor two methods to be one ?
 
+    @RequestMapping(value = "/getBucketlistImage/{nickname}/{photoPath:.+}")
+    @ResponseBody
+    public byte[] getBucketlistImage(@PathVariable String photoPath, @PathVariable String nickname){
+
+        String filename = photoPath;
+
+        Path imagePath;
+
+        if(!nickname.contains("@")){
+            UserDto user = userService.getUserByNickname(nickname);
+            imagePath = storageService.load(filename, user.getEmail());
+        }else {
+            imagePath = storageService.load(filename, nickname);
+        }
+
+        try{
+            byte[] imageData = Files.readAllBytes(imagePath);
+            return imageData;
+        }catch (IOException e){
+            throw new StorageException("Trouble serving content..." + e);
+        }
+    }
+
+    @RequestMapping(value = "/getItemImage/{nickname}/{image:.+}")
+    @ResponseBody
+    public byte[] getItemImage(@PathVariable String nickname, @PathVariable String image){
+
+        String filename = image;
         Path imagePath;
 
         if(!nickname.contains("@")){

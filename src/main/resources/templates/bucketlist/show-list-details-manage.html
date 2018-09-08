@@ -14,7 +14,7 @@
     <h1>Bucketlist <span th:text="${list.getName()}"></span>'s items</h1>
 
     <div>
-        <img th:src="@{'/getBucketlistImage/' + ${username} + '/' + ${list.getId()}}" alt="image">
+        <img th:src="@{'/getBucketlistImage/' + ${username} + '/' + ${list.getPhotoPath()}}" alt="image">
     </div>
 
     <div>
@@ -39,7 +39,7 @@
         </thead>
         <tbody>
         <tr th:each="item : ${list.getItems()}">
-            <td><img th:src="${item.getImage()}"> </td>
+            <td><img th:src="@{'/getItemImage/' + ${username} + '/' + ${item.getImage()}}">  </td>
             <td th:text="${item.getName()}"></td>
             <td th:text="${item.getDescription()}"></td>
             <td th:text="${item.getPrice()}"></td>
@@ -50,7 +50,7 @@
     </table>
 
 
-    <form th:action="@{/addListItem}" method="POST" id="addnewitem">
+    <form th:action="@{/addListItem}" method="POST" id="addnewitem" enctype="multipart/form-data">
         <input type="hidden" name="listID" th:value="${list.getId()}">
         <div>
             <label>Name</label>
@@ -65,8 +65,8 @@
             <input type="text" name="price"/>
         </div>
         <div>
-            <label>Image URL</label>
-            <input type="text" name="image"/>
+            <label>Image </label>
+            <input type="file" th:name="image"/>
         </div>
         <button type="submit" class="btn btn-primary">Add item</button>
     </form>
