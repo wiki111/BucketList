@@ -72,6 +72,29 @@
     </form>
 
 </div>
+
+    <div id="shareBtn" class="btn btn-success clearfix">Share</div>
+
+    <script>
+        document.getElementById('shareBtn').onclick = function() {
+            FB.ui({
+                method: 'share',
+                display: 'popup',
+                href:  'https://github.com/wiki111/BucketList'
+            }, function(response){});
+        }
+    </script>
+
+
+    <script>
+        (function(){
+            document.getElementById('gpluslink').setAttribute('data-href', 'https://github.com/wiki111/BucketList');
+        })();
+    </script>
+    <div id="gpluslink" class="g-plus" data-href="" data-action="share"></div>
+
+
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
 </body>
 
 </html>
