@@ -41,15 +41,8 @@
             <a class="nav-link nav-link-color" sec:authorize="isAuthenticated()" th:href="@{/profile}">Profile</a>
         </div>
     </div>
-    <div class="row">
-        <div class="col no-side-padding">
-            <img class="img-fluid banner-image" th:src="@{/img/background.jpg}"/>
-        </div>
-    </div>
-    <div class="row">
-        <div layout:fragment="content">
-            Some content
-        </div>
+    <div class="row" layout:fragment="content">
+        Some content
     </div>
 </div>
 </body>

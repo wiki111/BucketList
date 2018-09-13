@@ -9,45 +9,94 @@
     <script th:src="@{/webjars/bootstrap/4.0.0-2/js/bootstrap.min.js}"></script>
 </head>
 <body>
-<div layout:fragment="content">
-    <h1>Bucketlist info form</h1>
+<div class="row" layout:fragment="content">
+        <div class="col-8 offset-2 align-content-center text-center">
+            <h1 th:text="${titletext}">info form</h1>
+        </div>
 
-    <form th:action="@{'/user/bucketlist/manage/' + ${list.getId()} + '/edit'}" th:object="${list}" method="POST" enctype="multipart/form-data" >
-        <input type="hidden" th:field="*{id}">
-        <div>
-            <label>Name</label>
-            <input th:field="*{name}" th:default="${list.getName()}"/>
+        <div class="col-6 offset-3">
+
+                <form id="editListForm" th:action="@{'/user/bucketlist/manage/' + ${list.getId()} + '/edit'}" th:object="${list}" method="POST" enctype="multipart/form-data" >
+
+                    <input type="hidden" th:field="*{id}">
+
+                    <div class="form-group row">
+                        <div class="col-6 offset-3">
+
+                            <div class="row">
+                                <div class="col-12">
+                                    <img th:src="@{'/getBucketlistImage/' + ${username} + '/' + ${list.getPhotoPath()}}" alt="image">
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-2 offset-2">
+                                    <input th:type="file" th:name="imagefile" value="CHANGE IMAGE">
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="listName" class="col-2 offset-3 col-form-label">Name</label>
+                        <div class="col-4">
+                            <input id=listName th:field="*{name}" th:default="${list.getName()}"/>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-12">
+                            <div class="row">
+                                <div class="col-8 offset-2">
+                                    <label>Description</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-8 offset-2">
+                                    <textarea form="editListForm" rows="10" cols="50" id=description th:field="*{description}" th:default="${list.getDescription()}"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group row">
+                        <label for="listName" class="col-2 offset-3 col-form-label">Open</label>
+                        <div class="col-4">
+                            <input type="checkbox" th:field="*{open}" th:value="true" th:checked="${list.getOpen() == 'true'}?'checked'"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="listName" class="col-2 offset-3 col-form-label">Private</label>
+                        <div class="col-4">
+                            <input type="checkbox" th:field="*{isPrivate}" th:value="true" th:checked="${list.getIsPrivate() == 'true'}?'checked'"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="listName" class="col-2 offset-3 col-form-label">Tags</label>
+                        <div class="col-4">
+                            <input type="text" th:field="*{tags}" th:default="${list.getTags()}"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="listName" class="col-2 offset-3 col-form-label">Authorized users</label>
+                        <div class="col-4">
+                            <input th:type="text" th:field="*{authorizedUsers}" th:default="${list.getAuthorizedUsers()}">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-12 align-content-center text-center">
+                            <button type="submit"> Save </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
-        <div>
-            <label>Description</label>
-            <input th:field="*{description}" th:default="${list.getDescription()}"/>
-        </div>
-        <div>
-            <label>Open</label>
-            <input type="checkbox" th:field="*{open}" th:value="true" th:checked="${list.getOpen() == 'true'}?'checked'"/>
-        </div>
-        <div>
-            <label>Private</label>
-            <input type="checkbox" th:field="*{isPrivate}" th:value="true" th:checked="${list.getIsPrivate() == 'true'}?'checked'"/>
-        </div>
-        <div>
-            <label>Tags</label>
-            <input type="text" th:field="*{tags}" th:default="${list.getTags()}"/>
-        </div>
-        <div>
-            <label>Authorized users</label>
-            <p>Put here usernames of users that you wish had access to this bucketlist, even if it's private</p>
-            <input th:type="text" th:field="*{authorizedUsers}" th:default="${list.getAuthorizedUsers()}">
-        </div>
-        <div>
-            <label>Image</label>
-            <input th:type="file" th:name="imagefile">
-        </div>
-        <button type="submit"> Save </button>
-    </form>
-</div>
 </body>
-
-<a th:href="@{/login}" th:text="#{label.form.loginLink}" > I already have an account ! </a>
 
 </html>

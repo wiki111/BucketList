@@ -127,6 +127,7 @@ public class BucketlistsController {
             return "errors/not-authorized-error";
         }else{
             model.addAttribute("list", bucketListDto);
+            model.addAttribute("titletext", "EDIT BUCKETLIST");
             return "bucketlist/edit";
         }
 

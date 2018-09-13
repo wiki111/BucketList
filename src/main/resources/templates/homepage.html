@@ -9,27 +9,57 @@
     <script th:src="@{/webjars/bootstrap/4.0.0-2/js/bootstrap.min.js}"></script>
 </head>
 <body>
+    <div layout:fragment="content">
         <div class="row">
-            <div layout:fragment="content">
-                <div class="col-8 offset-2 align-content-center text-center">
-                    <h1>Czym jest Bucketlist ?</h1>
-                    <p> Bucketlist jest aplikacją, dzięki której twoje prezenty będą zawsze trafione. Użytkownicy Bucketlist mogą
-                        dodawać listy pełne pomysłów na prezenty, które chcieli by otrzymać. Nie musisz się więcej zastanawiać,
-                        jaki prezent będzie najlepszy na urodziny twojego przyjaciela, albo jaki prezent kupić dla młodej pary
-                        , tak by był przydatny, a jednocześnie by nie otrzymali dziesiątek identycznych zestawów sztućców. Ułatw sobie
-                        życie i uniknij rozczarowań - zarejestruj się już dziś i zaproś znajomych !</p>
-                </div>
-                <div>
-                    <a class="btn btn-primary" th:href="@{/bucketlists}">See bucketlists</a>
-                </div>
-                <div>
-                    <form method="get" th:action="@{/find-user}">
-                        <label>Nickname : </label>
-                        <input type="text" th:name="nickname">
-                        <button type="submit">Search !</button>
-                    </form>
-                </div>
+            <div class="col-8 offset-2 align-content-center text-center">
+                <h1>BUCKETLIST</h1>
             </div>
         </div>
+
+        <div class="row">
+            <div class="col-4 div-link-panel align-content-center text-center">
+                EXPLORE
+                <a th:href="@{/bucketlists}"><span class="div-link-span"></span></a>
+            </div>
+            <div class="col-4 div-link-panel align-content-center text-center">
+                SIGN UP
+                <a class="" sec:authorize="isAnonymous()" th:href="@{/register}"><span class="div-link-span"></span></a>
+                <a class="" sec:authorize="isAuthenticated()" th:href="@{/profile}"><span class="div-link-span"></span></a>
+            </div>
+            <div class="col-4 div-link-panel align-content-center text-center">
+                ABOUT
+                <a th:href="@{/about}"><span class="div-link-span"></span></a>
+            </div>
+        </div>
+
+        <div class="row big-divide-line">
+
+        </div>
+
+
+        <div class="col-8 offset-2 align-content-center text-center">
+            <p>
+                Bucketlist jest narzędziem pierwszym w swoim rodzaju i ostatnim jakiego będziesz potrzebował. Nieważne
+                co zbierasz - pomysły na prezenty ślubne, miejsca do odwiedzenia, rzeczy które do włączenia do kolekcji,
+                sugestie prezentów czy cokolwiek innego. Wszystko możesz wrzucić do kubełka - i pokazać innym, co w nim
+                trzymasz ;)
+            </p>
+        </div>
+
+
+        <!--
+            <div>
+                <a class="btn btn-primary" th:href="@{/bucketlists}">See bucketlists</a>
+            </div>
+            <div>
+                <form method="get" th:action="@{/find-user}">
+                    <label>Nickname : </label>
+                    <input type="text" th:name="nickname">
+                    <button type="submit">Search !</button>
+                </form>
+            </div>-->
+
+        </div>
+
 </body>
 </html>
