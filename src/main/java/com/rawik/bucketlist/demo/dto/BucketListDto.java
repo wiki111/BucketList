@@ -19,5 +19,6 @@ public class BucketListDto {
     private String tags;
     private String authorizedUsers;
     private String photoPath;
+    private Boolean othersCanMarkItems;
 
 }

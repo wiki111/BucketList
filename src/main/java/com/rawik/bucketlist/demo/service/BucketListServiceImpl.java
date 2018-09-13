@@ -110,6 +110,7 @@ public class BucketListServiceImpl implements BucketListService{
             listToSave.setIsPrivate(listMapper.stringToBoolean(dto.getIsPrivate()));
             listToSave.setTags(listMapper.tagStringToList(dto.getTags()));
             listToSave.setAuthorizedUsers(listMapper.authorizedStringToList(dto.getAuthorizedUsers()));
+            listToSave.setOthersCanMarkItems(dto.getOthersCanMarkItems());
             if(dto.getPhotoPath() != null){
                 if(!dto.getPhotoPath().isEmpty()){
                     listToSave.setPhotoPath(dto.getPhotoPath());

@@ -33,6 +33,7 @@ public class BucketListMapper {
         dto.setTags(tagListToString(list.getTags()));
         dto.setAuthorizedUsers(authorizedListToString(list.getAuthorizedUsers()));
         dto.setPhotoPath(list.getPhotoPath());
+        dto.setOthersCanMarkItems(list.getOthersCanMarkItems());
 
         if(list.getItems() != null){
             list.getItems().forEach(item -> dto.getItems().add(itemMapper.bucketItemToDto(item)));
@@ -53,6 +54,7 @@ public class BucketListMapper {
         list.setTags(tagStringToList(dto.getTags()));
         list.setAuthorizedUsers(authorizedStringToList(dto.getAuthorizedUsers()));
         list.setPhotoPath(dto.getPhotoPath());
+        list.setOthersCanMarkItems(dto.getOthersCanMarkItems());
 
         if(dto.getUserId() != null){
             User user = new User();

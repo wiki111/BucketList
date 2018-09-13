@@ -32,6 +32,7 @@ public class BucketList {
     private Date creationDate;
     private Boolean open;
     private Boolean isPrivate;
+    private Boolean othersCanMarkItems;
     private String photoPath;
 
     @ElementCollection(fetch = FetchType.EAGER)
