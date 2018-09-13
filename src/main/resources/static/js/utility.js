@@ -5,3 +5,4 @@ function showBucketList(id) {
 function showBucketListWithoutEditingOptions(id) {
     location.href = "/bucketlist/details/" + id;
 }
+
