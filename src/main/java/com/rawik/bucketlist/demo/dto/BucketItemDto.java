@@ -14,6 +14,7 @@ public class BucketItemDto {
     private Long price;
     private String image;
     private Date addedDate;
+    private String markedByUsers;
 
     public String getImage(){
         return this.image;

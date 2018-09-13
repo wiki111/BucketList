@@ -5,6 +5,9 @@ import com.rawik.bucketlist.demo.model.BucketItem;
 import com.rawik.bucketlist.demo.model.BucketList;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Component
 public class BucketItemMapper {
 
@@ -15,6 +18,10 @@ public class BucketItemMapper {
 
         if(item.getBucketlist() != null){
             dto.setListId(item.getBucketlist().getId());
+        }
+
+        if(item.getMarkedByUsers() != null){
+            dto.setMarkedByUsers(markedByUsersToString(item.getMarkedByUsers()));
         }
 
         dto.setName(item.getName());
@@ -39,6 +46,10 @@ public class BucketItemMapper {
             list.addItem(item);
         }
 
+        if(dto.getMarkedByUsers() != null){
+            item.setMarkedByUsers(markedByUsersToList(dto.getMarkedByUsers()));
+        }
+
         item.setName(dto.getName());
         item.setDescription(dto.getDescription());
         item.setPrice(dto.getPrice());
@@ -47,5 +58,36 @@ public class BucketItemMapper {
 
         return item;
     }
+
+    public List<String> markedByUsersToList(String tags){
+        ArrayList<String> tagList = new ArrayList<>();
+
+        if(tags != null){
+            String[] tagArray = tags.replaceAll("\\s+","").split(",");
+
+            for (String tag : tagArray) {
+                tagList.add(tag);
+            }
+        }
+
+        return tagList;
+    }
+
+    public String markedByUsersToString(List<String> tagList){
+
+        StringBuilder tagString =  new StringBuilder();
+
+        for (String tag: tagList) {
+            tagString.append(tag + ", ");
+        }
+
+        if(tagString.length() > 1){
+            tagString.setCharAt(tagString.length() - 1, ' ');
+        }
+
+        return tagString.toString();
+
+    }
+
 
 }

@@ -4,7 +4,9 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Entity
@@ -17,6 +19,9 @@ public class BucketItem {
 
     @ManyToOne
     private BucketList bucketlist;
+
+    @ElementCollection
+    private List<String> markedByUsers = new ArrayList<>();
 
     private String name;
     private String description;
