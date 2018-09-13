@@ -57,14 +57,6 @@ public class UserMapper {
             userDto.setNickname(user.getNickname());
         }
 
-        if(user.getPhone() != null){
-            userDto.setPhone(user.getPhone());
-        }
-
-        if(user.getAddress() != null){
-            userDto.setAddress(user.getAddress());
-        }
-
         if(user.getFacebookLink() != null){
             userDto.setFacebookLink(user.getFacebookLink());
         }
@@ -123,14 +115,6 @@ public class UserMapper {
 
         if(userDto.getNickname() != null){
             user.setNickname(userDto.getNickname());
-        }
-
-        if(userDto.getPhone() != null){
-            user.setPhone(userDto.getPhone());
-        }
-
-        if(userDto.getAddress() != null){
-            user.setAddress(userDto.getAddress());
         }
 
         if(userDto.getFacebookLink() != null){

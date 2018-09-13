@@ -35,8 +35,6 @@ public class User {
     private String avatarPath;
 
     private String nickname;
-    private String phone;
-    private String address;
 
     private String facebookLink;
     private String googleLink;

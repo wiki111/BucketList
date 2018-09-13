@@ -76,8 +76,6 @@ public class UserServiceTest {
         userDto.setFirstName("first");
         userDto.setLastName("last");
         userDto.setNickname("nick");
-        userDto.setAddress("address");
-        userDto.setPhone("123");
         userDto.setFacebookLink("facebook");
         userDto.setGoogleLink("google");
         userDto.setTwitterLink("twitter");

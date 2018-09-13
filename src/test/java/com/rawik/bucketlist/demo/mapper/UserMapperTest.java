@@ -48,8 +48,6 @@ public class UserMapperTest {
         user.setPassword("pass");
         user.setEmail("example@gmail.com");
         user.setNickname("nick");
-        user.setPhone("123");
-        user.setAddress("address");
         user.setFacebookLink("facebook");
         user.setGoogleLink("google");
         user.setTwitterLink("twitter");
@@ -73,8 +71,6 @@ public class UserMapperTest {
         assertEquals(user.getPassword(), userDto.getPassword());
         assertEquals(user.getEmail(), userDto.getEmail());
         assertEquals(user.getNickname(), userDto.getNickname());
-        assertEquals(user.getPhone(), userDto.getPhone());
-        assertEquals(user.getAddress(), userDto.getAddress());
         assertEquals(user.getBio(), userDto.getBio());
         assertEquals(user.getInterests(), userDto.getInterests());
 

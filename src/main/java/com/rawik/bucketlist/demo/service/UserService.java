@@ -55,8 +55,6 @@ public class UserService implements IUserService {
         user.setFirstName(userDto.getFirstName());
         user.setLastName(userDto.getLastName());
         user.setNickname(userDto.getNickname());
-        user.setAddress(userDto.getAddress());
-        user.setPhone(userDto.getPhone());
         user.setFacebookLink(userDto.getFacebookLink());
         user.setGoogleLink(userDto.getGoogleLink());
         user.setTwitterLink(userDto.getTwitterLink());
