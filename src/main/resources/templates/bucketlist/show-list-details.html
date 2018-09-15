@@ -12,21 +12,74 @@
 <body>
 <div layout:fragment="content">
 
+    <div class="col-8 offset-2 align-content-center text-center">
+        <h1>Bucketlist <span th:text="${list.getName()}"></span>'s items</h1>
+    </div>
 
-    <h1>Bucketlist <span th:text="${list.getName()}"></span>'s items</h1>
-
-    <div>
-        <h3>List info : </h3>
-        <div>
-            <img th:src="@{'/getBucketlistImage/' + ${username} + '/' + ${list.getPhotoPath()}}" alt="image">
+    <div class="col-12">
+        <div class="row">
+            <div class="col-3 offset-1 align-content-center text-center">
+                <img th:src="@{'/getBucketlistImage/' + ${username} + '/' + ${list.getPhotoPath()}}" alt="image">
+            </div>
+            <div class="col-7">
+                <div class="col-12">
+                    <h3>Description</h3>
+                </div>
+                <div class="col-12">
+                    <p th:text="${list.getDescription()}"></p>
+                </div>
+            </div>
         </div>
-        <p th:text="${list.getName()}"></p>
-        <p th:text="${list.getDescription()}"></p>
-        <p th:text="${list.getCreationDate()}"></p>
+
+        <!--<p th:text="${list.getCreationDate()}"></p>
         <p th:text="${list.getOpen()}"></p>
         <h3>User</h3>
-        <p th:text="${username}"></p>
+        <p th:text="${username}"></p>-->
+
+        <div class="row">
+
+            <div class="col-3" th:each="item : ${list.getItems()}">
+                <div class="row">
+                    <img th:src="@{'/getItemImage/' + ${username} + '/' + ${item.getImage()}}">
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <h4 th:text="${item.getName()}"></h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <p th:text="${item.getDescription()}"></p>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-4">
+                        <p>LINK : faduhfgkdjhgkjhgl</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-4 offset-4">
+                        here will be users count & button
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-4">
+                        <p th:text="${item.getAddedDate()}"></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-3 align-content-center text-center">
+                add new item
+            </div>
+        </div>
+
     </div>
+
+
+
+
 
     <table class="table">
         <thead>

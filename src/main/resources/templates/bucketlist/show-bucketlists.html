@@ -10,44 +10,83 @@
     <script th:src="@{/js/utility.js}"></script>
 </head>
 <body>
-<div layout:fragment="content">
-    <h1 sec:authorize="isAuthenticated()">Your bucketlists</h1>
-    <h1 sec:authorize="isAnonymous()">Public bucketlists</h1>
 
-    <div>
-        <h3>Search</h3>
-        <form th:action="@{'/search'}" method="POST">
-            <label>Tags (separate each tag with comma) : </label>
-            <input th:name="query">
-            <button type="submit">Go !</button>
-        </form>
+    <div layout:fragment="content">
+
+        <div class="col-12 align-content-center text-center">
+            <h1 sec:authorize="isAuthenticated()">Your bucketlists</h1>
+            <h1 sec:authorize="isAnonymous()">Public bucketlists</h1>
+        </div>
+
+        <div class="col-8 offset-2">
+
+            <div class="col-12 align-content-center text-center">
+                <h2>Search</h2>
+            </div>
+
+            <form th:action="@{'/search'}" method="POST">
+
+                <div class="form-group row">
+                    <div class="col-12 align-content-center text-center">
+                        <input type="text" size="70" th:name="query">
+                        <button type="submit">SEARCH</button>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-12">
+
+                        <fieldset>
+
+                            <div class="row">
+                                <div class="col-6 align-content-center text-center">
+                                    <input type="radio" name="criterium" th:value="by_tags">
+                                    <label>BY TAGS</label>
+                                </div>
+
+                                <div class="col-6 align-content-center text-center">
+                                    <input type="radio" name="criterium" th:value="by_username">
+                                    <label>BY USERNAME</label>
+                                </div>
+                            </div>
+
+                        </fieldset>
+
+                    </div>
+                </div>
+
+            </form>
+
+        </div>
+
+        <!--<div>
+            <a class="btn btn-primary" th:href="@{'/bucketlists'}">Show all</a>
+        </div>-->
+
+        <div class="col-8 offset-2">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Creation Date</th>
+                    <th>Open</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                <tr class="clickable-row" th:each="list : ${lists}" th:onclick="'javascript:showBucketListWithoutEditingOptions(\'' + ${list.getId()} + '\');'">
+                    <td th:text="${list.getName()}"></td>
+                    <td th:text="${list.getDescription()}"></td>
+                    <td th:text="${list.getCreationDate()}"></td>
+                    <td th:text="${list.getOpen()}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
     </div>
 
-    <div>
-        <a class="btn btn-primary" th:href="@{'/bucketlists'}">Show all</a>
-    </div>
-
-    <table class="table">
-        <thead>
-        <tr>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Creation Date</th>
-            <th>Open</th>
-        </tr>
-        </thead>
-        <tbody>
-
-            <tr class="clickable-row" th:each="list : ${lists}" th:onclick="'javascript:showBucketListWithoutEditingOptions(\'' + ${list.getId()} + '\');'">
-                <td th:text="${list.getName()}"></td>
-                <td th:text="${list.getDescription()}"></td>
-                <td th:text="${list.getCreationDate()}"></td>
-                <td th:text="${list.getOpen()}"></td>
-            </tr>
-        </tbody>
-    </table>
-
-</div>
 </body>
 
 </html>
