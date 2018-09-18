@@ -12,18 +12,93 @@
 <body>
 <div layout:fragment="content">
 
-    <h1 th:if="${showReceived}" th:text="'Messages Received'">Messages</h1>
-    <h1 th:unless="${showReceived}" th:text="'Messages Sent'">Messages</h1>
+    <div class="col-12 align-content-center text-center">
+        <div class="row align-content-center">
+            <div class="col-6 offset-3 align-content-center">
+                <h1 th:if="${showReceived}" th:text="'Messages Received'">Messages</h1>
+                <h1 th:unless="${showReceived}" th:text="'Messages Sent'">Messages</h1>
+            </div>
+            <div class="col-2 offset-1">
+                <a class="btn btn-primary" th:href="@{/user/sent}">SHOW SENT MESSGES</a>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="row">
+                <div class="col-2 offset-1">
+                    from
+                </div>
+                <div class="col-2">
+                    date
+                </div>
+                <div class="col-5">
+                    message
+                </div>
+            </div>
+            <hr>
+        </div>
+        <div class="col-12" th:each="message : ${messages}">
+            <div class="row">
+                <div class="col-2 offset-1">
+                    <p th:if = "${showReceived}" th:text="${message.getSenderNickname()}"></p>
+                    <p th:unless = "${showReceived}" th:text="${message.getReceiverNickname()}"></p>
+                </div>
+                <div class="col-2">
+                    <p th:text="${message.getDateSent()}"></p>
+                </div>
+                <div class="col-5">
+                    <p th:text="${message.getMessage()}"></p>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <div th:each="message : ${messages}">
+
+    <!--
+    <div >
         <div class="border border-primary">
             <p th:if = "${showReceived}" th:text="'Sent by ' +  ${message.getSenderNickname()}"></p>
             <p th:unless = "${showReceived}" th:text="'Sent to ' +  ${message.getReceiverNickname()}"></p>
             <p th:text="'Date : ' +  ${message.getDateSent()}"></p>
-            <p th:text="${message.getMessage()}"></p>
         </div>
-    </div>
+    </div>-->
 
+    <div class="col-12 align-content-center">
+        <form id="message_form" th:action="@{'/send-message'}" method="POST" enctype="utf8">
+            <div class="col-10 offset-1">
+                <div class="row">
+
+                    <div class="col-4">
+
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="row">
+                                    <div class="col-2">
+                                        <label>TO :</label>
+                                    </div>
+                                    <div class="col-3">
+                                        <input type="text" th:name="receiver" size="10"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="col-6 align-content-center text-center">
+                                    <button type="submit"> Send </button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-8">
+                        <textarea form="message_form" rows="3" cols="80" id=description th:name="message"></textarea>
+                    </div>
+
+                </div>
+            </div>
+        </form>
+    </div>
 </div>
 </body>
 

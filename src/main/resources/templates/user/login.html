@@ -10,23 +10,33 @@
 </head>
 <body>
 <div layout:fragment="content">
-    <h1>Login</h1>
 
-    <form name="login_form" action="login" method="POST">
-        <table>
-            <tr>
-                <td>Username : </td>
-                <td><input type="text" name="username" value=""></td>
-            </tr>
-            <tr>
-                <td>Password : </td>
-                <td><input type="password" name="password" /></td>
-            </tr>
-            <tr>
-                <td><input name="submit" type="submit" value="submit" /></td>
-            </tr>
-        </table>
-    </form>
+    <div class="col-8 offset-2 align-content-center text-center">
+        <h1>Login</h1>
+        <form name="login_form" action="login" method="POST">
+        <div class="row align-content-center">
+            <div class="col-4 offset-2">
+                <label>Username</label>
+            </div>
+            <div class="col-4">
+                <input type="text" name="username" value="">
+            </div>
+        </div>
+        <div class="row align-content-center">
+            <div class="col-4 offset-2">
+                <label>Password</label>
+            </div>
+            <div class="col-4">
+                <input type="password" name="password" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-8 offset-2 align-content-center">
+                <input name="submit" type="submit" value="submit" />
+            </div>
+        </div>
+        </form>
+    </div>
 </div>
 </body>
 

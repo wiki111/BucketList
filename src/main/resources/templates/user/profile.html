@@ -11,7 +11,101 @@
 
 <body>
 <div layout:fragment="content">
-    <div>
+
+
+    <div class="col-8 offset-2 align-content-center text-center">
+        <div class="row align-content-center text-center">
+            <div class="col-6 offset-3 align-content-center text-center">
+                <h1><span th:text="${user.getNickname()}"></span>'S PROFILE</h1>
+            </div>
+            <div class="col-2 offset-1">
+                <a class="btn btn-primary" th:href="@{/editprofile}">Edit</a>
+            </div>
+        </div>
+
+
+    </div>
+
+    <div class="col-12">
+        <div class="row">
+            <div class="col-2 offset-1 align-content-center text-center">
+                <img th:src="@{'/getAvatar/' + ${user.getEmail()}}" alt="image">
+            </div>
+            <div class="col-3">
+                <div class="col-12">
+                    <h3>Bio</h3>
+                </div>
+                <div class="col-12">
+                    <p th:text="${user.getBio()}"></p>
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="row">
+                    <div class="col-12">
+                        <h3>Interests</h3>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <span th:text="${user.getInterests()}"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-4">
+                <a class="btn btn-primary" th:href="@{/showsharedlists}">show shared lists</a>
+            </div>
+
+            <div class="col-4">
+                <a class="btn btn-primary" th:href="@{/user/bucketlists}">show bucketlists</a>
+            </div>
+
+            <div class="col-4">
+                <a class="btn btn-primary" th:href="@{/user/received}">messages</a>
+            </div>
+        </div>
+
+        <!--<p th:text="${list.getCreationDate()}"></p>
+        <p th:text="${list.getOpen()}"></p>
+        <h3>User</h3>
+        <p th:text="${username}"></p>-->
+
+        <div class="col-12 align-content-center text-center">
+            <h2>FEATURED BUCKETLISTS</h2>
+            <hr>
+        </div>
+
+        <div class="row">
+
+            <div class="col-3" th:each="list : ${user.getBucketlists()}">
+                <div class="row">
+                    <img th:src="@{'/getBucketlistImage/' + ${username} + '/' + ${list.getPhotoPath()}}">
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <h4 th:text="${list.getName()}"></h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <p th:text="${list.getDescription()}"></p>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-4">
+                        <p th:text="${list.getCreationDate()}"></p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!--<div>
         <h1> Profile info </h1>
 
         <div>
@@ -44,7 +138,7 @@
             <a class="btn btn-primary" th:href="@{/user/bucketlists}">Show shared lists</a>
         </div>
 
-    </div>
+    </div>-->
 
 </div>
 
