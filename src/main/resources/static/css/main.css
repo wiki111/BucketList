@@ -1,8 +1,9 @@
-.banner-image{
-    width: 100%;
-    max-height: 300px;
-    object-fit: cover;
+body {
+    background-color: #F3E6A5;
+    color: #273C74;
+    font-family: 'Open Sans', sans-serif;
 }
+
 
 .no-side-padding{
     padding-left: 0;
@@ -10,16 +11,46 @@
 }
 
 .nav-link-color{
-    color: #EDEDED;
+    color: #FFE97C;
+    text-decoration: none;
+    position: relative;
 }
 
-a.nav-link-color:hover{
-    color: #FFE000;
+.nav-link-color:hover{
+    text-decoration: none;
+    color: #FFE97C;
+}
+
+.nav-link-color:after{
+    content: "";
+    position: absolute;
+    width: 50%;
+    height: 2px;
+    bottom: 15%;
+    left: 25%;
+    background-color: #FFE97C;
+    visibility: visible;
+    visibility: hidden;
+    -webkit-transform: scaleX(0);
+    transform: scaleX(0);
+    -webkit-transition: all 0.3s ease-in-out 0s;
+    transition: all 0.3s ease-in-out 0s;
+}
+
+.nav-link-color:hover:after{
+    visibility: visible;
+    text-decoration: none;
+    -webkit-transform: scaleX(1);
+    transform: scaleX(1);
 }
 
 .bar-top{
-    background-color: #47B58F;
-    color: #EDEDED;
+    background-color: #273C74;
+    font-size: 18px;
+}
+
+.home-link, .nav-link-1, .nav-link-2{
+    text-align: center;
 }
 
 .clickable-row:hover{

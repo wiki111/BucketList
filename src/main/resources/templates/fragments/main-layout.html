@@ -7,6 +7,7 @@
     <link rel="stylesheet" th:href="@{/css/main.css}"/>
     <script th:src="@{/webjars/jquery/3.3.7-1/jquery.min.js}"></script>
     <script th:src="@{/webjars/bootstrap/4.0.0-2/js/bootstrap.min.js}"></script>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
 </head>
 <body>
 <script>
@@ -29,14 +30,14 @@
 </script>
 <div class="container-fluid ">
     <div class="row bar-top">
-        <div class="col-md-3">
+        <div class="col-md-2 home-link">
             <a class="nav-link nav-link-color" th:href="@{/homepage}">Bucketlist</a>
         </div>
-        <div class="col-md-2 offset-md-5">
+        <div class="col-md-2 offset-md-6 nav-link-1">
             <a class="nav-link nav-link-color" sec:authorize="isAnonymous()" th:href="@{/login}">Login</a>
             <a class="nav-link nav-link-color" sec:authorize="isAuthenticated()" th:href="@{/logout}">Logout</a>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-2 nav-link-2">
             <a class="nav-link nav-link-color" sec:authorize="isAnonymous()" th:href="@{/register}">Register</a>
             <a class="nav-link nav-link-color" sec:authorize="isAuthenticated()" th:href="@{/profile}">Profile</a>
         </div>

@@ -5,40 +5,48 @@
     <title>Home</title>
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css}" />
     <link rel="stylesheet" th:href="@{/css/main.css}"/>
+    <link rel="stylesheet" th:href="@{/css/mainpage.css}"/>
     <script th:src="@{/webjars/jquery/3.3.7-1/jquery.min.js}"></script>
     <script th:src="@{/webjars/bootstrap/4.0.0-2/js/bootstrap.min.js}"></script>
 </head>
     <body>
         <div layout:fragment="content">
             <div class="col-12">
-                <div class="row">
-                    <div class="col-8 offset-2 align-content-center text-center">
-                        <h1>BUCKETLIST</h1>
+
+                <div class="row logo-container">
+                    <div class="col-12">
+                        <img class="logo" th:src="@{/img/logo_large.png}">
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="col-4 div-link-panel align-content-center text-center">
+                <div class="row heading-container">
+                    <div class="col-8 offset-2 align-content-center text-center">
+                        <h1 class="homepage-heading">BUCKETLIST</h1>
+                    </div>
+                </div>
+
+                <div class="row homepage-links-row">
+                    <div class="col-lg-4 div-link-panel align-content-center text-center homepage-link">
                         EXPLORE
                         <a th:href="@{/bucketlists}"><span class="div-link-span"></span></a>
                     </div>
-                    <div class="col-4 div-link-panel align-content-center text-center">
+                    <div class="col-lg-4 div-link-panel align-content-center text-center homepage-link">
                         SIGN UP
                         <a class="" sec:authorize="isAnonymous()" th:href="@{/register}"><span class="div-link-span"></span></a>
                         <a class="" sec:authorize="isAuthenticated()" th:href="@{/profile}"><span class="div-link-span"></span></a>
                     </div>
-                    <div class="col-4 div-link-panel align-content-center text-center">
+                    <div class="col-lg-4 div-link-panel align-content-center text-center homepage-link">
                         ABOUT
                         <a th:href="@{/about}"><span class="div-link-span"></span></a>
                     </div>
                 </div>
 
                 <div class="row big-divide-line">
-
+                    <img class="big-rule" th:src="@{/img/big_rule_scaled.svg}">
                 </div>
 
 
-                <div class="col-8 offset-2 align-content-center text-center">
+                <div class="col-8 offset-2 align-content-center text-center homepage-text">
                     <p>
                         Bucketlist jest narzędziem pierwszym w swoim rodzaju i ostatnim jakiego będziesz potrzebował. Nieważne
                         co zbierasz - pomysły na prezenty ślubne, miejsca do odwiedzenia, rzeczy które do włączenia do kolekcji,
