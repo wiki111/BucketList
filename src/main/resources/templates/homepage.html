@@ -31,7 +31,8 @@
                         <a th:href="@{/bucketlists}"><span class="div-link-span"></span></a>
                     </div>
                     <div class="col-lg-4 div-link-panel align-content-center text-center homepage-link">
-                        SIGN UP
+                        <span sec:authorize="isAnonymous()">SIGN UP</span>
+                        <span sec:authorize="isAuthenticated()">PROFILE</span>
                         <a class="" sec:authorize="isAnonymous()" th:href="@{/register}"><span class="div-link-span"></span></a>
                         <a class="" sec:authorize="isAuthenticated()" th:href="@{/profile}"><span class="div-link-span"></span></a>
                     </div>
@@ -49,7 +50,7 @@
                 <div class="col-8 offset-2 align-content-center text-center homepage-text">
                     <p>
                         Bucketlist jest narzędziem pierwszym w swoim rodzaju i ostatnim jakiego będziesz potrzebował. Nieważne
-                        co zbierasz - pomysły na prezenty ślubne, miejsca do odwiedzenia, rzeczy które do włączenia do kolekcji,
+                        co zbierasz - pomysły na prezenty ślubne, miejsca do odwiedzenia, rzeczy które chcesz włączyć do kolekcji,
                         sugestie prezentów czy cokolwiek innego. Wszystko możesz wrzucić do kubełka - i pokazać innym, co w nim
                         trzymasz ;)
                     </p>

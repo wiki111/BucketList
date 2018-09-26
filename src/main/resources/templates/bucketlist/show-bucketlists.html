@@ -5,6 +5,8 @@
     <title>Login</title>
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css}" />
     <link rel="stylesheet" th:href="@{/css/main.css}"/>
+    <link rel="stylesheet" th:href="@{/css/form.css}"/>
+    <link rel="stylesheet" th:href="@{/css/table.css}"/>
     <script th:src="@{/webjars/jquery/3.3.7-1/jquery.min.js}"></script>
     <script th:src="@{/webjars/bootstrap/4.0.0-2/js/bootstrap.min.js}"></script>
     <script th:src="@{/js/utility.js}"></script>
@@ -27,9 +29,11 @@
             <form th:action="@{'/search'}" method="POST">
 
                 <div class="form-group row">
-                    <div class="col-12 align-content-center text-center">
+                    <div class="col-8 offset-2 align-content-center text-center">
                         <input type="text" size="70" th:name="query">
-                        <button type="submit">SEARCH</button>
+                    </div>
+                    <div class="col-2">
+                        <button class="bucketlist-button bucketlist-inline-button" type="submit">SEARCH</button>
                     </div>
                 </div>
 
@@ -39,14 +43,20 @@
                         <fieldset>
 
                             <div class="row">
-                                <div class="col-6 align-content-center text-center">
-                                    <input type="radio" name="criterium" th:value="by_tags">
-                                    <label>BY TAGS</label>
+                                <div class="col-4 offset-3">
+                                    <div class="radio-container">
+                                        <input class="inline-input bucketlist-radio-button" type="radio" name="criterium" th:value="by_tags" checked>
+                                        <span class="checkmark"></span>
+                                        <label class="inline-label">BY TAGS</label>
+                                    </div>
                                 </div>
 
-                                <div class="col-6 align-content-center text-center">
-                                    <input type="radio" name="criterium" th:value="by_username">
-                                    <label>BY USERNAME</label>
+                                <div class="col-4  radio-container">
+                                    <div class="radio-container">
+                                        <input class="inline-input bucketlist-radio-button" type="radio" name="criterium" th:value="by_username">
+                                        <span class="checkmark"></span>
+                                        <label class="inline-label">BY USERNAME</label>
+                                    </div>
                                 </div>
                             </div>
 

@@ -4,6 +4,10 @@ body {
     font-family: 'Open Sans', sans-serif;
 }
 
+h1 {
+    text-transform: uppercase;
+    font-weight: 300;
+}
 
 .no-side-padding{
     padding-left: 0;
@@ -51,13 +55,9 @@ body {
 
 .home-link, .nav-link-1, .nav-link-2{
     text-align: center;
+    text-transform: uppercase;
 }
 
-.clickable-row:hover{
-    cursor: pointer;
-    background: #4fB080;
-    color: #FFE000;
-}
 
 .div-link-panel{
     position:relative;

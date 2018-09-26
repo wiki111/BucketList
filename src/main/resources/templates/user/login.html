@@ -5,6 +5,8 @@
     <title>Login</title>
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css}" />
     <link rel="stylesheet" th:href="@{/css/main.css}"/>
+    <link rel="stylesheet" th:href="@{/css/loginpage.css}"/>
+    <link rel="stylesheet" th:href="@{/css/form.css}"/>
     <script th:src="@{/webjars/jquery/3.3.7-1/jquery.min.js}"></script>
     <script th:src="@{/webjars/bootstrap/4.0.0-2/js/bootstrap.min.js}"></script>
 </head>
@@ -15,24 +17,24 @@
         <h1>Login</h1>
         <form name="login_form" action="login" method="POST">
         <div class="row align-content-center">
-            <div class="col-4 offset-2">
+            <div class="col-2 offset-3">
                 <label>Username</label>
             </div>
-            <div class="col-4">
+            <div class="col-md-5 offset-1">
                 <input type="text" name="username" value="">
             </div>
         </div>
         <div class="row align-content-center">
-            <div class="col-4 offset-2">
+            <div class="col-2 offset-3">
                 <label>Password</label>
             </div>
-            <div class="col-4">
+            <div class="col-md-5 offset-1">
                 <input type="password" name="password" />
             </div>
         </div>
         <div class="row">
             <div class="col-8 offset-2 align-content-center">
-                <input name="submit" type="submit" value="submit" />
+                <input class="bucketlist-button" name="submit" type="submit" value="submit" />
             </div>
         </div>
         </form>

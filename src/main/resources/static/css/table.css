@@ -1,0 +1,35 @@
+.table{
+    font-size: 20px;
+}
+
+.table th{
+    border: none;
+    text-transform: uppercase;
+    font-weight: 300;
+    padding-bottom: 5px;
+}
+
+.table thead th{
+    border: none;
+}
+
+.table tr, .table td{
+    border: none;
+    font-weight: 300;
+}
+
+.table tr:hover, .table td:hover{
+    border: none;
+}
+
+.clickable-row{
+    transition: all 0.2s ease-in-out 0s;
+    margin: 5px;
+}
+
+.clickable-row:hover{
+    cursor: pointer;
+    background: #273C74;
+    color: #F3E6A5;
+    transform: scale(1.01);
+}
