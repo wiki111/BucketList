@@ -5,6 +5,8 @@
     <title>Login</title>
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css}" />
     <link rel="stylesheet" th:href="@{/css/main.css}"/>
+    <link rel="stylesheet" th:href="@{/css/bldetails.css}"/>
+    <link rel="stylesheet" th:href="@{/css/form.css}"/>
     <script th:src="@{/webjars/jquery/3.3.7-1/jquery.min.js}"></script>
     <script th:src="@{/webjars/bootstrap/4.0.0-2/js/bootstrap.min.js}"></script>
     <script th:src="@{/js/utility.js}"></script>
@@ -13,17 +15,26 @@
 <div layout:fragment="content">
 
     <div class="col-8 offset-2 align-content-center text-center">
-        <h1>Bucketlist <span th:text="${list.getName()}"></span>'s items</h1>
+        <div class="row align-content-center text-center">
+            <div class="col-6 offset-3 align-content-center text-center">
+                <h1 class="bl-details-h">Bucketlist <span th:text="${list.getName()}"></span>'s items</h1>
+            </div>
+            <div th:if="${ownedByAuth}" class="col-2 offset-1">
+                <a class="btn btn-primary" th:href="@{'/user/bucketlist/manage/'+${list.getId()}+'/edit'}">Edit</a>
+            </div>
+        </div>
+
     </div>
 
     <div class="col-12">
-        <div class="row">
-            <div class="col-3 offset-1 align-content-center text-center">
-                <img th:src="@{'/getBucketlistImage/' + ${username} + '/' + ${list.getPhotoPath()}}" alt="image">
+
+        <div class="row bl-info">
+            <div class="col-2 offset-1 align-content-center text-center">
+                <img class="bl-image" th:src="@{'/getBucketlistImage/' + ${username} + '/' + ${list.getPhotoPath()}}" alt="image">
             </div>
             <div class="col-7">
                 <div class="col-12">
-                    <h3>Description</h3>
+                    <h3 class="bl-name-h">Description</h3>
                 </div>
                 <div class="col-12">
                     <p th:text="${list.getDescription()}"></p>
@@ -38,41 +49,64 @@
 
         <div class="row">
 
-            <div class="col-3" th:each="item : ${list.getItems()}">
-                <div class="row">
-                    <img th:src="@{'/getItemImage/' + ${username} + '/' + ${item.getImage()}}">
-                </div>
-                <div class="row">
-                    <div class="col-12">
-                        <h4 th:text="${item.getName()}"></h4>
+            <div class="item-list col-10 offset-1">
+
+                <div class="item-list-inner row" >
+
+                    <div class="col-md-4 item bl-item" th:each="item : ${list.getItems()}">
+                        <div class="bl-item-card bl-item-card-size">
+
+                            <div class="row">
+                                <div class="col-12 bl-img-wrap">
+                                    <img class="bl-item-image" th:src="@{'/getItemImage/' + ${username} + '/' + ${item.getImage()}}">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <h4 th:text="${item.getName()}"></h4>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <p class="bl-item-desc" th:text="${item.getDescription()}"></p>
+                                </div>
+                            </div>
+                            <hr class="bl-link-divide">
+                            <div class="row">
+                                <div class="col-4">
+                                    <p>LINK : faduhfgkdjhgkjhgl</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-4 offset-4">
+                                    counter
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-8">
+                                    <p th:text="${#dates.format(item.getAddedDate(), 'dd-MM-yyyy HH:mm')}"></p>
+                                </div>
+                                <div th:if="${ownedByAuth}" class="col-4">
+                                    <a class="bl-btn-inverse" th:href="@{'/editListItem/' + ${list.getId()}  + '/' + ${item.getId()}}">edit</a>
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-12">
-                        <p th:text="${item.getDescription()}"></p>
+
+                    <div class="col-4 align-content-center text-center item bl-item" th:if="${ownedByAuth}">
+                        <div class="bl-add-new">
+                            <a class="no-link-effect" th:href="@{'/addItemToList/' + ${list.getId()}}">add new item<span class="div-link-span"></span></a>
+                        </div>
                     </div>
+
                 </div>
-                <hr>
-                <div class="row">
-                    <div class="col-4">
-                        <p>LINK : faduhfgkdjhgkjhgl</p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-4 offset-4">
-                        here will be users count & button
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-4">
-                        <p th:text="${item.getAddedDate()}"></p>
-                    </div>
-                </div>
+
             </div>
 
-            <div class="col-3 align-content-center text-center">
-                add new item
-            </div>
+
+
+
         </div>
 
     </div>
@@ -80,7 +114,7 @@
 
 
 
-
+<!--
     <table class="table">
         <thead>
         <tr>
@@ -100,7 +134,7 @@
             <td th:text="${item.getAddedDate()}"></td>
         </tr>
         </tbody>
-    </table>
+    </table>-->
 
     <div id="shareBtn" class="btn btn-success clearfix">Share</div>
 

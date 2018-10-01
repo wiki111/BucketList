@@ -28,7 +28,10 @@ public class BucketList {
     private User user;
 
     private String name;
+
+    @Lob
     private String description;
+
     private Date creationDate;
     private Boolean open;
     private Boolean isPrivate;

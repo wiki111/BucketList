@@ -73,8 +73,8 @@
                     <div class="col-4">
                         <p th:text="${item.getAddedDate()}"></p>
                     </div>
-                    <div class="col-4 offset-4">
-                        <button class="btn btn-primary">edit button</button>
+                    <div th:if="${ownedByAuth}" class="col-4 offset-4">
+                        <a class="btn btn-primary" th:href="@{/}">edit button</a>
                     </div>
                 </div>
             </div>

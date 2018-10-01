@@ -51,7 +51,7 @@ public class BucketlistsController {
         model.addAttribute(
                 "lists",
                 userService.getUserLists(principal.getName()));
-        return SHOW_USERS_BUCKETLISTS;
+        return SHOW_BUCKETLISTS;
     }
 
     @GetMapping("/bucketlists")
@@ -76,7 +76,7 @@ public class BucketlistsController {
 
     @GetMapping("/bucketlist/details/{id}")
     public String showPublicBucketlistDetails(
-            @PathVariable("id") Long id, Model model){
+            @PathVariable("id") Long id, Model model, Principal principal){
 
         BucketListDto bucketListDto = bucketListService.getListById(id);
         model.addAttribute("list", bucketListDto);
@@ -84,7 +84,20 @@ public class BucketlistsController {
         UserDto user = userService.findByUserId(bucketListDto.getUserId());
         model.addAttribute("username", user.getNickname());
 
+        if(bucketListService.getUsersListById(id, principal.getName()) == null ){
+            model.addAttribute("ownedByAuth", false);
+        }else{
+            model.addAttribute("ownedByAuth", true);
+        }
+
         return "bucketlist/show-list-details";
+    }
+
+    @GetMapping("/addItemToList/{id}")
+    public String getAddListItemPage(@PathVariable("id") long id, Principal principal, Model model){
+        BucketListDto list = userService.getUsersListById(id, principal.getName());
+        model.addAttribute("list",list);
+        return "bucketlist/add-item";
     }
 
     @PostMapping("/addListItem")
@@ -186,6 +199,7 @@ public class BucketlistsController {
     }
 
     //todo refactor two methods to be one ?
+    // todo add default images 270x170px
 
     @RequestMapping(value = "/getBucketlistImage/{nickname}/{photoPath:.+}")
     @ResponseBody

@@ -24,7 +24,10 @@ public class BucketItem {
     private List<String> markedByUsers = new ArrayList<>();
 
     private String name;
+
+    @Lob
     private String description;
+
     private Long price;
     private String image;
     private Date addedDate;

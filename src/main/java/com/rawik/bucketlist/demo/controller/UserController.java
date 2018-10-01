@@ -106,6 +106,7 @@ public class UserController {
         );
 
         model.addAttribute("user", dto);
+        model.addAttribute("username", principal.getName());
 
         return "user/profile";
     }

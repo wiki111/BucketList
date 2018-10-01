@@ -5,6 +5,8 @@
     <title>Profile</title>
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css}" />
     <link rel="stylesheet" th:href="@{/css/main.css}"/>
+    <link rel="stylesheet" th:href="@{/css/bldetails.css}"/>
+    <link rel="stylesheet" th:href="@{/css/form.css}"/>
     <script th:src="@{/webjars/jquery/3.3.7-1/jquery.min.js}"></script>
     <script th:src="@{/webjars/bootstrap/4.0.0-2/js/bootstrap.min.js}"></script>
 </head>
@@ -16,10 +18,10 @@
     <div class="col-8 offset-2 align-content-center text-center">
         <div class="row align-content-center text-center">
             <div class="col-6 offset-3 align-content-center text-center">
-                <h1><span th:text="${user.getNickname()}"></span>'S PROFILE</h1>
+                <h1 class="bl-profile-h1"><span th:text="${user.getNickname()}"></span>'S PROFILE</h1>
             </div>
-            <div class="col-2 offset-1">
-                <a class="btn btn-primary" th:href="@{/editprofile}">Edit</a>
+            <div class="col-2 offset-1 bl-relative-wrap">
+                <a class="bucketlist-button bucketlist-inline-button bl-center" th:href="@{/editprofile}">Edit</a>
             </div>
         </div>
 
@@ -27,13 +29,13 @@
     </div>
 
     <div class="col-12">
-        <div class="row">
+        <div class="row bl-info">
             <div class="col-2 offset-1 align-content-center text-center">
-                <img th:src="@{'/getAvatar/' + ${user.getEmail()}}" alt="image">
+                <img class="bl-image" th:src="@{'/getAvatar/' + ${user.getEmail()}}" alt="image">
             </div>
             <div class="col-3">
                 <div class="col-12">
-                    <h3>Bio</h3>
+                    <h3 class="bl-name-h">Bio</h3>
                 </div>
                 <div class="col-12">
                     <p th:text="${user.getBio()}"></p>
@@ -42,7 +44,7 @@
             <div class="col-2">
                 <div class="row">
                     <div class="col-12">
-                        <h3>Interests</h3>
+                        <h3 class="bl-name-h">Interests</h3>
                     </div>
                 </div>
                 <div class="row">
@@ -54,17 +56,22 @@
         </div>
 
         <div class="row">
-            <div class="col-4">
-                <a class="btn btn-primary" th:href="@{/showsharedlists}">show shared lists</a>
+            <div class="col-10 offset-1">
+                <div class="row bl-row-spacer">
+                    <div class="col-4 text-center">
+                        <a class="bucketlist-button" th:href="@{/showsharedlists}">show shared lists</a>
+                    </div>
+
+                    <div class="col-4 text-center">
+                        <a class="bucketlist-button" th:href="@{/user/bucketlists}">show bucketlists</a>
+                    </div>
+
+                    <div class="col-4 text-center">
+                        <a class="bucketlist-button" th:href="@{/user/received}">messages</a>
+                    </div>
+                </div>
             </div>
 
-            <div class="col-4">
-                <a class="btn btn-primary" th:href="@{/user/bucketlists}">show bucketlists</a>
-            </div>
-
-            <div class="col-4">
-                <a class="btn btn-primary" th:href="@{/user/received}">messages</a>
-            </div>
         </div>
 
         <!--<p th:text="${list.getCreationDate()}"></p>
@@ -79,27 +86,47 @@
 
         <div class="row">
 
-            <div class="col-3" th:each="list : ${user.getBucketlists()}">
-                <div class="row">
-                    <img th:src="@{'/getBucketlistImage/' + ${username} + '/' + ${list.getPhotoPath()}}">
-                </div>
-                <div class="row">
-                    <div class="col-12">
-                        <h4 th:text="${list.getName()}"></h4>
+            <div class="item-list col-10 offset-1">
+
+                <div class="item-list-inner row">
+
+                    <div class="col-md-4 item bl-item" th:each="list : ${user.getBucketlists()}">
+
+                        <div class="bl-item-card bl-list-card-size">
+
+                            <a th:href="@{'/bucketlist/details/' + ${list.getId()}}"><span class="div-link-span"></span></a>
+
+                            <div class="row">
+                                <div class="col-12 bl-img-wrap">
+                                        <img class="bl-list-image" th:src="@{'/getBucketlistImage/' + ${username} + '/' + ${list.getPhotoPath()}}">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <h4 th:text="${list.getName()}"></h4>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <p class="bl-item-desc" th:text="${list.getDescription()}"></p>
+                                </div>
+                            </div>
+                            <hr class="bl-link-divide">
+                            <div class="row">
+                                <div class="col-12">
+                                    <p th:text="${#dates.format(list.getCreationDate(), 'dd-MM-yyyy HH:mm')}"></p>
+                                </div>
+                            </div>
+
+                        </div>
+
                     </div>
+
                 </div>
-                <div class="row">
-                    <div class="col-12">
-                        <p th:text="${list.getDescription()}"></p>
-                    </div>
-                </div>
-                <hr>
-                <div class="row">
-                    <div class="col-4">
-                        <p th:text="${list.getCreationDate()}"></p>
-                    </div>
-                </div>
+
             </div>
+
+
 
         </div>
 

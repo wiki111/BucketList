@@ -16,8 +16,7 @@
     <div layout:fragment="content">
 
         <div class="col-12 align-content-center text-center">
-            <h1 sec:authorize="isAuthenticated()">Your bucketlists</h1>
-            <h1 sec:authorize="isAnonymous()">Public bucketlists</h1>
+            <h1>Public bucketlists</h1>
         </div>
 
         <div class="col-8 offset-2">
@@ -85,7 +84,7 @@
                 </thead>
                 <tbody>
 
-                <tr class="clickable-row" th:each="list : ${lists}" th:onclick="'javascript:showBucketListWithoutEditingOptions(\'' + ${list.getId()} + '\');'">
+                <tr class="clickable-row" th:each="list : ${lists}" th:onclick="'javascript:showBucketList(\'' + ${list.getId()} + '\');'">
                     <td th:text="${list.getName()}"></td>
                     <td th:text="${list.getDescription()}"></td>
                     <td th:text="${list.getCreationDate()}"></td>

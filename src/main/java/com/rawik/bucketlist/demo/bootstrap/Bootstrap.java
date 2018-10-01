@@ -49,6 +49,7 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
         userDto.setPassword("reter");
         userDto.setMatchingPassword("reter");
         userDto.setNickname("wiki");
+        userDto.setAvatarPath("sample_avatar.png");
 
         UserDto userDto2 = new UserDto();
         userDto2.setEmail("matt3@daniels.com");
@@ -84,7 +85,35 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
         testItem.setName("TestItem");
         testItem.setAddedDate(new Date());
         testItem.setPrice(10L);
-        testItem.setImage("image");
+        testItem.setImage("sample_blitem_img.jpg");
+        testItem.setDescription("Curae, Duis sodales wisi placerat faucibus. Sed in neque quis erat. Vivamus volutpat aliquam pharetra ante euismod eget, sagittis ac, molestie a, bibendum porttitor. Aenean vel nibh. Morbi eleifend. Nulla quis quam molestie placerat, nulla nec nunc posuere ante pellentesque auctor eu, dapibus diam. Aliquam luctus pellentesque.");
+
+        BucketItemDto testItem2= new BucketItemDto();
+        testItem2.setId(2L);
+        testItem2.setListId(1L);
+        testItem2.setName("TestItem2");
+        testItem2.setAddedDate(new Date());
+        testItem2.setPrice(10L);
+        testItem2.setImage("sample_blitem_img.jpg");
+        testItem2.setDescription("Curae, Duis sodales wisi placerat faucibus. Sed in neque quis erat. Vivamus volutpat aliquam pharetra ante euismod eget, sagittis ac, molestie a, bibendum porttitor. Aenean vel nibh. Morbi eleifend. Nulla quis quam molestie placerat, nulla nec nunc posuere ante pellentesque auctor eu, dapibus diam. Aliquam luctus pellentesque.");
+
+        BucketItemDto testItem3 = new BucketItemDto();
+        testItem3.setId(3L);
+        testItem3.setListId(1L);
+        testItem3.setName("TestItem3");
+        testItem3.setAddedDate(new Date());
+        testItem3.setPrice(10L);
+        testItem3.setImage("sample_blitem_img.jpg");
+        testItem3.setDescription("Curae, Duis sodales wisi placerat faucibus. Sed in neque quis erat. Vivamus volutpat aliquam pharetra ante euismod eget, sagittis ac, molestie a, bibendum porttitor. Aenean vel nibh. Morbi eleifend. Nulla quis quam molestie placerat, nulla nec nunc posuere ante pellentesque auctor eu, dapibus diam. Aliquam luctus pellentesque.");
+
+        BucketItemDto testItem4 = new BucketItemDto();
+        testItem4.setId(4L);
+        testItem4.setListId(1L);
+        testItem4.setName("TestItem4");
+        testItem4.setAddedDate(new Date());
+        testItem4.setPrice(10L);
+        testItem4.setImage("sample_blitem_img.jpg");
+        testItem4.setDescription("Curae, Duis sodales wisi placerat faucibus. Sed in neque quis erat. Vivamus volutpat aliquam pharetra ante euismod eget, sagittis ac, molestie a, bibendum porttitor. Aenean vel nibh. Morbi eleifend. Nulla quis quam molestie placerat, nulla nec nunc posuere ante pellentesque auctor eu, dapibus diam. Aliquam luctus pellentesque.");
 
         BucketListDto listDto = new BucketListDto();
         listDto.setUserId(user.getUserId());
@@ -97,6 +126,8 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
         listDto.getItems().add(testItem);
         listDto.setTags("taggy,little taggy");
         listDto.setCreationDate(new Date());
+        listDto.setPhotoPath("sample_bl_img.png");
+        listDto.setDescription("Curae, Duis sodales wisi placerat faucibus. Sed in neque quis erat. Vivamus volutpat aliquam pharetra ante euismod eget, sagittis ac, molestie a, bibendum porttitor. Aenean vel nibh. Morbi eleifend. Nulla quis quam molestie placerat, nulla nec nunc posuere ante pellentesque auctor eu, dapibus diam. Aliquam luctus pellentesque.");
 
         BucketListDto listDto2 = new BucketListDto();
         listDto2.setUserId(user.getUserId());
@@ -121,5 +152,9 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
 
         listDto.setName("Updated");
         listService.updateList(listDto);
+
+        listService.addItemToList(testItem2, user.getEmail());
+        listService.addItemToList(testItem3, user.getEmail());
+        listService.addItemToList(testItem4, user.getEmail());
     }
 }

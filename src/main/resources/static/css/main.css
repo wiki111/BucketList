@@ -9,6 +9,10 @@ h1 {
     font-weight: 300;
 }
 
+a:hover{
+    text-decoration: none;
+}
+
 .no-side-padding{
     padding-left: 0;
     padding-right: 0;
@@ -75,4 +79,13 @@ h1 {
     /* fixes overlap error in IE7/8,
        make sure you have an empty gif */
     /*background-image: url('empty.gif');*/
+}
+
+hr{
+    background: #273C74;
+    height: 2px;
+}
+
+form{
+    margin-bottom: 45px;
 }

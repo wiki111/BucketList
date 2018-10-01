@@ -117,6 +117,23 @@ thead{
     color: #F3E6A5;
 }
 
+.bl-btn-inverse{
+    background-color: #2B4897;
+    border: solid 2px #F3E6A5;
+    border-radius: 10px;
+    width: fit-content;
+    padding: 5px 20px 5px 20px;
+    color: #F3E6A5;
+    -webkit-transition: all 0.3s ease-in-out 0s;
+    transition: all 0.3s ease-in-out 0s;
+    margin-top: 20px;
+}
+
+.bl-btn-inverse:hover{
+    background: #F3E6A5;
+    color: #2B4897;
+}
+
 .bucketlist-inline-button{
     margin: 5px;
 }

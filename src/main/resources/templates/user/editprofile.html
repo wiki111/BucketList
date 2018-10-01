@@ -5,6 +5,7 @@
     <title>Edit Profile</title>
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css}" />
     <link rel="stylesheet" th:href="@{/css/main.css}"/>
+    <link rel="stylesheet" th:href="@{/css/form.css}"/>
     <script th:src="@{/webjars/jquery/3.3.7-1/jquery.min.js}"></script>
     <script th:src="@{/webjars/bootstrap/4.0.0-2/js/bootstrap.min.js}"></script>
 </head>
@@ -25,7 +26,7 @@
                         <form method="POST" enctype="multipart/form-data" th:action="@{/updateAvatar}">
                             <label>Upload avatar file :</label>
                             <input th:type="file" name="avatarFile">
-                            <input type="submit" th:value="Upload">
+                            <input type="submit" class="bucketlist-button" th:value="Upload">
                         </form>
                     </div>
                 </div>
@@ -106,7 +107,7 @@
                             </div>
                         </div>
 
-                        <button type="submit" class="btn btn-primary">Update Info</button>
+                        <button type="submit" class="bucketlist-button">Update Info</button>
                     </form>
                 </div>
             </div>
