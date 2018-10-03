@@ -121,7 +121,7 @@ public class BucketListMapper {
             userString.setCharAt(userString.length() - 1, ' ');
         }
 
-        return userList.toString();
+        return userString.toString();
     }
 
     public List<String> authorizedStringToList(String userString){

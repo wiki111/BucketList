@@ -38,7 +38,8 @@ public class BucketList {
     private Boolean othersCanMarkItems;
     private String photoPath;
 
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<String> tags = new ArrayList<>();
 
     @ElementCollection

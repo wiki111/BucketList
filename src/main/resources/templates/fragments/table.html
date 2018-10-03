@@ -28,7 +28,7 @@
                 th:each="list : ${user.getBucketlists()}"
                 th:object="${list}"
                 th:if="${list.getIsPrivate()} == 'false'"
-                th:onclick="'javascript:showBucketListWithoutEditingOptions(\'' + ${list.getId()} + '\');'">
+                th:onclick="'javascript:showBucketList(\'' + ${list.getId()} + '\');'">
                 <td th:text="${list.getName()}"></td>
                 <td th:text="${list.getDescription()}"></td>
                 <td th:text="${list.getCreationDate()}"></td>

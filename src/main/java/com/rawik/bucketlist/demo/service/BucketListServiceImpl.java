@@ -108,7 +108,9 @@ public class BucketListServiceImpl implements BucketListService{
             listToSave.setDescription(dto.getDescription());
             listToSave.setOpen(listMapper.stringToBoolean(dto.getOpen()));
             listToSave.setIsPrivate(listMapper.stringToBoolean(dto.getIsPrivate()));
+            listToSave.getTags().clear();
             listToSave.setTags(listMapper.tagStringToList(dto.getTags()));
+            listToSave.getAuthorizedUsers().clear();
             listToSave.setAuthorizedUsers(listMapper.authorizedStringToList(dto.getAuthorizedUsers()));
             listToSave.setOthersCanMarkItems(dto.getOthersCanMarkItems());
             if(dto.getPhotoPath() != null){
@@ -223,6 +225,14 @@ public class BucketListServiceImpl implements BucketListService{
         BucketList bucketList = searchUsersListsForId(user, itemDto.getListId());
 
         if(bucketList != null){
+
+            Optional<BucketItem> itemOpt = bucketList.getItems().stream()
+                    .filter(item -> item.getId().equals(itemDto.getId())).findFirst();
+
+            if(itemOpt.isPresent()){
+                bucketList.getItems().remove(itemOpt.get());
+            }
+
             bucketList.getItems().add(itemMapper.dtoToBucketItem(itemDto));
             userService.updateBucketLists(bucketList);
             return true;

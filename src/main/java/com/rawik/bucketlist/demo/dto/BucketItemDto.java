@@ -15,6 +15,7 @@ public class BucketItemDto {
     private String image;
     private Date addedDate;
     private String markedByUsers;
+    private Long numberOfMarks;
 
     public String getImage(){
         return this.image;

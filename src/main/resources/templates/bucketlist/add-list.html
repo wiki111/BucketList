@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html layout:decorate= "~{fragments/main-layout}" lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${titletext}"></title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css}" />
+    <link rel="stylesheet" th:href="@{/css/main.css}"/>
+    <link rel="stylesheet" th:href="@{/css/form.css}"/>
+    <link rel="stylesheet" th:href="@{/css/bldetails.css}"/>
+    <script th:src="@{/webjars/jquery/3.3.7-1/jquery.min.js}"></script>
+    <script th:src="@{/webjars/bootstrap/4.0.0-2/js/bootstrap.min.js}"></script>
+</head>
+<body>
+<div class="row" layout:fragment="content">
+    <div class="col-8 offset-2 align-content-center text-center">
+        <h1 th:text="${titletext}">info form</h1>
+    </div>
+
+    <div class="col-6 offset-3">
+
+        <form id="editListForm" th:action="@{'/bucketlists/addnew'}" th:object="${list}" method="POST" enctype="multipart/form-data" >
+
+            <input type="hidden" th:field="*{id}">
+
+            <div class="form-group row">
+                <div class="col-6 offset-3">
+
+                    <div class="row">
+                        <div class="col-12 bl-img-form-wrap">
+                            <img class="bl-list-image" th:src="@{'/getBucketlistImage/' + ${username} + '/' + ${list.getPhotoPath()}}" alt="image">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12">
+                            <input th:type="file" th:name="imagefile" value="CHANGE IMAGE">
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="listName" class="col-2 offset-3 col-form-label">Name</label>
+                <div class="col-4">
+                    <input id=listName th:field="*{name}" th:default="${list.getName()}"/>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col-12">
+                    <div class="row">
+                        <div class="col-6 offset-3">
+                            <label>Description</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6 offset-3">
+                            <textarea form="editListForm" rows="10" cols="50" id=description th:field="*{description}" th:default="${list.getDescription()}"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="form-group row">
+                <label for="listName" class="col-2 offset-3 col-form-label">Open</label>
+                <div class="col-4 bl-checkbox-wrap">
+                    <input type="checkbox" class="bl-checkbox" th:field="*{open}" th:value="true"/>
+                    <span class="checkmark checkbox-checkmark"></span>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="listName" class="col-2 offset-3 col-form-label">Private</label>
+                <div class="col-4 bl-checkbox-wrap">
+                    <input type="checkbox" class="bl-checkbox" th:field="*{isPrivate}" th:value="true"/>
+                    <span class="checkmark checkbox-checkmark"></span>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="listName" class="col-2 offset-3 col-form-label">Tags</label>
+                <div class="col-4">
+                    <input type="text" th:field="*{tags}" th:default="${list.getTags()}"/>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="listName" class="col-2 offset-3 col-form-label">Authorized users</label>
+                <div class="col-4">
+                    <input th:type="text" th:field="*{authorizedUsers}" th:default="${list.getAuthorizedUsers()}">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-12 align-content-center text-center">
+                    <button type="submit" class="bucketlist-button"> Save </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+
+</html>

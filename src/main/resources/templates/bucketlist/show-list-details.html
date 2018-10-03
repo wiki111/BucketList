@@ -2,7 +2,7 @@
 <html layout:decorate= "~{fragments/main-layout}" lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
     <meta charset="UTF-8">
-    <title>Login</title>
+    <title>Bucketlist details</title>
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css}" />
     <link rel="stylesheet" th:href="@{/css/main.css}"/>
     <link rel="stylesheet" th:href="@{/css/bldetails.css}"/>
@@ -20,7 +20,7 @@
                 <h1 class="bl-details-h">Bucketlist <span th:text="${list.getName()}"></span>'s items</h1>
             </div>
             <div th:if="${ownedByAuth}" class="col-2 offset-1">
-                <a class="btn btn-primary" th:href="@{'/user/bucketlist/manage/'+${list.getId()}+'/edit'}">Edit</a>
+                <a class="bucketlist-button bl-line-height" th:href="@{'/user/bucketlist/manage/'+${list.getId()}+'/edit'}">Edit</a>
             </div>
         </div>
 
@@ -53,51 +53,60 @@
 
                 <div class="item-list-inner row" >
 
-                    <div class="col-md-4 item bl-item" th:each="item : ${list.getItems()}">
-                        <div class="bl-item-card bl-item-card-size">
+                    <div class="item-cards-container">
 
-                            <div class="row">
-                                <div class="col-12 bl-img-wrap">
-                                    <img class="bl-item-image" th:src="@{'/getItemImage/' + ${username} + '/' + ${item.getImage()}}">
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-12">
-                                    <h4 th:text="${item.getName()}"></h4>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-12">
-                                    <p class="bl-item-desc" th:text="${item.getDescription()}"></p>
-                                </div>
-                            </div>
-                            <hr class="bl-link-divide">
-                            <div class="row">
-                                <div class="col-4">
-                                    <p>LINK : faduhfgkdjhgkjhgl</p>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-4 offset-4">
-                                    counter
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-8">
-                                    <p th:text="${#dates.format(item.getAddedDate(), 'dd-MM-yyyy HH:mm')}"></p>
-                                </div>
-                                <div th:if="${ownedByAuth}" class="col-4">
-                                    <a class="bl-btn-inverse" th:href="@{'/editListItem/' + ${list.getId()}  + '/' + ${item.getId()}}">edit</a>
-                                </div>
-                            </div>
 
+                        <div class="bl-item-card-wrap item bl-item" th:each="item : ${list.getItems()}">
+                            <div class="bl-item-card bl-item-card-size">
+
+                                <div class="">
+                                    <div class="bl-img-wrap">
+                                        <img class="bl-item-image" th:src="@{'/getItemImage/' + ${username} + '/' + ${item.getImage()}}">
+                                    </div>
+                                </div>
+                                <div class="">
+                                    <div class="">
+                                        <h4 th:text="${item.getName()}"></h4>
+                                    </div>
+                                </div>
+                                <div class="">
+                                    <div class="">
+                                        <p class="bl-item-desc" th:text="${item.getDescription()}"></p>
+                                    </div>
+                                </div>
+                                <hr class="bl-link-divide">
+                                <div class="">
+                                    <div class="">
+                                        <p>LINK : faduhfgkdjhgkjhgl</p>
+                                    </div>
+                                </div>
+                                <div class="tagCounterWrap">
+                                    <div class="marked-icon" data-tagged="false" th:id="itemTagMarkIcon + ${item.getId()}" th:onclick="'javascript:toggleItemTagged(\'' + ${item.getId()} + '\');'">
+                                    </div>
+                                    <div class="mark-counter" th:id="itemCounter + ${item.getId()}">
+                                        0
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="date-wrap">
+                                        <p th:text="${#dates.format(item.getAddedDate(), 'dd-MM-yyyy HH:mm')}"></p>
+                                    </div>
+                                    <div th:if="${ownedByAuth}" class="edit-btn-wrap">
+                                        <a class="bl-btn-inverse" th:href="@{'/editListItem/' + ${list.getId()}  + '/' + ${item.getId()}}">edit</a>
+                                    </div>
+                                </div>
+
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="col-4 align-content-center text-center item bl-item" th:if="${ownedByAuth}">
-                        <div class="bl-add-new">
-                            <a class="no-link-effect" th:href="@{'/addItemToList/' + ${list.getId()}}">add new item<span class="div-link-span"></span></a>
+
+
+                        <div class="bl-item-card-wrap align-content-center text-center item bl-item" th:if="${ownedByAuth}">
+                            <div class="bl-add-new">
+                                <a class="no-link-effect" th:href="@{'/addItemToList/' + ${list.getId()}}">add new item<span class="div-link-span"></span></a>
+                            </div>
                         </div>
+
                     </div>
 
                 </div>

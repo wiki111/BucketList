@@ -10,6 +10,8 @@
     height: 200px;
     margin: 15px;
     border-radius: 5%;
+    max-width: 100%;
+    object-fit: cover;
 }
 
 .bl-name-h{
@@ -18,7 +20,7 @@
 }
 
 .bl-details-h{
-    margin-top: 45px;
+    margin-top: 30px;
     margin-bottom: 15px;
 }
 
@@ -27,6 +29,28 @@
     /*display: inline-block;
     height: fit-content;
     float: none;*/
+}
+
+.bl-item-card-wrap{
+    height: 350px;
+    width: 400px;
+    margin: 10px;
+    float: left;
+    position: relative;
+}
+
+
+.item-cards-container{
+    margin: 0 auto;
+    width: 1680px;
+}
+
+.edit-btn-wrap{
+    float: right;
+}
+
+.date-wrap{
+    float: left;
 }
 
 .bl-item-card{
@@ -41,6 +65,10 @@
     height: 450px;
     -webkit-transition: all 0.3s ease-in-out 0s;
     transition: all 0.3s ease-in-out 0s;
+}
+
+.bl-line-height{
+    line-height: 150px;
 }
 
 .bl-item-card:hover{
@@ -151,4 +179,47 @@
     margin: 20px;
     margin-top: 30px;
     margin-bottom: 30px;
+}
+
+.bl-img-form-wrap{
+    height: 170px;
+    margin: 5px;
+    border: 2px solid #273C74;
+    border-radius: 10px;
+}
+
+.marked-icon{
+    width: 20px;
+    height: 20px;
+    background: url(../img/mark.svg);
+    position: relative;
+    background-repeat: no-repeat;
+    margin: 10px auto;
+    cursor: pointer;
+}
+
+.mark-counter{
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+.tagCounterWrap{
+    position: relative;
+    text-align: center;
+}
+
+@media only screen and (max-width: 1400px){
+    .bl-item-card-wrap{
+        height: 250px;
+        width: 300px;
+    }
+
+    .item-cards-container{
+        margin: 0 auto;
+        width: 960px;
+    }
+
+    .bl-item-card-size{
+        height: 510px;
+    }
 }

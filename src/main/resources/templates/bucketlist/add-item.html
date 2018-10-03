@@ -2,54 +2,77 @@
 <html layout:decorate= "~{fragments/main-layout}" lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
     <meta charset="UTF-8">
-    <title>Login</title>
+    <title>Add list item</title>
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css}" />
     <link rel="stylesheet" th:href="@{/css/main.css}"/>
     <link rel="stylesheet" th:href="@{/css/form.css}"/>
+    <link rel="stylesheet" th:href="@{/css/bldetails.css}"/>
     <script th:src="@{/webjars/jquery/3.3.7-1/jquery.min.js}"></script>
     <script th:src="@{/webjars/bootstrap/4.0.0-2/js/bootstrap.min.js}"></script>
     <script th:src="@{/js/utility.js}"></script>
 </head>
 <body>
 <div layout:fragment="content">
-    <div class="offset-3 col-6">
+    <div class="offset-3 col-6 text-center">
+
+        <h1 class="bl-profile-h1">Add new item</h1>
+
         <form th:action="@{/addListItem}" method="POST" id="addnewitem" enctype="multipart/form-data">
             <input type="hidden" name="listID" th:value="${list.getId()}">
+            <input th:if="${edit}" type="hidden" name="itemId" th:value="${item.getId()}">
 
             <div class="form-group row">
                 <div class="col-6 offset-3">
 
-                    <div class="row">
-                        <div class="col-12">
-                            <img th:src="@{'/getItemImage/' + ${} + '/' + ${list.getPhotoPath()}}" alt="image">
+                    <div class="row" >
+                        <div class="col-12 bl-img-form-wrap">
+                            <img class="bl-list-image" th:if="${edit}" th:src="@{'/getItemImage/' + ${username} + '/' + ${item.getImage()}}" alt="image">
+
+                            <!-- todo add default item image -->
+                            <img th:unless="${edit}"  alt="image">
                         </div>
                     </div>
 
                     <div class="row">
-                        <div class="col-2 offset-2">
-                            <input th:type="file" th:name="imagefile" value="CHANGE IMAGE">
+                        <div class="col-12">
+                            <input th:type="file" th:name="image">
+                            <input th:if="${edit}" type="hidden" th:name="photoPath" th:value="${item.getImage()}">
                         </div>
                     </div>
 
                 </div>
             </div>
 
-            <div>
-                <label>Name</label>
-                <input type="text" name="name"/>
+            <div class="form-group row">
+                <div class="col-3">
+                    <label>Name</label>
+                </div>
+                <div class="col-8">
+                    <input type="text" name="name"/>
+                </div>
             </div>
-            <div>
-                <label>Description</label>
-                <input type="text" name="description"/>
+
+            <div class="form-group row">
+                <div class="col-3">
+                    <label>Description</label>
+                </div>
+                <div class="col-8">
+                    <input type="text" name="description"/>
+                </div>
             </div>
-            <div>
-                <label>Price</label>
-                <input type="text" name="price"/>
+
+            <div class="form-group row">
+                <div class="col-3">
+                    <label>Price</label>
+                </div>
+                <div class="col-8">
+                    <input type="text" name="price"/>
+                </div>
             </div>
-            <div>
+           <!-- <div>
                 <label>Image </label>
                 <input type="file" th:name="image"/>
-            </div>
+            </div>-->
             <button type="submit" class="bucketlist-button">Add item</button>
         </form>
     </div>

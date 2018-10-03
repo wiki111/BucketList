@@ -62,6 +62,33 @@ public class BucketlistsController {
         return SHOW_BUCKETLISTS;
     }
 
+    @GetMapping("/bucketlists/addnew")
+    public String getAddNewBucketlistForm(Model model, Principal principal){
+        model.addAttribute("username", principal.getName());
+        model.addAttribute("list", new BucketListDto());
+        model.addAttribute("titletext", "Add new list");
+        return "bucketlist/add-list";
+    }
+
+    @PostMapping("/bucketlists/addnew")
+    public String addNewBucketlist(@ModelAttribute("list") BucketListDto listDto,
+                                   @RequestParam("imagefile") MultipartFile imagefile,
+                                   Principal principal){
+
+        if(!imagefile.isEmpty()){
+            String imageFilename = storageService.store(imagefile, principal.getName());
+            listDto.setPhotoPath(imageFilename);
+        }
+
+        User user = userService.findByUsername(principal.getName());
+        listDto.setUserId(user.getUserId());
+        listDto.setCreationDate(new Date());
+
+        bucketListService.saveList(listDto);
+
+        return "redirect:/user/bucketlists";
+    }
+
     @GetMapping(MANAGE_LIST_LINK + "{id}")
     public String showUsersBucketlistForManagement(
             @ModelAttribute("id") Long id, Model model, Principal principal){
@@ -71,7 +98,13 @@ public class BucketlistsController {
         model.addAttribute("list", listDto);
         model.addAttribute("username", principal.getName());
 
-        return "bucketlist/show-list-details-manage";
+        if(bucketListService.getUsersListById(id, principal.getName()) == null ){
+            model.addAttribute("ownedByAuth", false);
+        }else{
+            model.addAttribute("ownedByAuth", true);
+        }
+
+        return "bucketlist/show-list-details";
     }
 
     @GetMapping("/bucketlist/details/{id}")
@@ -97,23 +130,53 @@ public class BucketlistsController {
     public String getAddListItemPage(@PathVariable("id") long id, Principal principal, Model model){
         BucketListDto list = userService.getUsersListById(id, principal.getName());
         model.addAttribute("list",list);
+        model.addAttribute("username", principal.getName());
         return "bucketlist/add-item";
     }
 
     @PostMapping("/addListItem")
     public String addListItem(WebRequest request, Principal principal, @RequestParam("image") MultipartFile multipartFile){
 
-        String imagePath = storageService.store(multipartFile, principal.getName());
-        bucketListService.addItemToList(
-                setUpBucketItemDto(request, imagePath), principal.getName());
+        try{
+            String imagePath = storageService.store(multipartFile, principal.getName());
+            bucketListService.addItemToList(
+                    setUpBucketItemDto(request, imagePath), principal.getName());
+        }catch (Exception e){
+            bucketListService.addItemToList(
+                    setUpBucketItemDto(request, ""), principal.getName());
+        }
+
+
 
         return "redirect:" + MANAGE_LIST_LINK + request.getParameter("listID");
+    }
+
+    @GetMapping("/editListItem/{listId}/{itemId}")
+    public String editListItem(@PathVariable("listId") long listId, @PathVariable("itemId") long itemId, Model model, Principal principal){
+
+        model.addAttribute("edit", true);
+        model.addAttribute("username", principal.getName());
+
+        BucketListDto listDto = bucketListService.getListById(listId);
+        model.addAttribute("list", listDto);
+
+        Optional<BucketItemDto> itemDtoOpt = listDto.getItems().stream().filter(item -> item.getId().equals(itemId)).findFirst();
+        if(itemDtoOpt.isPresent()){
+            model.addAttribute("item", itemDtoOpt.get());
+        }
+
+        return "bucketlist/add-item";
     }
 
     private BucketItemDto setUpBucketItemDto(WebRequest request, String imagePath){
 
         BucketItemDto itemDto = new BucketItemDto();
         itemDto.setListId(Long.valueOf(request.getParameter("listID")));
+
+        if(request.getParameter("itemId") != null){
+            itemDto.setId(Long.valueOf(request.getParameter("itemId")));
+        }
+
         itemDto.setName(request.getParameter("name"));
         itemDto.setDescription(request.getParameter("description"));
 
@@ -124,7 +187,12 @@ public class BucketlistsController {
         }
 
         itemDto.setAddedDate(new Date());
-        itemDto.setImage(imagePath);
+
+        if(request.getParameter("photoPath") != null && imagePath.isEmpty()){
+            itemDto.setImage(request.getParameter("photoPath"));
+        }else{
+            itemDto.setImage(imagePath);
+        }
 
         return itemDto;
     }
@@ -149,15 +217,15 @@ public class BucketlistsController {
 
     @PostMapping( MANAGE_LIST_LINK + "{listid}/edit")
     public String editBucketlist(
-            @ModelAttribute("bucketlistdto") BucketListDto bucketListDto,
+            @ModelAttribute("list") BucketListDto bucketListDto,
             Principal principal, @RequestParam("imagefile") MultipartFile multipartFile){
 
         if(!multipartFile.isEmpty()){
             String imageFilename = storageService.store(multipartFile, principal.getName());
             bucketListDto.setPhotoPath(imageFilename);
         }
-        bucketListService.updateList(bucketListDto);
 
+        bucketListService.updateList(bucketListDto);
 
         return "redirect:" + MANAGE_LIST_LINK + bucketListDto.getId();
     }
