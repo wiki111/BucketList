@@ -44,7 +44,8 @@
                             <div class="row">
                                 <div class="col-4 offset-3">
                                     <div class="radio-container">
-                                        <input class="inline-input bucketlist-radio-button" type="radio" name="criterium" th:value="by_tags" checked>
+                                        <input class="inline-input bucketlist-radio-button" type="radio" name="criterium" th:value="by_tags"
+                                        th:checked="${byTags=='true'}?'checked'" th:name="criterium">
                                         <span class="checkmark"></span>
                                         <label class="inline-label">BY TAGS</label>
                                     </div>
@@ -52,7 +53,8 @@
 
                                 <div class="col-4  radio-container">
                                     <div class="radio-container">
-                                        <input class="inline-input bucketlist-radio-button" type="radio" name="criterium" th:value="by_username">
+                                        <input class="inline-input bucketlist-radio-button" type="radio" name="criterium" th:value="by_username"
+                                           th:checked="${byUser=='true'}?'checked'" th:name="criterium">
                                         <span class="checkmark"></span>
                                         <label class="inline-label">BY USERNAME</label>
                                     </div>

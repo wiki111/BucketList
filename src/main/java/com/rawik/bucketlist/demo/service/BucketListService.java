@@ -17,6 +17,7 @@ public interface BucketListService {
     void dropListItem(Long listid, Long itemid, String user);
     List<BucketListDto> getPublicBucketlists();
     List<BucketListDto> getPublicBucketlistsByTag(String tags);
+    List<BucketListDto> getPublicBucketlistsByUsername(String username);
     boolean addItemToList(BucketItemDto itemDto, String username);
     List<BucketListDto> getBucketlistsAvailableForUser(String username);
     String getImageForListId(Long listid);

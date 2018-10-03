@@ -219,6 +219,24 @@ public class BucketListServiceImpl implements BucketListService{
     }
 
     @Override
+    public List<BucketListDto> getPublicBucketlistsByUsername(String username) {
+        Optional<User> userOpt = userRepository.findByEmail(username);
+
+        if(userOpt.isPresent()){
+            User user = userOpt.get();
+            List<BucketListDto> bucketListDtos = new ArrayList<>();
+            for(BucketList list : user.getBucketLists()){
+                BucketListDto listDto = listMapper.bucketListToDto(list);
+                bucketListDtos.add(listDto);
+            }
+
+            return bucketListDtos;
+        }
+
+        return null;
+    }
+
+    @Override
     public boolean addItemToList(BucketItemDto itemDto, String username) {
 
         User user = userService.findByUsername(username);

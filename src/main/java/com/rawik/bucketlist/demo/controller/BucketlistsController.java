@@ -51,6 +51,8 @@ public class BucketlistsController {
         model.addAttribute(
                 "lists",
                 userService.getUserLists(principal.getName()));
+
+        model.addAttribute("byTags", "true");
         return SHOW_BUCKETLISTS;
     }
 
@@ -59,6 +61,7 @@ public class BucketlistsController {
         model.addAttribute(
                 "lists",
                 bucketListService.getPublicBucketlists());
+        model.addAttribute("byTags", "true");
         return SHOW_BUCKETLISTS;
     }
 
@@ -247,11 +250,17 @@ public class BucketlistsController {
     }
 
     @PostMapping("/search")
-    public String showPublicBucketlistsByTags(
-            @RequestParam("query") String query, Model model){
+    public String search(
+            @RequestParam("query") String query, @RequestParam("criterium") String criterium, Model model){
 
-        model.addAttribute("lists",
-                bucketListService.getPublicBucketlistsByTag(query));
+        if(criterium.equals("by_tags")){
+            model.addAttribute("lists",
+                    bucketListService.getPublicBucketlistsByTag(query));
+            model.addAttribute("byTags", "true");
+        }else {
+            model.addAttribute("lists", bucketListService.getPublicBucketlistsByUsername(query));
+            model.addAttribute("byUser", "true");
+        }
 
         return SHOW_BUCKETLISTS;
     }
