@@ -10,8 +10,10 @@ function addItem(){
     location.href = "/bucketlists/addnew"
 }
 
-function toggleItemTagged(id) {
-    toggleItemMark(id);
+function toggleItemTagged(id, isAuthorized) {
+    if(isAuthorized){
+        toggleItemMark(id);
+    }
 }
 
 function toggleItemMark(id){

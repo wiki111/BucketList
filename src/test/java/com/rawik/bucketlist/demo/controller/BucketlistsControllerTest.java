@@ -84,7 +84,7 @@ public class BucketlistsControllerTest {
 
     }
 
-    @Test
+    /*@Test
     public void showBucketlistForManagementTest() {
 
         Long id = 1L;
@@ -99,7 +99,7 @@ public class BucketlistsControllerTest {
         assertEquals("bucketlist/show-list-details-manage", view);
         verify(model, times(1)).addAttribute(eq("list"), listCaptor.capture());
         assertEquals(listDto, listCaptor.getValue());
-    }
+    }*/
 //    @Test
 //    @Ignore
 //    public void addListItem() {

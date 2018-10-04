@@ -3,10 +3,6 @@ package com.rawik.bucketlist.demo.controller;
 import com.rawik.bucketlist.demo.dto.BucketItemDto;
 import com.rawik.bucketlist.demo.dto.BucketListDto;
 import com.rawik.bucketlist.demo.dto.UserDto;
-import com.rawik.bucketlist.demo.exceptions.StorageException;
-import com.rawik.bucketlist.demo.mapper.BucketItemMapper;
-import com.rawik.bucketlist.demo.mapper.BucketListMapper;
-import com.rawik.bucketlist.demo.model.BucketList;
 import com.rawik.bucketlist.demo.model.User;
 import com.rawik.bucketlist.demo.service.BucketListService;
 import com.rawik.bucketlist.demo.service.StorageService;
@@ -18,16 +14,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import javax.xml.ws.WebEndpoint;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -38,7 +30,6 @@ public class BucketlistsController {
     private StorageService storageService;
 
     private static final String MANAGE_LIST_LINK = "/user/bucketlist/manage/";
-    private static final String SHOW_USERS_BUCKETLISTS = "bucketlist/show-users-bucketlists";
     private static final String SHOW_BUCKETLISTS = "bucketlist/show-bucketlists";
 
     public BucketlistsController(UserService userService,
@@ -51,25 +42,19 @@ public class BucketlistsController {
 
     @GetMapping("/user/bucketlists")
     public String showUsersBucketlists(Model model, Principal principal){
-        model.addAttribute(
-                "lists",
-                userService.getUserLists(principal.getName()));
-
+        model.addAttribute("lists", userService.getUserLists(principal.getName()));
         model.addAttribute("byTags", "true");
-
+        model.addAttribute("title", "Your bucketlists");
         return SHOW_BUCKETLISTS;
     }
 
     @GetMapping("/bucketlists")
     public String showPublicBucketlists(Model model){
-        model.addAttribute(
-                "lists",
-                bucketListService.getPublicBucketlists());
+        model.addAttribute("lists", bucketListService.getPublicBucketlists());
         model.addAttribute("byTags", "true");
+        model.addAttribute("title", "Public bucketlists");
         return SHOW_BUCKETLISTS;
     }
-
-
 
     @GetMapping("/bucketlists/addnew")
     public String getAddNewBucketlistForm(Model model, Principal principal){
@@ -80,67 +65,63 @@ public class BucketlistsController {
     }
 
     @PostMapping("/bucketlists/addnew")
-    public String addNewBucketlist(@ModelAttribute("list") BucketListDto listDto,
-                                   @RequestParam("imagefile") MultipartFile imagefile,
+    public String addNewBucketlist(@ModelAttribute("list") BucketListDto listDto, @RequestParam("imagefile") MultipartFile imagefile,
                                    Principal principal){
-
-        if(!imagefile.isEmpty()){
-            String imageFilename = storageService.store(imagefile, principal.getName());
-            listDto.setPhotoPath(imageFilename);
-        }
-
-        User user = userService.findByUsername(principal.getName());
-        listDto.setUserId(user.getUserId());
-        listDto.setCreationDate(new Date());
-
-        bucketListService.saveList(listDto);
-
+        String imagePath = saveImage(imagefile, principal.getName());
+        bucketListService.saveList(setUpBucketlistDto(listDto, imagePath, principal.getName()));
         return "redirect:/user/bucketlists";
     }
 
-    @GetMapping(MANAGE_LIST_LINK + "{id}")
-    public String showUsersBucketlistForManagement(
-            @ModelAttribute("id") Long id, Model model, Principal principal){
+    private BucketListDto setUpBucketlistDto(BucketListDto listDto, String imagePath, String username){
+        User user = userService.findByUsername(username);
+        listDto.setUserId(user.getUserId());
+        listDto.setCreationDate(new Date());
+        if(imagePath != null) listDto.setPhotoPath(imagePath);
+        return listDto;
+    }
 
-        BucketListDto listDto = userService
-                .getUsersListById(id, principal.getName());
-        model.addAttribute("list", listDto);
-        model.addAttribute("username", principal.getName());
-        model.addAttribute("idsOfMarkedItems", bucketListService.idsOfItemsMarkedByUser(principal.getName()));
-
-        if(bucketListService.getUsersListById(id, principal.getName()) == null ){
-            model.addAttribute("ownedByAuth", false);
+    private String saveImage(MultipartFile imageFile, String username){
+        if(!imageFile.isEmpty()){
+            String imageFilename = storageService.store(imageFile, username);
+            return imageFilename;
         }else{
-            model.addAttribute("ownedByAuth", true);
+            return null;
         }
-
-        return "bucketlist/show-list-details";
     }
 
     @GetMapping("/bucketlist/details/{id}")
-    public String showPublicBucketlistDetails(
-            @PathVariable("id") Long id, Model model, Principal principal){
+    public String showBucketlistDetails(@PathVariable("id") Long id, Model model, Principal principal){
+        model = prepareModelForShowBucketlistsPage(model, principal, id);
+        return "bucketlist/show-list-details";
+    }
+
+    private Model prepareModelForShowBucketlistsPage(Model model, Principal principal, Long id){
 
         BucketListDto bucketListDto = bucketListService.getListById(id);
-        model.addAttribute("list", bucketListDto);
-
         UserDto user = userService.findByUserId(bucketListDto.getUserId());
+
+        model.addAttribute("list", bucketListDto);
         model.addAttribute("username", user.getNickname());
 
         if(principal != null){
+            model.addAttribute("ownedByAuth" ,checkIfUserOwnsList(id, principal.getName()));
+            model.addAttribute("userLoggedIn", true);
             model.addAttribute("idsOfMarkedItems", bucketListService.idsOfItemsMarkedByUser(principal.getName()));
-            if(bucketListService.getUsersListById(id, principal.getName()) == null ){
-                model.addAttribute("ownedByAuth", false);
-            }else{
-                model.addAttribute("ownedByAuth", true);
-            }
         }else {
-            model.addAttribute("idsOfMarkedItems", new ArrayList<>());
             model.addAttribute("ownedByAuth", false);
+            model.addAttribute("userLoggedIn", false);
+            model.addAttribute("idsOfMarkedItems", new ArrayList<>());
         }
 
+        return model;
+    }
 
-        return "bucketlist/show-list-details";
+    private boolean checkIfUserOwnsList(Long listId, String username){
+        if(bucketListService.getUsersListById(listId, username) == null ){
+            return false;
+        }else{
+            return true;
+        }
     }
 
     @GetMapping("/addItemToList/{id}")
@@ -153,36 +134,43 @@ public class BucketlistsController {
 
     @PostMapping("/addListItem")
     public String addListItem(WebRequest request, Principal principal, @RequestParam("image") MultipartFile multipartFile){
+        String imagePath = saveListItemImage(multipartFile, principal.getName());
+        bucketListService.addItemToList(setUpBucketItemDto(request, imagePath), principal.getName());
+        return "redirect:/bucketlist/details/"+ request.getParameter("listID");
+    }
 
+    private String saveListItemImage(MultipartFile file, String username){
         try{
-            String imagePath = storageService.store(multipartFile, principal.getName());
-            bucketListService.addItemToList(
-                    setUpBucketItemDto(request, imagePath), principal.getName());
+            return storageService.store(file, username);
         }catch (Exception e){
-            bucketListService.addItemToList(
-                    setUpBucketItemDto(request, ""), principal.getName());
+            return "";
         }
-
-
-
-        return "redirect:" + MANAGE_LIST_LINK + request.getParameter("listID");
     }
 
     @GetMapping("/editListItem/{listId}/{itemId}")
     public String editListItem(@PathVariable("listId") long listId, @PathVariable("itemId") long itemId, Model model, Principal principal){
+        model = setUpModelForEditListItem(model, listId, itemId, principal.getName());
+        return "bucketlist/add-item";
+    }
+
+    private Model setUpModelForEditListItem(Model model, Long listId, Long itemId, String username){
+        BucketListDto listDto = bucketListService.getListById(listId);
 
         model.addAttribute("edit", true);
-        model.addAttribute("username", principal.getName());
-
-        BucketListDto listDto = bucketListService.getListById(listId);
+        model.addAttribute("username", username);
         model.addAttribute("list", listDto);
 
-        Optional<BucketItemDto> itemDtoOpt = listDto.getItems().stream().filter(item -> item.getId().equals(itemId)).findFirst();
+        Optional<BucketItemDto> itemDtoOpt = listDto
+                .getItems()
+                .stream()
+                .filter(item -> item.getId().equals(itemId))
+                .findFirst();
+
         if(itemDtoOpt.isPresent()){
             model.addAttribute("item", itemDtoOpt.get());
         }
 
-        return "bucketlist/add-item";
+        return model;
     }
 
     private BucketItemDto setUpBucketItemDto(WebRequest request, String imagePath){
@@ -215,8 +203,7 @@ public class BucketlistsController {
     }
 
     @GetMapping( MANAGE_LIST_LINK + "{listid}/edit" )
-    public String editBucketlist(
-            @PathVariable Long listid, Model model, Principal principal){
+    public String editBucketlist(@PathVariable Long listid, Model model, Principal principal){
 
         BucketListDto bucketListDto = bucketListService
                 .getUsersListById(listid, principal.getName());
@@ -226,6 +213,7 @@ public class BucketlistsController {
         }else{
             model.addAttribute("list", bucketListDto);
             model.addAttribute("titletext", "EDIT BUCKETLIST");
+            model.addAttribute("username", principal.getName());
             return "bucketlist/edit";
         }
 
@@ -233,9 +221,8 @@ public class BucketlistsController {
 
 
     @PostMapping( MANAGE_LIST_LINK + "{listid}/edit")
-    public String editBucketlist(
-            @ModelAttribute("list") BucketListDto bucketListDto,
-            Principal principal, @RequestParam("imagefile") MultipartFile multipartFile){
+    public String editBucketlist(@ModelAttribute("list") BucketListDto bucketListDto, Principal principal,
+                                 @RequestParam("imagefile") MultipartFile multipartFile){
 
         if(!multipartFile.isEmpty()){
             String imageFilename = storageService.store(multipartFile, principal.getName());
@@ -244,7 +231,7 @@ public class BucketlistsController {
 
         bucketListService.updateList(bucketListDto);
 
-        return "redirect:" + MANAGE_LIST_LINK + bucketListDto.getId();
+        return "redirect:/bucketlist/details/"+ bucketListDto.getId();
     }
 
     @GetMapping("/bucketlist/delete/{id}")
@@ -257,19 +244,15 @@ public class BucketlistsController {
     public String deleteBucketlistItem(
             @PathVariable Long listid, @PathVariable Long itemid,
             Principal principal){
-
         bucketListService.dropListItem(listid, itemid, principal.getName());
-
         return "redirect:" + MANAGE_LIST_LINK + listid;
     }
 
     @PostMapping("/search")
-    public String search(
-            @RequestParam("query") String query, @RequestParam("criterium") String criterium, Model model){
+    public String search(@RequestParam("query") String query, @RequestParam("criterium") String criterium, Model model){
 
         if(criterium.equals("by_tags")){
-            model.addAttribute("lists",
-                    bucketListService.getPublicBucketlistsByTag(query));
+            model.addAttribute("lists", bucketListService.getPublicBucketlistsByTag(query));
             model.addAttribute("byTags", "true");
         }else {
             model.addAttribute("lists", bucketListService.getPublicBucketlistsByUsername(query));
@@ -281,19 +264,18 @@ public class BucketlistsController {
 
     @GetMapping("/showsharedlists")
     public String showSharedListsForUser(Model model, Principal principal){
-
         model.addAttribute("lists", bucketListService.getBucketlistsAvailableForUser(principal.getName()));
-
         return SHOW_BUCKETLISTS;
-
     }
 
     @PostMapping("/markitem/{itemid}")
     public @ResponseBody ResponseEntity markItem(Principal principal, @PathVariable("itemid") Long itemId){
         boolean operationState = false;
+
         if(principal != null){
             operationState = bucketListService.markItem(itemId, principal.getName());
         }
+
         if(operationState){
             return ResponseEntity.status(HttpStatus.OK).body(null);
         }else{
@@ -304,9 +286,11 @@ public class BucketlistsController {
     @PostMapping("/unmarkitem/{itemid}")
     public @ResponseBody ResponseEntity unmarkItem(Principal principal, @PathVariable("itemid") Long itemId){
         boolean operationState = false;
+
         if(principal != null){
             operationState = bucketListService.markItem(itemId, principal.getName());
         }
+
         if(operationState){
             return ResponseEntity.status(HttpStatus.OK).body(null);
         }else{
@@ -314,15 +298,13 @@ public class BucketlistsController {
         }
     }
 
-    //todo refactor two methods to be one ?
     // todo add default images 270x170px
 
-    @RequestMapping(value = "/getBucketlistImage/{nickname}/{photoPath:.+}")
+    @RequestMapping(value = "/getImage/{nickname}/{photoPath:.+}")
     @ResponseBody
-    public byte[] getBucketlistImage(@PathVariable String photoPath, @PathVariable String nickname){
+    public byte[] getImage(@PathVariable String photoPath, @PathVariable String nickname){
 
         String filename = photoPath;
-
         Path imagePath;
 
         if(!nickname.contains("@")){
@@ -340,28 +322,4 @@ public class BucketlistsController {
         }
         return null;
     }
-
-    @RequestMapping(value = "/getItemImage/{nickname}/{image:.+}")
-    @ResponseBody
-    public byte[] getItemImage(@PathVariable String nickname, @PathVariable String image){
-
-        String filename = image;
-        Path imagePath;
-
-        if(!nickname.contains("@")){
-            UserDto user = userService.getUserByNickname(nickname);
-            imagePath = storageService.load(filename, user.getEmail());
-        }else {
-            imagePath = storageService.load(filename, nickname);
-        }
-
-        try{
-            byte[] imageData = Files.readAllBytes(imagePath);
-            return imageData;
-        }catch (IOException e){
-            throw new StorageException("Trouble serving content..." + e);
-        }
-    }
-
-
 }

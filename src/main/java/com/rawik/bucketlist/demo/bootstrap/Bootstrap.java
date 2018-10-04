@@ -39,11 +39,11 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
         if(userRepository.count() == 0L){
             loadUsers();
         }
-
         setUpMessages();
     }
 
     private void loadUsers(){
+
         UserDto userDto = new UserDto();
         userDto.setEmail("matt@daniels.com");
         userDto.setPassword("reter");
@@ -56,12 +56,13 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
         userDto2.setPassword("ravix");
         userDto2.setMatchingPassword("ravix");
         userDto2.setNickname("ravi");
-        User user;
 
         try{
-            user = userService.registerNewUser(userDto);
-            userService.registerNewUser(userDto2);
+            User user = userService.registerNewUser(userDto);
             setUpLists(user);
+
+            User user2 = userService.registerNewUser(userDto2);
+
         }catch (EmailExistsException e){
 
         }catch (NicknameExistsException e){
@@ -149,9 +150,6 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
         listService.saveList(listDto);
         listService.saveList(listDto2);
         listService.saveList(listDto3);
-
-        listDto.setName("Updated");
-        listService.updateList(listDto);
 
         listService.addItemToList(testItem2, user.getEmail());
         listService.addItemToList(testItem3, user.getEmail());

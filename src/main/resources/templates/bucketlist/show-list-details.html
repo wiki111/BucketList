@@ -30,7 +30,7 @@
 
         <div class="row bl-info">
             <div class="col-2 offset-1 align-content-center text-center">
-                <img class="bl-image" th:src="@{'/getBucketlistImage/' + ${username} + '/' + ${list.getPhotoPath()}}" alt="image">
+                <img class="bl-image" th:src="@{'/getImage/' + ${username} + '/' + ${list.getPhotoPath()}}" alt="image">
             </div>
             <div class="col-7">
                 <div class="col-12">
@@ -61,7 +61,7 @@
 
                                 <div class="">
                                     <div class="bl-img-wrap">
-                                        <img class="bl-item-image" th:src="@{'/getItemImage/' + ${username} + '/' + ${item.getImage()}}">
+                                        <img class="bl-item-image" th:src="@{'/getImage/' + ${username} + '/' + ${item.getImage()}}">
                                     </div>
                                 </div>
 
@@ -86,8 +86,8 @@
                                 </div>
 
                                 <div class="tagCounterWrap">
-                                    <div th:if="${idsOfMarkedItems.contains(item.getId())}" class="marked-icon" style="background-image:url('/img/mark_filled.svg');" data-tagged="true" th:id="itemTagMarkIcon + ${item.getId()}" th:onclick="'javascript:toggleItemTagged(\'' + ${item.getId()} + '\');'"></div>
-                                    <div th:if="${!idsOfMarkedItems.contains(item.getId())}" class="marked-icon" data-tagged="false" th:id="itemTagMarkIcon + ${item.getId()}" th:onclick="'javascript:toggleItemTagged(\'' + ${item.getId()} + '\');'"></div>
+                                    <div th:if="${idsOfMarkedItems.contains(item.getId())}" class="marked-icon" style="background-image:url('/img/mark_filled.svg');" data-tagged="true" th:id="itemTagMarkIcon + ${item.getId()}" th:onclick="'javascript:toggleItemTagged(\'' + ${item.getId()} + ',' + ${userLoggedIn} + '\');'"></div>
+                                    <div th:if="${!idsOfMarkedItems.contains(item.getId())}" class="marked-icon" data-tagged="false" th:id="itemTagMarkIcon + ${item.getId()}" th:onclick="'javascript:toggleItemTagged(\'' + ${item.getId()} + ',' + ${userLoggedIn} + '\');'"></div>
 
                                     <div class="mark-counter" th:id="itemCounter + ${item.getId()}">
                                         <span th:text="${item.getNumberOfMarks()}"></span>
