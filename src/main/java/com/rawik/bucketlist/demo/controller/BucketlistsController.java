@@ -11,6 +11,8 @@ import com.rawik.bucketlist.demo.model.User;
 import com.rawik.bucketlist.demo.service.BucketListService;
 import com.rawik.bucketlist.demo.service.StorageService;
 import com.rawik.bucketlist.demo.service.UserService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +25,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -53,6 +56,7 @@ public class BucketlistsController {
                 userService.getUserLists(principal.getName()));
 
         model.addAttribute("byTags", "true");
+
         return SHOW_BUCKETLISTS;
     }
 
@@ -64,6 +68,8 @@ public class BucketlistsController {
         model.addAttribute("byTags", "true");
         return SHOW_BUCKETLISTS;
     }
+
+
 
     @GetMapping("/bucketlists/addnew")
     public String getAddNewBucketlistForm(Model model, Principal principal){
@@ -100,6 +106,7 @@ public class BucketlistsController {
                 .getUsersListById(id, principal.getName());
         model.addAttribute("list", listDto);
         model.addAttribute("username", principal.getName());
+        model.addAttribute("idsOfMarkedItems", bucketListService.idsOfItemsMarkedByUser(principal.getName()));
 
         if(bucketListService.getUsersListById(id, principal.getName()) == null ){
             model.addAttribute("ownedByAuth", false);
@@ -120,11 +127,18 @@ public class BucketlistsController {
         UserDto user = userService.findByUserId(bucketListDto.getUserId());
         model.addAttribute("username", user.getNickname());
 
-        if(bucketListService.getUsersListById(id, principal.getName()) == null ){
+        if(principal != null){
+            model.addAttribute("idsOfMarkedItems", bucketListService.idsOfItemsMarkedByUser(principal.getName()));
+            if(bucketListService.getUsersListById(id, principal.getName()) == null ){
+                model.addAttribute("ownedByAuth", false);
+            }else{
+                model.addAttribute("ownedByAuth", true);
+            }
+        }else {
+            model.addAttribute("idsOfMarkedItems", new ArrayList<>());
             model.addAttribute("ownedByAuth", false);
-        }else{
-            model.addAttribute("ownedByAuth", true);
         }
+
 
         return "bucketlist/show-list-details";
     }
@@ -265,7 +279,6 @@ public class BucketlistsController {
         return SHOW_BUCKETLISTS;
     }
 
-
     @GetMapping("/showsharedlists")
     public String showSharedListsForUser(Model model, Principal principal){
 
@@ -273,6 +286,32 @@ public class BucketlistsController {
 
         return SHOW_BUCKETLISTS;
 
+    }
+
+    @PostMapping("/markitem/{itemid}")
+    public @ResponseBody ResponseEntity markItem(Principal principal, @PathVariable("itemid") Long itemId){
+        boolean operationState = false;
+        if(principal != null){
+            operationState = bucketListService.markItem(itemId, principal.getName());
+        }
+        if(operationState){
+            return ResponseEntity.status(HttpStatus.OK).body(null);
+        }else{
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+    }
+
+    @PostMapping("/unmarkitem/{itemid}")
+    public @ResponseBody ResponseEntity unmarkItem(Principal principal, @PathVariable("itemid") Long itemId){
+        boolean operationState = false;
+        if(principal != null){
+            operationState = bucketListService.markItem(itemId, principal.getName());
+        }
+        if(operationState){
+            return ResponseEntity.status(HttpStatus.OK).body(null);
+        }else{
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
     }
 
     //todo refactor two methods to be one ?
@@ -297,8 +336,9 @@ public class BucketlistsController {
             byte[] imageData = Files.readAllBytes(imagePath);
             return imageData;
         }catch (IOException e){
-            throw new StorageException("Trouble serving content..." + e);
+            //throw new StorageException("Trouble serving content..." + e);
         }
+        return null;
     }
 
     @RequestMapping(value = "/getItemImage/{nickname}/{image:.+}")

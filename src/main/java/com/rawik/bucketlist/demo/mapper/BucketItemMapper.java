@@ -22,6 +22,7 @@ public class BucketItemMapper {
 
         if(item.getMarkedByUsers() != null){
             dto.setMarkedByUsers(markedByUsersToString(item.getMarkedByUsers()));
+            dto.setNumberOfMarks(Long.valueOf(item.getMarkedByUsers().size()));
         }
 
         dto.setName(item.getName());

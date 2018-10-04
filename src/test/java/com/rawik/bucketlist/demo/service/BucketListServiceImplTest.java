@@ -5,6 +5,7 @@ import com.rawik.bucketlist.demo.mapper.BucketItemMapper;
 import com.rawik.bucketlist.demo.mapper.BucketListMapper;
 import com.rawik.bucketlist.demo.model.BucketList;
 import com.rawik.bucketlist.demo.model.User;
+import com.rawik.bucketlist.demo.repository.BucketItemRepository;
 import com.rawik.bucketlist.demo.repository.BucketListRepository;
 import com.rawik.bucketlist.demo.repository.UserRepository;
 import org.junit.Before;
@@ -39,6 +40,9 @@ public class BucketListServiceImplTest {
     @Mock
     BucketItemMapper itemMapper;
 
+    @Mock
+    BucketItemRepository itemRepository;
+
     @Before
     public void setUp(){
         MockitoAnnotations.initMocks(this);
@@ -47,7 +51,8 @@ public class BucketListServiceImplTest {
                 userRepository,
                 listMapper,
                 userService,
-                itemMapper);
+                itemMapper,
+                itemRepository);
     }
 
     @Test

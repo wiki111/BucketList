@@ -49,7 +49,6 @@ public class BucketList {
     public void addItem(BucketItem item){
         item.setBucketlist(this);
         this.items.add(item);
-
     }
 
 }

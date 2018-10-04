@@ -9,6 +9,7 @@ import com.rawik.bucketlist.demo.mapper.BucketItemMapper;
 import com.rawik.bucketlist.demo.mapper.BucketListMapper;
 import com.rawik.bucketlist.demo.model.BucketList;
 import com.rawik.bucketlist.demo.model.User;
+import com.rawik.bucketlist.demo.repository.BucketItemRepository;
 import com.rawik.bucketlist.demo.repository.BucketListRepository;
 import com.rawik.bucketlist.demo.repository.UserRepository;
 import org.junit.Before;
@@ -46,6 +47,9 @@ public class BucketListServiceImplIntegrationTest {
     @Autowired
     BucketItemMapper itemMapper;
 
+    @Autowired
+    BucketItemRepository itemRepository;
+
     BucketListService bucketListService;
 
     String testUserEmail = "newtestemail@email.com";
@@ -66,7 +70,8 @@ public class BucketListServiceImplIntegrationTest {
                     userRepository,
                     bucketListMapper,
                     userService,
-                    itemMapper);
+                    itemMapper,
+                    itemRepository);
 
             setUpTestEntities();
     }

@@ -55,8 +55,8 @@
 
                     <div class="item-cards-container">
 
-
                         <div class="bl-item-card-wrap item bl-item" th:each="item : ${list.getItems()}">
+
                             <div class="bl-item-card bl-item-card-size">
 
                                 <div class="">
@@ -64,29 +64,36 @@
                                         <img class="bl-item-image" th:src="@{'/getItemImage/' + ${username} + '/' + ${item.getImage()}}">
                                     </div>
                                 </div>
+
                                 <div class="">
                                     <div class="">
                                         <h4 th:text="${item.getName()}"></h4>
                                     </div>
                                 </div>
+
                                 <div class="">
                                     <div class="">
                                         <p class="bl-item-desc" th:text="${item.getDescription()}"></p>
                                     </div>
                                 </div>
+
                                 <hr class="bl-link-divide">
+
                                 <div class="">
                                     <div class="">
                                         <p>LINK : faduhfgkdjhgkjhgl</p>
                                     </div>
                                 </div>
+
                                 <div class="tagCounterWrap">
-                                    <div class="marked-icon" data-tagged="false" th:id="itemTagMarkIcon + ${item.getId()}" th:onclick="'javascript:toggleItemTagged(\'' + ${item.getId()} + '\');'">
-                                    </div>
+                                    <div th:if="${idsOfMarkedItems.contains(item.getId())}" class="marked-icon" style="background-image:url('/img/mark_filled.svg');" data-tagged="true" th:id="itemTagMarkIcon + ${item.getId()}" th:onclick="'javascript:toggleItemTagged(\'' + ${item.getId()} + '\');'"></div>
+                                    <div th:if="${!idsOfMarkedItems.contains(item.getId())}" class="marked-icon" data-tagged="false" th:id="itemTagMarkIcon + ${item.getId()}" th:onclick="'javascript:toggleItemTagged(\'' + ${item.getId()} + '\');'"></div>
+
                                     <div class="mark-counter" th:id="itemCounter + ${item.getId()}">
-                                        0
+                                        <span th:text="${item.getNumberOfMarks()}"></span>
                                     </div>
                                 </div>
+
                                 <div>
                                     <div class="date-wrap">
                                         <p th:text="${#dates.format(item.getAddedDate(), 'dd-MM-yyyy HH:mm')}"></p>
@@ -97,9 +104,8 @@
                                 </div>
 
                             </div>
+
                         </div>
-
-
 
                         <div class="bl-item-card-wrap align-content-center text-center item bl-item" th:if="${ownedByAuth}">
                             <div class="bl-add-new">
@@ -113,37 +119,9 @@
 
             </div>
 
-
-
-
         </div>
 
     </div>
-
-
-
-
-<!--
-    <table class="table">
-        <thead>
-        <tr>
-            <th>Image</th>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Price</th>
-            <th>Date added</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="item : ${list.getItems()}">
-            <td><img th:src="@{'/getItemImage/' + ${username} + '/' + ${item.getImage()}}"> </td>
-            <td th:text="${item.getName()}"></td>
-            <td th:text="${item.getDescription()}"></td>
-            <td th:text="${item.getPrice()}"></td>
-            <td th:text="${item.getAddedDate()}"></td>
-        </tr>
-        </tbody>
-    </table>-->
 
     <div id="shareBtn" class="btn btn-success clearfix">Share</div>
 
@@ -163,11 +141,13 @@
             document.getElementById('gpluslink').setAttribute('data-href', 'https://github.com/wiki111/BucketList');
         })();
     </script>
+
     <div id="gpluslink" class="g-plus" data-href="" data-action="share"></div>
 
-
     <script src="https://apis.google.com/js/platform.js" async defer></script>
-</div>
+
+    </div>
+
 </body>
 
 </html>

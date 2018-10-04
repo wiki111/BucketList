@@ -7,11 +7,13 @@ import com.rawik.bucketlist.demo.mapper.BucketListMapper;
 import com.rawik.bucketlist.demo.model.BucketItem;
 import com.rawik.bucketlist.demo.model.BucketList;
 import com.rawik.bucketlist.demo.model.User;
+import com.rawik.bucketlist.demo.repository.BucketItemRepository;
 import com.rawik.bucketlist.demo.repository.BucketListRepository;
 import com.rawik.bucketlist.demo.repository.UserRepository;
 import org.springframework.boot.autoconfigure.couchbase.CouchbaseProperties;
 import org.springframework.stereotype.Service;
 
+import javax.jws.soap.SOAPBinding;
 import java.util.*;
 
 @Service
@@ -22,17 +24,20 @@ public class BucketListServiceImpl implements BucketListService{
     private BucketListMapper listMapper;
     private UserService userService;
     private BucketItemMapper itemMapper;
+    private BucketItemRepository itemRepository;
 
     public BucketListServiceImpl(BucketListRepository listRepository,
                                  UserRepository userRepository,
                                  BucketListMapper listMapper,
                                  UserService userService,
-                                 BucketItemMapper itemMapper) {
+                                 BucketItemMapper itemMapper,
+                                 BucketItemRepository itemRepository) {
         this.listRepository = listRepository;
         this.userRepository = userRepository;
         this.listMapper = listMapper;
         this.userService = userService;
         this.itemMapper = itemMapper;
+        this.itemRepository = itemRepository;
     }
 
     @Override
@@ -284,6 +289,62 @@ public class BucketListServiceImpl implements BucketListService{
         }
 
         return "";
+    }
+
+    @Override
+    public List<Long> idsOfItemsMarkedByUser(String username) {
+
+        List<Long> ids = new ArrayList<>();
+        Optional<User> userOpt = userRepository.findByEmail(username);
+        String nickname = "";
+        if(userOpt.isPresent()){
+            nickname = userOpt.get().getNickname();
+        }
+
+        List<BucketItem> items = itemRepository.findItemsByMarkedByUsersIn(nickname);
+
+        for(BucketItem item : items){
+            ids.add(item.getId());
+        }
+
+        return ids;
+    }
+
+    @Override
+    public boolean markItem(Long itemId, String causerUsername) {
+
+        Optional<BucketItem> itemOpt = itemRepository.findById(itemId);
+        if(itemOpt.isPresent()){
+            BucketItem item = itemOpt.get();
+            Optional<User> userOpt = userRepository.findByEmail(causerUsername);
+            if(userOpt.isPresent()){
+                if(!item.getMarkedByUsers().contains(userOpt.get().getNickname())){
+                    item.getMarkedByUsers().add(userOpt.get().getNickname());
+                    itemRepository.save(item);
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean unmarkItem(Long itemId, String causerUsername) {
+
+        Optional<BucketItem> itemOpt = itemRepository.findById(itemId);
+        if(itemOpt.isPresent()){
+            BucketItem item = itemOpt.get();
+            Optional<User> userOpt = userRepository.findByEmail(causerUsername);
+            if(userOpt.isPresent()){
+                if(item.getMarkedByUsers().remove(userOpt.get().getNickname())){
+                    itemRepository.save(item);
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
 
