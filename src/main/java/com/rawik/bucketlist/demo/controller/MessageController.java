@@ -17,14 +17,9 @@ public class MessageController {
     MessageService messageService;
 
     @PostMapping("/send-message")
-    public String sendMessage(Principal principal,
-                            @RequestParam("receiver") String receiver,
-                            @RequestParam("message") String message){
-
+    public String sendMessage(Principal principal, @RequestParam("receiver") String receiver, @RequestParam("message") String message){
         messageService.sendMessage(principal.getName(), receiver, message);
-
         return "redirect:/profile";
-
     }
 
     @GetMapping("/send-message")
@@ -34,24 +29,16 @@ public class MessageController {
 
     @GetMapping("/user/sent")
     public String getSentMessages(Principal principal, Model model){
-
-        model.addAttribute("messages", messageService
-                .getSentMessages(principal.getName()));
+        model.addAttribute("messages", messageService.getSentMessages(principal.getName()));
         model.addAttribute("showReceived", false);
-
         return "user/show-messages";
-
     }
 
     @GetMapping("/user/received")
     public String getReceivedMessages(Principal principal, Model model){
-
-        model.addAttribute("messages", messageService
-                .getReceivedMessages(principal.getName()));
+        model.addAttribute("messages", messageService.getReceivedMessages(principal.getName()));
         model.addAttribute("showReceived", true);
-
         return "user/show-messages";
-
     }
 
 }

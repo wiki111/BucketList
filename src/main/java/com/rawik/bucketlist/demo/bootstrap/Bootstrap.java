@@ -127,7 +127,7 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
         listDto.getItems().add(testItem);
         listDto.setTags("taggy,little taggy");
         listDto.setCreationDate(new Date());
-        listDto.setPhotoPath("sample_bl_img.png");
+        listDto.setPhotoPath("sample_bl_img.jpg");
         listDto.setDescription("Curae, Duis sodales wisi placerat faucibus. Sed in neque quis erat. Vivamus volutpat aliquam pharetra ante euismod eget, sagittis ac, molestie a, bibendum porttitor. Aenean vel nibh. Morbi eleifend. Nulla quis quam molestie placerat, nulla nec nunc posuere ante pellentesque auctor eu, dapibus diam. Aliquam luctus pellentesque.");
 
         BucketListDto listDto2 = new BucketListDto();

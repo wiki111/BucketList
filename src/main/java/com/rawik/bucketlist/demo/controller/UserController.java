@@ -113,61 +113,44 @@ public class UserController {
 
     @GetMapping("/editprofile")
     public String getEditProfile(Model model, Principal principal){
-
         UserDto dto = userMapper.userToUserDto(service.findByUsername(principal.getName()));
         model.addAttribute("user", dto);
-
         return "user/editprofile";
-
     }
 
     @PostMapping("/updateUserInfo")
-    public String updateUserInfo(
-        @ModelAttribute("user") UserDto userDto,
-        BindingResult bindingResult){
-
+    public String updateUserInfo(@ModelAttribute("user") UserDto userDto, BindingResult bindingResult){
         if(!bindingResult.hasErrors()){
             service.updateUserInfo(userDto);
         }
-
         return "redirect:/editprofile";
     }
 
     @GetMapping("/info/{email:.+}")
     public String showUserInfo(@PathVariable String email, Model model){
-
         UserDto userDto = userMapper.userToUserDto(
                 service.findByUsername(email)
         );
-
         model.addAttribute("user", userDto);
-
         return "user/info";
-
     }
 
     @GetMapping("/find-user")
     public String findUser(@RequestParam("nickname") String nickname, Model model){
-
         model.addAttribute("user", service.getUserByNickname(nickname));
-
         return "user/info";
-
     }
 
     @PostMapping("/updateAvatar")
-    public String handleAvatarUpload(@RequestParam("avatarFile") MultipartFile avatarFile,
-                                     RedirectAttributes redirectAttributes, Principal principal){
+    public String handleAvatarUpload(@RequestParam("avatarFile") MultipartFile avatarFile, Principal principal){
         String avatarFilename = storageService.store(avatarFile, principal.getName());
         service.updateAvatar(avatarFilename, principal.getName());
-
         return "redirect:" + "/profile";
     }
 
     @RequestMapping(value = "/getAvatar/{username:.+}")
     @ResponseBody
     public byte[] getAvatar(@PathVariable String username, HttpServletRequest request){
-
         String avatarFilename = service.getAvatarFilename(username);
         Path path = storageService.load(avatarFilename, username);
         try{

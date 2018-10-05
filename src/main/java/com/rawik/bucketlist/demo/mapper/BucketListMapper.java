@@ -71,70 +71,54 @@ public class BucketListMapper {
 
     public List<String> tagStringToList(String tags){
         ArrayList<String> tagList = new ArrayList<>();
-
         if(tags != null){
             String[] tagArray = tags.replaceAll("\\s+","").split(",");
-
             for (String tag : tagArray) {
                 tagList.add(tag);
             }
         }
-
         return tagList;
     }
 
     public String tagListToString(List<String> tagList){
-
         StringBuilder tagString =  new StringBuilder();
-
         for (String tag: tagList) {
             tagString.append(tag + ", ");
         }
-
         if(tagString.length() > 1){
             tagString.setCharAt(tagString.length() - 1, ' ');
         }
-
         return tagString.toString();
-
     }
 
     public Boolean stringToBoolean(String text){
-
         if(text != null){
             if(text.toLowerCase().equals("true")){
                 return true;
             }
         }
-
         return false;
     }
 
     public String authorizedListToString(List<String> userList){
         StringBuilder userString = new StringBuilder();
-
         for (String username : userList){
             userString.append(username + ", ");
         }
-
         if(userString.length() > 1){
             userString.setCharAt(userString.length() - 1, ' ');
         }
-
         return userString.toString();
     }
 
     public List<String> authorizedStringToList(String userString){
         ArrayList<String> userList = new ArrayList<>();
-
         if(userString != null){
             String[] userArr = userString.replaceAll("\\s+", "").split(",");
-
             for(String user : userArr){
                 userList.add(user);
             }
         }
-
         return userList;
     }
 }

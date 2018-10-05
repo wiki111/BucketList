@@ -24,5 +24,6 @@ public interface BucketListService {
     List<Long> idsOfItemsMarkedByUser(String username);
     boolean markItem(Long itemId, String causerUsername);
     boolean unmarkItem(Long itemId, String causerUsername);
-
+    String getCurrentItemImageName(Long itemId);
+    String getCurrentListImageName(Long listId);
 }

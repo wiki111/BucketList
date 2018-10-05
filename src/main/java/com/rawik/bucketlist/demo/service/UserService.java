@@ -37,13 +37,10 @@ public class UserService implements IUserService {
         if(emailExists(userDto.getEmail())){
             throw new EmailExistsException("There is an account with that email address : " + userDto.getEmail());
         }
-
         if(nicknameExists(userDto.getNickname())){
             throw new NicknameExistsException("There is an account with that nickname - please choose another.");
         }
-
         User user = userMapper.userDtoToUser(userDto);
-
         return repository.save(user);
     }
 
@@ -51,7 +48,6 @@ public class UserService implements IUserService {
     @Override
     public User updateUserInfo(UserDto userDto) {
         User user = repository.findByEmail(userDto.getEmail()).get();
-
         user.setFirstName(userDto.getFirstName());
         user.setLastName(userDto.getLastName());
         user.setNickname(userDto.getNickname());
@@ -60,9 +56,7 @@ public class UserService implements IUserService {
         user.setTwitterLink(userDto.getTwitterLink());
         user.setBio(userDto.getBio());
         user.setInterests(userDto.getInterests());
-
         repository.save(user);
-
         return user;
     }
 
@@ -73,14 +67,12 @@ public class UserService implements IUserService {
                 .stream()
                 .filter(list -> list.getId() == bucketList.getId())
                 .findFirst();
-
         if(usersBucketlist.isPresent()){
             savedUser.getBucketLists().remove(usersBucketlist.get());
             savedUser.getBucketLists().add(bucketList);
         }else {
             savedUser.getBucketLists().add(bucketList);
         }
-
         repository.save(savedUser);
     }
 
@@ -108,19 +100,15 @@ public class UserService implements IUserService {
 
     @Override
     public UserDto findByUserId(Long id) {
-
         Optional<User> userOpt = repository.findById(id);
-
         if(userOpt.isPresent()){
             return userMapper.userToUserDto(userOpt.get());
         }
-
         return null;
     }
 
     @Override
     public BucketListDto getUsersListById(Long listId, String username) {
-
         Optional<User> userOpt = repository.findByEmail(username);
         if(userOpt.isPresent()){
             User user = userOpt.get();
@@ -131,20 +119,16 @@ public class UserService implements IUserService {
                 return listDto;
             }
         }
-
         return null;
     }
 
     @Override
     public Set<BucketListDto> getUserLists(String email) {
-
         Optional<User> user = repository.findByEmail(email);
-
         if(user.isPresent()){
             UserDto userDto = userMapper.userToUserDto(user.get());
             return userDto.getBucketlists();
         }
-
         return null;
     }
 
@@ -154,33 +138,26 @@ public class UserService implements IUserService {
         if(userOptional.isPresent()){
             return userMapper.userToUserDto(userOptional.get());
         }
-        
         return null;
     }
 
     @Override
     public void updateAvatar(String avatarFilename, String username) {
-
         Optional<User> user = repository.findByEmail(username);
-
         if(user.isPresent()){
             User userObj = user.get();
             userObj.setAvatarPath(avatarFilename);
             repository.save(userObj);
         }
-
     }
 
     @Override
     public String getAvatarFilename(String username) {
-
         Optional<User> userOpt = repository.findByEmail(username);
-
         if(userOpt.isPresent()){
             User user = userOpt.get();
             return user.getAvatarPath();
         }
-
         return "";
     }
 

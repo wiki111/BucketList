@@ -28,12 +28,10 @@ public class UserDetailsService implements org.springframework.security.core.use
         if(user == null){
             throw new UsernameNotFoundException("No user found with email " + email);
         }
-
         boolean enabled = true;
         boolean accountNotExpired = true;
         boolean credentialsNotExpired = true;
         boolean accountNotLocked = true;
-
         return new User(
                 user.getEmail(),
                 user.getPassword(),
@@ -48,9 +46,7 @@ public class UserDetailsService implements org.springframework.security.core.use
 
     private static List<GrantedAuthority> getAuthorities (String role){
         List<GrantedAuthority> authorities = new ArrayList<>();
-
         authorities.add(new SimpleGrantedAuthority(role));
-
         return authorities;
     }
 }

@@ -67,7 +67,7 @@ public class BucketlistsController {
     @PostMapping("/bucketlists/addnew")
     public String addNewBucketlist(@ModelAttribute("list") BucketListDto listDto, @RequestParam("imagefile") MultipartFile imagefile,
                                    Principal principal){
-        String imagePath = saveImage(imagefile, principal.getName());
+        String imagePath = saveImage(imagefile, principal.getName(), listDto.getId());
         bucketListService.saveList(setUpBucketlistDto(listDto, imagePath, principal.getName()));
         return "redirect:/user/bucketlists";
     }
@@ -80,8 +80,11 @@ public class BucketlistsController {
         return listDto;
     }
 
-    private String saveImage(MultipartFile imageFile, String username){
+    private String saveImage(MultipartFile imageFile, String username, Long listId){
         if(!imageFile.isEmpty()){
+            try {
+                storageService.deleteFile(username, bucketListService.getCurrentListImageName(listId));
+            }catch (Exception e){}
             String imageFilename = storageService.store(imageFile, username);
             return imageFilename;
         }else{
@@ -134,13 +137,16 @@ public class BucketlistsController {
 
     @PostMapping("/addListItem")
     public String addListItem(WebRequest request, Principal principal, @RequestParam("image") MultipartFile multipartFile){
-        String imagePath = saveListItemImage(multipartFile, principal.getName());
+        String imagePath = saveListItemImage(multipartFile, principal.getName(), request.getParameter("itemId"));
         bucketListService.addItemToList(setUpBucketItemDto(request, imagePath), principal.getName());
         return "redirect:/bucketlist/details/"+ request.getParameter("listID");
     }
 
-    private String saveListItemImage(MultipartFile file, String username){
+    private String saveListItemImage(MultipartFile file, String username, String itemId){
         try{
+            try{
+                storageService.deleteFile(username, bucketListService.getCurrentItemImageName(Long.valueOf(itemId)));
+            }catch (Exception e){}
             return storageService.store(file, username);
         }catch (Exception e){
             return "";
@@ -221,16 +227,9 @@ public class BucketlistsController {
 
 
     @PostMapping( MANAGE_LIST_LINK + "{listid}/edit")
-    public String editBucketlist(@ModelAttribute("list") BucketListDto bucketListDto, Principal principal,
-                                 @RequestParam("imagefile") MultipartFile multipartFile){
-
-        if(!multipartFile.isEmpty()){
-            String imageFilename = storageService.store(multipartFile, principal.getName());
-            bucketListDto.setPhotoPath(imageFilename);
-        }
-
+    public String editBucketlist(@ModelAttribute("list") BucketListDto bucketListDto, Principal principal, @RequestParam("imagefile") MultipartFile multipartFile){
+        bucketListDto.setPhotoPath(saveImage(multipartFile, principal.getName(), bucketListDto.getId()));
         bucketListService.updateList(bucketListDto);
-
         return "redirect:/bucketlist/details/"+ bucketListDto.getId();
     }
 
@@ -296,6 +295,18 @@ public class BucketlistsController {
         }else{
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
+    }
+
+    @PostMapping("/deleteList/{listId}")
+    public String deleteList(@PathVariable Long listId, Principal principal){
+        bucketListService.dropList(listId, principal.getName());
+        return "redirect:/user/bucketlists";
+    }
+
+    @PostMapping("/deleteItem/{listId}/{itemId}")
+    public String deleteItem(@PathVariable Long listId, @PathVariable Long itemId, Principal principal){
+        bucketListService.dropListItem(listId, itemId, principal.getName());
+        return "redirect:/bucketlist/details/" + listId;
     }
 
     // todo add default images 270x170px

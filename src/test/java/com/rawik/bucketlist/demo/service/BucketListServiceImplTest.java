@@ -43,6 +43,9 @@ public class BucketListServiceImplTest {
     @Mock
     BucketItemRepository itemRepository;
 
+    @Mock
+    StorageService storageService;
+
     @Before
     public void setUp(){
         MockitoAnnotations.initMocks(this);
@@ -52,7 +55,8 @@ public class BucketListServiceImplTest {
                 listMapper,
                 userService,
                 itemMapper,
-                itemRepository);
+                itemRepository,
+                storageService);
     }
 
     @Test

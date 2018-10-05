@@ -75,6 +75,18 @@
             </div>-->
             <button type="submit" class="bucketlist-button">Add item</button>
         </form>
+        <div th:if="${edit}" class="row">
+            <div class="col-12 align-content-center text-center">
+                <form th:action="@{'/deleteItem/' + ${list.getId()} + '/' + ${item.getId()}}" method="POST">
+                    <button
+                            type="submit"
+                            onclick="return confirm('Do you really want to delete this item ?');"
+                            class="bucketlist-button"
+                            th:value="Delete"
+                            th:name="Delete"> Delete </button>
+                </form>
+            </div>
+        </div>
     </div>
 </div>
 </body>

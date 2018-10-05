@@ -19,32 +19,24 @@ public class MessageMapper {
     }
 
     public MessageDto messageToDto(Message message){
-
         MessageDto messageDto = new MessageDto();
-
         messageDto.setSenderNickname(message.getSender().getNickname());
         messageDto.setReceiverNickname(message.getReceiver().getNickname());
         messageDto.setDateSent(message.getDateSent());
         messageDto.setMessage(message.getMessage());
-
         return messageDto;
     }
 
     public Message dtoToMessage(MessageDto messageDto){
-
         Message message = new Message();
-
         Optional<User> sender = userRepository.findByNickname(messageDto.getSenderNickname());
         Optional<User> receiver = userRepository.findByNickname(messageDto.getReceiverNickname());
-
         if(sender.isPresent() && receiver.isPresent()){
             message.setSender(sender.get());
             message.setReceiver(receiver.get());
         }
-
         message.setMessage(messageDto.getMessage());
         message.setDateSent(messageDto.getDateSent());
-
         return message;
     }
 

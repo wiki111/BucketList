@@ -28,81 +28,46 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public void sendMessage(String senderEmail,
-                            String receiverNickname,
-                            String message) {
-
+    public void sendMessage(String senderEmail, String receiverNickname, String message) {
         Message messageObj = new Message();
-
-        Optional<User> sender = userRepository
-                .findByEmail(senderEmail);
-        Optional<User> receiver = userRepository
-                .findByNickname(receiverNickname);
-
+        Optional<User> sender = userRepository.findByEmail(senderEmail);
+        Optional<User> receiver = userRepository.findByNickname(receiverNickname);
         if(sender.isPresent() && receiver.isPresent()){
-
             User senderObj = sender.get();
             User receiverObj = receiver.get();
-
             messageObj.setSender(senderObj);
             messageObj.setReceiver(receiverObj);
             messageObj.setDateSent(new Date());
             messageObj.setMessage(message);
-
-            receiverObj
-                    .getMessagesReceived()
-                    .add(messageObj);
-
-            senderObj
-                    .getMessagesSent()
-                    .add(messageObj);
-
+            receiverObj.getMessagesReceived().add(messageObj);
+            senderObj.getMessagesSent().add(messageObj);
             messageRepository.save(messageObj);
         }
     }
 
     @Override
     public List<MessageDto> getReceivedMessages(String email) {
-
         List<MessageDto> messages = new ArrayList<>();
-
-        Optional<List<Message>> savedMessagesOptional =
-                messageRepository
-                        .findAllByReceiverEmail(email);
+        Optional<List<Message>> savedMessagesOptional = messageRepository.findAllByReceiverEmail(email);
         if(savedMessagesOptional.isPresent()){
-            for (Message message
-                    : savedMessagesOptional.get()) {
-
-                messages
-                        .add(messageMapper
-                                .messageToDto(message)
-                        );
-
+            for (Message message : savedMessagesOptional.get()) {
+                messages.add(messageMapper.messageToDto(message));
             }
-
             return messages;
         }
-
         return null;
     }
 
     @Override
     public List<MessageDto> getSentMessages(String email) {
-
         List<MessageDto> messages = new ArrayList<>();
-
-        Optional<List<Message>> savedMessagesOptional =
-                messageRepository.findAllBySenderEmail(email);
+        Optional<List<Message>> savedMessagesOptional = messageRepository.findAllBySenderEmail(email);
         if(savedMessagesOptional.isPresent()){
-
             for (Message message : savedMessagesOptional.get()){
-                messages
-                    .add(messageMapper.messageToDto(message));
+                messages.add(messageMapper.messageToDto(message));
             }
-
             return messages;
         }
-
         return null;
     }
 }

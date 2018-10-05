@@ -50,6 +50,9 @@ public class BucketListServiceImplIntegrationTest {
     @Autowired
     BucketItemRepository itemRepository;
 
+    @Autowired
+    StorageService storageService;
+
     BucketListService bucketListService;
 
     String testUserEmail = "newtestemail@email.com";
@@ -71,7 +74,8 @@ public class BucketListServiceImplIntegrationTest {
                     bucketListMapper,
                     userService,
                     itemMapper,
-                    itemRepository);
+                    itemRepository,
+                    storageService);
 
             setUpTestEntities();
     }
