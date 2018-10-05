@@ -9,6 +9,7 @@
     <link rel="stylesheet" th:href="@{/css/bldetails.css}"/>
     <script th:src="@{/webjars/jquery/3.3.7-1/jquery.min.js}"></script>
     <script th:src="@{/webjars/bootstrap/4.0.0-2/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/utility.js}"></script>
 </head>
 <body>
 <div class="row" layout:fragment="content">
@@ -27,13 +28,13 @@
 
                             <div class="row">
                                 <div class="col-12 bl-img-form-wrap">
-                                    <img class="bl-list-image" th:src="@{'/getImage/' + ${username} + '/' + ${list.getPhotoPath()}}" alt="image">
+                                    <img class="bl-list-image" id="imageframe" th:src="@{'/getImage/' + ${username} + '/' + ${list.getPhotoPath()}}" alt="image">
                                 </div>
                             </div>
 
                             <div class="row">
                                 <div class="col-12">
-                                    <input th:type="file" th:name="imagefile" value="CHANGE IMAGE">
+                                    <input th:type="file" th:name="imagefile" value="CHANGE IMAGE" onchange="loadFile(event)">
                                 </div>
                             </div>
 

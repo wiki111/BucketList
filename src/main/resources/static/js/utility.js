@@ -63,3 +63,8 @@ function unmarkItem(id){
     xhttp.open("POST", "/unmarkitem/"+id);
     xhttp.send();
 }
+
+function loadFile(event){
+        var output = document.getElementById('imageframe');
+        output.src = URL.createObjectURL(event.target.files[0]);
+}

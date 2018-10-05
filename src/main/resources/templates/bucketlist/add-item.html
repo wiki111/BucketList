@@ -26,17 +26,17 @@
 
                     <div class="row" >
                         <div class="col-12 bl-img-form-wrap">
-                            <img class="bl-list-image" th:if="${edit}" th:src="@{'/getImage/' + ${username} + '/' + ${item.getImage()}}" alt="image">
+                            <img class="bl-list-image" id="imageframe" th:if="${edit}" th:src="@{'/getImage/' + ${username} + '/' + ${item.getImage()}}" alt="image">
 
                             <!-- todo add default item image -->
-                            <img th:unless="${edit}"  alt="image">
+                            <img class="bl-list-image" th:unless="${edit}"  id="imageframe" alt="image">
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col-12">
-                            <input th:type="file" th:name="image">
-                            <input th:if="${edit}" type="hidden" th:name="photoPath" th:value="${item.getImage()}">
+                            <input th:type="file" th:name="image" onchange="loadFile(event)">
+                            <input th:if="${edit}" type="hidden" th:name="photoPath" th:value="${item.getImage()}" onchange="loadFile(event)">
                         </div>
                     </div>
 
