@@ -9,15 +9,24 @@
     <script th:src="@{/webjars/bootstrap/4.0.0-2/js/bootstrap.min.js}"></script>
 </head>
 <body>
-<div layout:fragment="content">
-    <h1>Error</h1>
+<div class="row" layout:fragment="content">
 
-    <div>
-        <p>
-            You are not authorized to make this request.
-        </p>
+    <div class="col-12">
+
+        <div class="row">
+            <div class="col-8 offset-2">
+                <h1>Error</h1>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-8 offset-2">
+                <p th:text="${exception}">
+                    Something went wrong. Try again ?
+                </p>
+            </div>
+        </div>
     </div>
-
 </div>
 </body>
 
