@@ -109,7 +109,7 @@ public class BucketlistsController {
         if(principal != null){
             model.addAttribute("ownedByAuth" ,checkIfUserOwnsList(id, principal.getName()));
             model.addAttribute("userLoggedIn", true);
-            model.addAttribute("idsOfMarkedItems", bucketListService.idsOfItemsMarkedByUser(principal.getName()));
+            model.addAttribute("idsOfMarkedItems", bucketListService.getIdsOfItemsMarkedByUser(principal.getName()));
         }else {
             model.addAttribute("ownedByAuth", false);
             model.addAttribute("userLoggedIn", false);
@@ -278,7 +278,7 @@ public class BucketlistsController {
         if(operationState){
             return ResponseEntity.status(HttpStatus.OK).body(null);
         }else{
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
     }
 
@@ -293,7 +293,7 @@ public class BucketlistsController {
         if(operationState){
             return ResponseEntity.status(HttpStatus.OK).body(null);
         }else{
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
     }
 

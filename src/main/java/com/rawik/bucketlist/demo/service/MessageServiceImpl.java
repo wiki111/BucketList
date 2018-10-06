@@ -1,6 +1,7 @@
 package com.rawik.bucketlist.demo.service;
 
 import com.rawik.bucketlist.demo.dto.MessageDto;
+import com.rawik.bucketlist.demo.exceptions.OperationException;
 import com.rawik.bucketlist.demo.mapper.MessageMapper;
 import com.rawik.bucketlist.demo.model.Message;
 import com.rawik.bucketlist.demo.model.User;
@@ -42,6 +43,8 @@ public class MessageServiceImpl implements MessageService {
             receiverObj.getMessagesReceived().add(messageObj);
             senderObj.getMessagesSent().add(messageObj);
             messageRepository.save(messageObj);
+        }else{
+            throw new OperationException("Missing sender or receiver data. Please try again.");
         }
     }
 

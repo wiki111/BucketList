@@ -46,6 +46,8 @@ function markItem(id) {
         if(this.readyState == 4 && this.status == 200){
             console.log("operation ok " + id);
             showItemMark(id);
+        }else if(this.status == 401){
+            //todo show message to the user
         }
     };
     xhttp.open("POST", "/markitem/"+id);
@@ -58,6 +60,8 @@ function unmarkItem(id){
         if(this.readyState == 4 && this.status == 200){
             console.log("operation unmark ok " + id);
             showUnmarkItem(id);
+        }else if(this.status == 401){
+            //todo show message to the user
         }
     };
     xhttp.open("POST", "/unmarkitem/"+id);

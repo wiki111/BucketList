@@ -72,8 +72,7 @@ public class StorageServiceImpl implements StorageService{
                 Files.createDirectory(usersDir);
                 return usersDir;
             }catch (IOException e){
-                throw new RuntimeException();
-                //todo handle error
+                throw new StorageException("Cannot create user directory. Please try again.");
             }
         }
     }
@@ -91,7 +90,7 @@ public class StorageServiceImpl implements StorageService{
             Files.deleteIfExists(path.resolve(filename));
             return true;
         }catch (Exception e){
-            return false;
+            throw new StorageException("Cannot delete file. Please try again.");
         }
     }
 }

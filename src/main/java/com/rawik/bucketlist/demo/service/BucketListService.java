@@ -21,7 +21,7 @@ public interface BucketListService {
     boolean addItemToList(BucketItemDto itemDto, String username);
     List<BucketListDto> getBucketlistsAvailableForUser(String username);
     String getImageForListId(Long listid);
-    List<Long> idsOfItemsMarkedByUser(String username);
+    List<Long> getIdsOfItemsMarkedByUser(String username);
     boolean markItem(Long itemId, String causerUsername);
     boolean unmarkItem(Long itemId, String causerUsername);
     String getCurrentItemImageName(Long itemId);

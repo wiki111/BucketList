@@ -2,6 +2,9 @@ package com.rawik.bucketlist.demo.service;
 
 import com.rawik.bucketlist.demo.dto.BucketItemDto;
 import com.rawik.bucketlist.demo.dto.BucketListDto;
+import com.rawik.bucketlist.demo.exceptions.NotAuthorizedException;
+import com.rawik.bucketlist.demo.exceptions.NotFoundException;
+import com.rawik.bucketlist.demo.exceptions.OperationException;
 import com.rawik.bucketlist.demo.mapper.BucketItemMapper;
 import com.rawik.bucketlist.demo.mapper.BucketListMapper;
 import com.rawik.bucketlist.demo.model.BucketItem;
@@ -10,6 +13,7 @@ import com.rawik.bucketlist.demo.model.User;
 import com.rawik.bucketlist.demo.repository.BucketItemRepository;
 import com.rawik.bucketlist.demo.repository.BucketListRepository;
 import com.rawik.bucketlist.demo.repository.UserRepository;
+import org.graalvm.compiler.core.common.type.ArithmeticOpTable;
 import org.springframework.boot.autoconfigure.couchbase.CouchbaseProperties;
 import org.springframework.stereotype.Service;
 
@@ -47,18 +51,15 @@ public class BucketListServiceImpl implements BucketListService{
     public BucketListDto getUsersListById(Long id, String username) {
         Optional<BucketList> optional = listRepository.findById(id);
         if(!optional.isPresent()){
-            //todo better exception handling
-            throw new RuntimeException();
+            throw new NotFoundException("List doesn't exist in database.");
         }else {
             BucketList bucketList = optional.get();
             if(bucketList.getUser().getEmail().equals(username)){
                 BucketListDto bucketListDto = listMapper.bucketListToDto(optional.get());
                 return bucketListDto;
             }else{
-                //todo handle user not authorized to access bucketlist
-                return null;
+                throw new NotAuthorizedException("User not authorized to access this information.");
             }
-
         }
     }
 
@@ -66,8 +67,7 @@ public class BucketListServiceImpl implements BucketListService{
     public BucketListDto getListById(Long id) {
         Optional<BucketList> optional = listRepository.findById(id);
         if(!optional.isPresent()){
-            //todo better exception handling
-            throw new RuntimeException();
+            throw new NotFoundException("List doesn't exist in database.");
         }else {
             BucketListDto bucketListDto = listMapper.bucketListToDto(optional.get());
             return bucketListDto;
@@ -78,8 +78,7 @@ public class BucketListServiceImpl implements BucketListService{
     public BucketList saveList(BucketListDto dto) {
         Optional<User> userOptional = userRepository.findById(dto.getUserId());
         if(!userOptional.isPresent()){
-            //todo better error handling
-            throw new RuntimeException();
+            throw new NotFoundException("Invalid user - information doesn't exist in database.");
         }
         User user = userOptional.get();
         BucketList list = listMapper.dtoToBucketList(dto);
@@ -91,7 +90,8 @@ public class BucketListServiceImpl implements BucketListService{
         if(savedBucketlist.isPresent()){
             return savedBucketlist.get();
         }else{
-            return null;
+            throw new OperationException("Encountered a problem while saving list. Please try again or contact " +
+                    "customer service.");
         }
     }
 
@@ -117,9 +117,8 @@ public class BucketListServiceImpl implements BucketListService{
             listRepository.save(listToSave);
             return listToSave;
         }else{
-            //todo handle error
+            throw new NotFoundException("Cannot update list, because it doesn't exist in database.");
         }
-        return null;
     }
 
     @Override
@@ -141,7 +140,11 @@ public class BucketListServiceImpl implements BucketListService{
                 userRepository.save(foundUser);
                 listRepository.save(bucketListToDelete);
                 listRepository.deleteById(bucketListToDelete.getId());
+            }else{
+                throw new NotFoundException("Cannot find relevant information in database. Please try again");
             }
+        }else{
+            throw new NotAuthorizedException("Missing authorization to process this request. Please try again.");
         }
     }
 
@@ -173,8 +176,14 @@ public class BucketListServiceImpl implements BucketListService{
                     foundItem.setBucketlist(null);
                     foundBucketlist.getItems().remove(bucketItemOptional.get());
                     listRepository.save(foundBucketlist);
+                }else{
+                    throw new NotFoundException("Cannot find relevant information in database.");
                 }
+            }else {
+                throw new NotFoundException("Cannot find relevant information in database.");
             }
+        }else{
+            throw new NotAuthorizedException("Lacking authorization to perform this request. Please try again ?");
         }
     }
 
@@ -228,8 +237,7 @@ public class BucketListServiceImpl implements BucketListService{
             userService.updateBucketLists(bucketList);
             return true;
         }else{
-            //todo handle bucketlist doesn't exist
-            return false;
+            throw new NotFoundException("Cannot find relevant data.");
         }
     }
 
@@ -254,7 +262,7 @@ public class BucketListServiceImpl implements BucketListService{
     }
 
     @Override
-    public List<Long> idsOfItemsMarkedByUser(String username) {
+    public List<Long> getIdsOfItemsMarkedByUser(String username) {
         List<Long> ids = new ArrayList<>();
         Optional<User> userOpt = userRepository.findByEmail(username);
         String nickname = "";
@@ -333,7 +341,7 @@ public class BucketListServiceImpl implements BucketListService{
         if(bucketListOptional.isPresent()){
             return bucketListOptional.get();
         }else {
-            return null;
+            throw new NotFoundException("Cannot find relevant data.");
         }
     }
 }

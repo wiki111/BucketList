@@ -59,9 +59,7 @@ public class UserController {
     }
 
     @PostMapping(value = "/register")
-    public ModelAndView registerNewUser(
-            @ModelAttribute("user") @Valid UserDto userAccount,
-            BindingResult result){
+    public ModelAndView registerNewUser(@ModelAttribute("user") @Valid UserDto userAccount, BindingResult result){
 
         User registered = new User();
 

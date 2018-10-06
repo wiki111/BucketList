@@ -4,6 +4,8 @@ import com.rawik.bucketlist.demo.dto.BucketListDto;
 import com.rawik.bucketlist.demo.dto.UserDto;
 import com.rawik.bucketlist.demo.exceptions.EmailExistsException;
 import com.rawik.bucketlist.demo.exceptions.NicknameExistsException;
+import com.rawik.bucketlist.demo.exceptions.NotFoundException;
+import com.rawik.bucketlist.demo.exceptions.OperationException;
 import com.rawik.bucketlist.demo.mapper.BucketListMapper;
 import com.rawik.bucketlist.demo.mapper.UserMapper;
 import com.rawik.bucketlist.demo.model.BucketList;
@@ -47,17 +49,23 @@ public class UserService implements IUserService {
     @Transactional
     @Override
     public User updateUserInfo(UserDto userDto) {
-        User user = repository.findByEmail(userDto.getEmail()).get();
-        user.setFirstName(userDto.getFirstName());
-        user.setLastName(userDto.getLastName());
-        user.setNickname(userDto.getNickname());
-        user.setFacebookLink(userDto.getFacebookLink());
-        user.setGoogleLink(userDto.getGoogleLink());
-        user.setTwitterLink(userDto.getTwitterLink());
-        user.setBio(userDto.getBio());
-        user.setInterests(userDto.getInterests());
-        repository.save(user);
-        return user;
+        Optional<User> userOpt = repository.findByEmail(userDto.getEmail());
+        if(userOpt.isPresent()){
+            User user = userOpt.get();
+            user.setFirstName(userDto.getFirstName());
+            user.setLastName(userDto.getLastName());
+            user.setNickname(userDto.getNickname());
+            user.setFacebookLink(userDto.getFacebookLink());
+            user.setGoogleLink(userDto.getGoogleLink());
+            user.setTwitterLink(userDto.getTwitterLink());
+            user.setBio(userDto.getBio());
+            user.setInterests(userDto.getInterests());
+            repository.save(user);
+            return user;
+        }else {
+            throw new OperationException("Could not update user info. Please try again.");
+        }
+
     }
 
     @Override
@@ -95,7 +103,12 @@ public class UserService implements IUserService {
 
     @Override
     public User findByUsername(String username) {
-        return repository.findByEmail(username).get();
+        Optional<User> userOpt = repository.findByEmail(username);
+        if(userOpt.isPresent()){
+            return userOpt.get();
+        }else{
+            throw new NotFoundException("Cannot find user with such username in database.");
+        }
     }
 
     @Override
@@ -103,8 +116,9 @@ public class UserService implements IUserService {
         Optional<User> userOpt = repository.findById(id);
         if(userOpt.isPresent()){
             return userMapper.userToUserDto(userOpt.get());
+        }else{
+            throw new NotFoundException("Cannot find user with id " + id);
         }
-        return null;
     }
 
     @Override
@@ -117,9 +131,12 @@ public class UserService implements IUserService {
                 BucketList foundList = foundListOpt.get();
                 BucketListDto listDto = bucketListMapper.bucketListToDto(foundList);
                 return listDto;
+            }else{
+                throw new NotFoundException("Cannot find list with id " + listId + " which is owned by user " + username);
             }
+        }else{
+            throw new NotFoundException("Cannot find user with username " + username);
         }
-        return null;
     }
 
     @Override
@@ -128,8 +145,9 @@ public class UserService implements IUserService {
         if(user.isPresent()){
             UserDto userDto = userMapper.userToUserDto(user.get());
             return userDto.getBucketlists();
+        }else {
+            throw new NotFoundException("Cannot find user with email : " + email);
         }
-        return null;
     }
 
     @Override
@@ -137,8 +155,9 @@ public class UserService implements IUserService {
         Optional<User> userOptional = repository.findByNickname(nickname);
         if(userOptional.isPresent()){
             return userMapper.userToUserDto(userOptional.get());
+        }else{
+            throw new NotFoundException("Cannot find user with nickname : " + nickname);
         }
-        return null;
     }
 
     @Override
@@ -148,6 +167,8 @@ public class UserService implements IUserService {
             User userObj = user.get();
             userObj.setAvatarPath(avatarFilename);
             repository.save(userObj);
+        }else{
+            throw new NotFoundException("Cannot find user. Please try again?");
         }
     }
 
@@ -157,8 +178,9 @@ public class UserService implements IUserService {
         if(userOpt.isPresent()){
             User user = userOpt.get();
             return user.getAvatarPath();
+        }else{
+            throw new NotFoundException("Cannot find user with username: " + username);
         }
-        return "";
     }
 
 
