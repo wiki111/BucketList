@@ -47,6 +47,7 @@
                 </div>
                 <div class="col-4">
                     <input type="password" th:field="*{matchingPassword}" />
+                    <p class="error" th:each="error : ${#fields.errors('matchingPassword')}" th:text="${error}">Password invalid</p>
                 </div>
             </div>
             <button class="bucketlist-button" type="submit" th:text="#{label.form.submit}" th:value="REGISTER"> Register </button>

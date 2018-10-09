@@ -19,36 +19,4 @@ public class MainController {
     public String getHome(){
         return "homepage";
     }
-
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(NotFoundException.class)
-    public ModelAndView handleNotFound(Exception e){
-        return prepareModelAndView(e, "not-found-error");
-    }
-
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    @ExceptionHandler(StorageException.class)
-    public ModelAndView handleStorage(Exception e){
-        return prepareModelAndView(e, "operation-error");
-    }
-
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    @ExceptionHandler(OperationException.class)
-    public ModelAndView handleOperation(Exception e){
-        return prepareModelAndView(e, "operation-error");
-    }
-
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    @ExceptionHandler(NotAuthorizedException.class)
-    public ModelAndView handleNotAuthorized(Exception e){
-        return prepareModelAndView(e,"not-authorized-error");
-    }
-
-    private ModelAndView prepareModelAndView(Exception e, String viewName){
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("exception", e.getMessage());
-        modelAndView.setViewName(viewName);
-        return modelAndView;
-    }
-
 }

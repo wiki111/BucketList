@@ -13,7 +13,6 @@ import com.rawik.bucketlist.demo.model.User;
 import com.rawik.bucketlist.demo.repository.BucketItemRepository;
 import com.rawik.bucketlist.demo.repository.BucketListRepository;
 import com.rawik.bucketlist.demo.repository.UserRepository;
-import org.graalvm.compiler.core.common.type.ArithmeticOpTable;
 import org.springframework.boot.autoconfigure.couchbase.CouchbaseProperties;
 import org.springframework.stereotype.Service;
 
