@@ -17,9 +17,9 @@
 
         <h1 class="bl-profile-h1">Add new item</h1>
 
-        <form th:action="@{/addListItem}" method="POST" id="addnewitem" enctype="multipart/form-data">
-            <input type="hidden" name="listID" th:value="${list.getId()}">
-            <input th:if="${edit}" type="hidden" name="itemId" th:value="${item.getId()}">
+        <form th:action="@{/addListItem}" th:object="${item}" method="POST" enctype="multipart/form-data">
+            <input type="hidden" th:value="${theListId}" th:name="theListId">
+            <input th:if="${edit}" type="hidden" name="itemId" th:field="*{id}" th:value="${item.getId()}">
 
             <div class="form-group row">
                 <div class="col-6 offset-3">
@@ -35,8 +35,9 @@
 
                     <div class="row">
                         <div class="col-12">
-                            <input th:type="file" th:name="image" onchange="loadFile(event)">
+                            <input th:type="file" th:name="listImage" onchange="loadFile(event)">
                             <input th:if="${edit}" type="hidden" th:name="photoPath" th:value="${item.getImage()}" onchange="loadFile(event)">
+                            <p class="error" th:each="error : ${#fields.errors('image')}" th:text="${error}"></p>
                         </div>
                     </div>
 
@@ -48,7 +49,8 @@
                     <label>Name</label>
                 </div>
                 <div class="col-8">
-                    <input type="text" name="name"/>
+                    <input type="text" th:field="*{name}" name="name"/>
+                    <p class="error" th:each="error : ${#fields.errors('name')}" th:text="${error}"></p>
                 </div>
             </div>
 
@@ -57,7 +59,8 @@
                     <label>Description</label>
                 </div>
                 <div class="col-8">
-                    <input type="text" name="description"/>
+                    <input type="text" th:field="*{description}" name="description"/>
+                    <p class="error" th:each="error : ${#fields.errors('description')}" th:text="${error}"></p>
                 </div>
             </div>
 
@@ -66,7 +69,8 @@
                     <label>Price</label>
                 </div>
                 <div class="col-8">
-                    <input type="text" name="price"/>
+                    <input type="text" th:field="*{price}" name="price"/>
+                    <p class="error" th:each="error : ${#fields.errors('price')}" th:text="${error}"></p>
                 </div>
             </div>
            <!-- <div>

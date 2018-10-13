@@ -3,6 +3,8 @@ package com.rawik.bucketlist.demo.controller;
 import com.rawik.bucketlist.demo.dto.BucketItemDto;
 import com.rawik.bucketlist.demo.dto.BucketListDto;
 import com.rawik.bucketlist.demo.dto.UserDto;
+import com.rawik.bucketlist.demo.exceptions.StorageException;
+import com.rawik.bucketlist.demo.model.BucketList;
 import com.rawik.bucketlist.demo.model.User;
 import com.rawik.bucketlist.demo.service.BucketListService;
 import com.rawik.bucketlist.demo.service.StorageService;
@@ -11,16 +13,18 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
+
+import javax.validation.Valid;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Optional;
+import java.util.*;
 
 @Controller
 public class BucketlistsController {
@@ -65,11 +69,25 @@ public class BucketlistsController {
     }
 
     @PostMapping("/bucketlists/addnew")
-    public String addNewBucketlist(@ModelAttribute("list") BucketListDto listDto, @RequestParam("imagefile") MultipartFile imagefile,
+    public ModelAndView addNewBucketlist(@ModelAttribute("list") @Valid BucketListDto listDto,  BindingResult result, @RequestParam("imagefile") MultipartFile imagefile,
                                    Principal principal){
-        String imagePath = saveImage(imagefile, principal.getName(), listDto.getId());
-        bucketListService.saveList(setUpBucketlistDto(listDto, imagePath, principal.getName()));
-        return "redirect:/user/bucketlists";
+        String imagePath = "";
+        try {
+            imagePath = saveImage(imagefile, principal.getName(), listDto.getId());
+        }catch (StorageException e){
+            result.rejectValue("photoPath", "Image not valid : " + e.getMessage());
+        }
+
+        if(result.hasErrors()){
+            Map<String, Object> modelMap = new HashMap<>();
+            modelMap.put("username", principal.getName());
+            modelMap.put("list", listDto);
+            modelMap.put("titletext", "Add new list");
+            return new ModelAndView("bucketlist/add-list", "model", modelMap);
+        }else{
+            BucketList bucketList = bucketListService.saveList(setUpBucketlistDto(listDto, imagePath, principal.getName()));
+            return new ModelAndView("redirect:/bucketlist/details/"+bucketList.getId());
+        }
     }
 
     private BucketListDto setUpBucketlistDto(BucketListDto listDto, String imagePath, String username){
@@ -84,7 +102,9 @@ public class BucketlistsController {
         if(!imageFile.isEmpty()){
             try {
                 storageService.deleteFile(username, bucketListService.getCurrentListImageName(listId));
-            }catch (Exception e){}
+            }catch (Exception e){
+                throw new StorageException(e.getMessage());
+            }
             String imageFilename = storageService.store(imageFile, username);
             return imageFilename;
         }else{
@@ -130,16 +150,41 @@ public class BucketlistsController {
     @GetMapping("/addItemToList/{id}")
     public String getAddListItemPage(@PathVariable("id") long id, Principal principal, Model model){
         BucketListDto list = userService.getUsersListById(id, principal.getName());
-        model.addAttribute("list",list);
+        model.addAttribute("theListId",list.getId());
+        model.addAttribute("item", new BucketItemDto());
         model.addAttribute("username", principal.getName());
         return "bucketlist/add-item";
     }
 
     @PostMapping("/addListItem")
-    public String addListItem(WebRequest request, Principal principal, @RequestParam("image") MultipartFile multipartFile){
-        String imagePath = saveListItemImage(multipartFile, principal.getName(), request.getParameter("itemId"));
-        bucketListService.addItemToList(setUpBucketItemDto(request, imagePath), principal.getName());
-        return "redirect:/bucketlist/details/"+ request.getParameter("listID");
+    public ModelAndView addListItem(@ModelAttribute("item") @Valid BucketItemDto item, BindingResult result,
+                              Principal principal, @RequestParam("listImage") MultipartFile multipartFile,
+                                    @RequestParam("theListId") Long listId){
+
+        String imagePath = "";
+        ModelAndView modelAndView;
+
+        try{
+            imagePath = saveListItemImage(multipartFile, principal.getName(), String.valueOf(listId));
+            item.setImage(imagePath);
+        }catch (StorageException e){
+            result.rejectValue("image", "Image file couldn't be stored. Please choose another. Details : " + e.getMessage());
+        }
+
+        if(result.hasErrors()){
+            modelAndView = new ModelAndView("bucketlist/add-item");
+            modelAndView.getModel().put("list", userService.getUsersListById(listId, principal.getName()));
+            modelAndView.getModel().put("item", item);
+            modelAndView.getModel().put("username", principal.getName());
+        }else {
+            item.setListId(listId);
+            bucketListService.addItemToList(item, principal.getName());
+            modelAndView = new ModelAndView("redirect:/bucketlist/details/" + listId);
+        }
+
+        return modelAndView;
+
+
     }
 
     private String saveListItemImage(MultipartFile file, String username, String itemId){

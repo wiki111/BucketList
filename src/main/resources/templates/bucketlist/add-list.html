@@ -35,6 +35,7 @@
                     <div class="row">
                         <div class="col-12">
                             <input id="imageform" th:type="file" th:name="imagefile" value="CHANGE IMAGE" onchange="loadFile(event)">
+                            <p class="error" th:each="error : ${#fields.errors('photoPath')}" th:text="${error}"></p>
                         </div>
                     </div>
 
@@ -45,6 +46,7 @@
                 <label for="listName" class="col-2 offset-3 col-form-label">Name</label>
                 <div class="col-4">
                     <input id=listName th:field="*{name}" th:default="${list.getName()}"/>
+                    <p class="error" th:each="error : ${#fields.errors('name')}" th:text="${error}">Email invalid</p>
                 </div>
             </div>
 

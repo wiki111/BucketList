@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.servlet.ModelAndView;
 
 @ControllerAdvice
@@ -37,9 +38,22 @@ public class ControllerExceptionHandler {
         return prepareModelAndView(e,"errors/not-authorized-error");
     }
 
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public ModelAndView handleMaxSizeException(MaxUploadSizeExceededException e){
+        return prepareModelAndView(e, "errors/operation-error", "File too big ! Details :");
+    }
+
     private ModelAndView prepareModelAndView(Exception e, String viewName){
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("exception", e.getMessage());
+        modelAndView.setViewName(viewName);
+        return modelAndView;
+    }
+
+    private ModelAndView prepareModelAndView(Exception e, String viewName, String message){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("exception", message + " " + e.getMessage());
         modelAndView.setViewName(viewName);
         return modelAndView;
     }

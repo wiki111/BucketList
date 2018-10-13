@@ -2,6 +2,7 @@ package com.rawik.bucketlist.demo.dto;
 
 import lombok.Data;
 
+import javax.validation.constraints.NotEmpty;
 import java.util.Date;
 
 @Data
@@ -9,6 +10,7 @@ public class BucketItemDto {
 
     private Long id;
     private Long listId;
+    @NotEmpty
     private String name;
     private String description;
     private Long price;
