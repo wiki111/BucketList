@@ -14,6 +14,29 @@
     object-fit: cover;
 }
 
+.bl-owner-avatar{
+    border: solid 2px #F3E6A5;
+    display: block;
+    height: 100px;
+    margin: 15px;
+    border-radius: 5%;
+    max-width: 100%;
+    object-fit: cover;
+}
+
+.bl-owner-link{
+    margin: 50px;
+    color: #FFE97C;
+    -webkit-transition: all 0.3s ease-in-out 0s;
+    transition: all 0.3s ease-in-out 0s;
+
+}
+
+.bl-owner-link:hover{
+    text-decoration: none;
+    color: #E1832C;
+}
+
 .bl-name-h{
     margin-top: 15px;
     font-weight: 300;
@@ -158,6 +181,8 @@
     margin-bottom: 10px;
     border-radius: 5%;
     height: 170px;
+    width: 90%;
+    object-fit: cover;
 }
 
 .bl-profile-h1{

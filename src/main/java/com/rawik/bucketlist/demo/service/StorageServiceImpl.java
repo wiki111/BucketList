@@ -79,6 +79,7 @@ public class StorageServiceImpl implements StorageService{
 
     @Override
     public Path load(String filename, String username) {
+        //todo catch and resolve situation when there is no file at specified location, or no filename at all
         Path location = getDirectoryForUser(username);
         return location.resolve(filename);
     }

@@ -101,7 +101,9 @@ public class BucketlistsController {
     private String saveImage(MultipartFile imageFile, String username, Long listId){
         if(!imageFile.isEmpty()){
             try {
-                storageService.deleteFile(username, bucketListService.getCurrentListImageName(listId));
+                if(bucketListService.getCurrentListImageName(listId) != null){
+                    storageService.deleteFile(username, bucketListService.getCurrentListImageName(listId));
+                }
             }catch (Exception e){
                 throw new StorageException(e.getMessage());
             }

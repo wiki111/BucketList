@@ -97,6 +97,7 @@ public class UserController {
     @GetMapping("/profile")
     public String getProfile(Model model, Principal principal){
 
+        //todo refactor to use mapper in service not in controller
         UserDto dto = userMapper.userToUserDto(
                 service.findByUsername(
                         principal.getName()
@@ -104,7 +105,24 @@ public class UserController {
         );
 
         model.addAttribute("user", dto);
+        model.addAttribute("editable", true);
         model.addAttribute("username", principal.getName());
+
+        return "user/profile";
+    }
+
+    @GetMapping("/user/{username}")
+    public String getUsersInfo(@PathVariable String username, Model model, Principal principal){
+
+        UserDto userDto = service.getUserByNickname(username);
+
+        if(userDto.getEmail().equals(principal.getName())){
+            return "redirect:/profile";
+        }
+
+        model.addAttribute("user", userDto);
+        model.addAttribute("editable", false);
+        model.addAttribute("username", userDto.getNickname());
 
         return "user/profile";
     }
@@ -150,6 +168,10 @@ public class UserController {
     @ResponseBody
     public byte[] getAvatar(@PathVariable String username, HttpServletRequest request){
         String avatarFilename = service.getAvatarFilename(username);
+        if(!username.contains("@")){
+            UserDto userDto = service.getUserByNickname(username);
+            username = userDto.getEmail();
+        }
         Path path = storageService.load(avatarFilename, username);
         try{
             byte[] avatarData = Files.readAllBytes(path);

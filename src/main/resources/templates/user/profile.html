@@ -20,8 +20,8 @@
             <div class="col-6 offset-3 align-content-center text-center">
                 <h1 class="bl-profile-h1"><span th:text="${user.getNickname()}"></span>'S PROFILE</h1>
             </div>
-            <div class="col-2 offset-1 bl-relative-wrap">
-                <a class="bucketlist-button bucketlist-inline-button bl-center" th:href="@{/editprofile}">Edit</a>
+            <div th:if="${editable}" class="col-2 offset-1 bl-relative-wrap">
+                <a  class="bucketlist-button bucketlist-inline-button bl-center" th:href="@{/editprofile}">Edit</a>
             </div>
         </div>
 
@@ -58,16 +58,16 @@
         <div class="row">
             <div class="col-10 offset-1">
                 <div class="row bl-row-spacer">
-                    <div class="col-4 text-center">
-                        <a class="bucketlist-button" th:href="@{/showsharedlists}">show shared lists</a>
+                    <div th:if="${editable}" class="col-4 text-center">
+                        <a  class="bucketlist-button" th:href="@{/showsharedlists}">show shared lists</a>
                     </div>
 
                     <div class="col-4 text-center">
                         <a class="bucketlist-button" th:href="@{/user/bucketlists}">show bucketlists</a>
                     </div>
 
-                    <div class="col-4 text-center">
-                        <a class="bucketlist-button" th:href="@{/user/received}">messages</a>
+                    <div th:if="${editable}" class="col-4 text-center">
+                        <a  class="bucketlist-button" th:href="@{/user/received}">messages</a>
                     </div>
                 </div>
             </div>

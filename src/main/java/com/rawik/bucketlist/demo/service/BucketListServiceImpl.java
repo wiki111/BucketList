@@ -53,12 +53,14 @@ public class BucketListServiceImpl implements BucketListService{
             throw new NotFoundException("List doesn't exist in database.");
         }else {
             BucketList bucketList = optional.get();
-            if(bucketList.getUser().getEmail().equals(username)){
+            /*if(bucketList.getUser().getEmail().equals(username)){
                 BucketListDto bucketListDto = listMapper.bucketListToDto(optional.get());
                 return bucketListDto;
             }else{
                 throw new NotAuthorizedException("User not authorized to access this information.");
-            }
+            }*/
+            BucketListDto bucketListDto = listMapper.bucketListToDto(optional.get());
+            return bucketListDto;
         }
     }
 
@@ -196,6 +198,7 @@ public class BucketListServiceImpl implements BucketListService{
         return bucketListDtos;
     }
 
+
     @Override
     public List<BucketListDto> getPublicBucketlistsByTag(String tags) {
         List<BucketListDto> bucketListDtos = new ArrayList<>();
@@ -209,6 +212,7 @@ public class BucketListServiceImpl implements BucketListService{
 
     @Override
     public List<BucketListDto> getPublicBucketlistsByUsername(String username) {
+        //todo refactor method to return only public bucketlists
         Optional<User> userOpt = userRepository.findByEmail(username);
         if(userOpt.isPresent()){
             User user = userOpt.get();

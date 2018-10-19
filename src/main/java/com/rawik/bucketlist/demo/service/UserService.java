@@ -174,7 +174,13 @@ public class UserService implements IUserService {
 
     @Override
     public String getAvatarFilename(String username) {
-        Optional<User> userOpt = repository.findByEmail(username);
+        Optional<User> userOpt;
+        if(username.contains("@")){
+            userOpt = repository.findByEmail(username);
+        }else {
+            userOpt = repository.findByNickname(username);
+        }
+
         if(userOpt.isPresent()){
             User user = userOpt.get();
             return user.getAvatarPath();
