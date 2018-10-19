@@ -98,8 +98,8 @@
                                 </div>
 
                                 <div class="tagCounterWrap">
-                                    <div th:if="${idsOfMarkedItems.contains(item.getId())}" class="marked-icon" style="background-image:url('/img/mark_filled.svg');" data-tagged="true" th:id="itemTagMarkIcon + ${item.getId()}" th:onclick="'javascript:toggleItemTagged(\'' + ${item.getId()} + ',' + ${userLoggedIn} + '\');'"></div>
-                                    <div th:if="${!idsOfMarkedItems.contains(item.getId())}" class="marked-icon" data-tagged="false" th:id="itemTagMarkIcon + ${item.getId()}" th:onclick="'javascript:toggleItemTagged(\'' + ${item.getId()} + ',' + ${userLoggedIn} + '\');'"></div>
+                                    <div th:if="${idsOfMarkedItems.contains(item.getId())}" class="marked-icon" style="background-image:url('/img/mark_filled.svg');" data-tagged="true" th:id="itemTagMarkIcon + ${item.getId()}" th:onclick="'javascript:toggleItemTagged(' + ${item.getId()} + ',' + ${userLoggedIn} + ');'"></div>
+                                    <div th:if="${!idsOfMarkedItems.contains(item.getId())}" class="marked-icon" data-tagged="false" th:id="itemTagMarkIcon + ${item.getId()}" th:onclick="'javascript:toggleItemTagged(' + ${item.getId()} + ',' + ${userLoggedIn} + ');'"></div>
 
                                     <div class="mark-counter" th:id="itemCounter + ${item.getId()}">
                                         <span th:text="${item.getNumberOfMarks()}"></span>

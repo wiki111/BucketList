@@ -334,7 +334,7 @@ public class BucketlistsController {
         boolean operationState = false;
 
         if(principal != null){
-            operationState = bucketListService.markItem(itemId, principal.getName());
+            operationState = bucketListService.unmarkItem(itemId, principal.getName());
         }
 
         if(operationState){

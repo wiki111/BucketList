@@ -13,14 +13,17 @@ function addItem(){
 function toggleItemTagged(id, isAuthorized) {
     if(isAuthorized){
         toggleItemMark(id);
+        console.log("inside toggleItemTagged func");
     }
 }
 
 function toggleItemMark(id){
     if(document.getElementById("itemTagMarkIcon" + id).getAttribute("data-tagged") == "false"){
         markItem(id);
+        console.log("inside toggleItemMark funcm mark branch");
     }else{
         unmarkItem(id);
+        console.log("inside toggleItemMark funcm unmark branch");
     }
 }
 
