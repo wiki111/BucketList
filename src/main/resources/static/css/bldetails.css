@@ -231,6 +231,27 @@
 .tagCounterWrap{
     position: relative;
     text-align: center;
+    -webkit-transition: all 0.3s ease-in-out 0s;
+    transition: all 0.3s ease-in-out 0s;
+}
+
+.marked-by{
+    position: absolute;
+    left: 61%;
+    border: #F3E6A5 2px solid;
+    width: 100px;
+    background: #2B4897;
+    border-radius: 10px;
+    top: -10%;
+    opacity: 0;
+    -webkit-transition: all 0.3s ease-in-out 0s;
+    transition: all 0.3s ease-in-out 0s;
+}
+
+.tagCounterWrap:hover .marked-by{
+    opacity: 100;
+    -webkit-transition: all 0.3s ease-in-out 0s;
+    transition: all 0.3s ease-in-out 0s;
 }
 
 @media only screen and (max-width: 1400px){

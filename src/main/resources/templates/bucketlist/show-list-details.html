@@ -104,6 +104,10 @@
                                     <div class="mark-counter" th:id="itemCounter + ${item.getId()}">
                                         <span th:text="${item.getNumberOfMarks()}"></span>
                                     </div>
+
+                                    <div class="marked-by">
+                                        <p th:text="'Marked by: ' + ${item.getMarkedByUsers()}"></p>
+                                    </div>
                                 </div>
 
                                 <div>
