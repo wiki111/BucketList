@@ -19,4 +19,9 @@ public class MainController {
     public String getHome(){
         return "homepage";
     }
+
+    @GetMapping("/about")
+    public String getAboutPage(){
+        return "about";
+    }
 }

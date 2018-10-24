@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html layout:decorate= "~{fragments/main-layout}" lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <meta charset="UTF-8">
+    <title>About</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css}" />
+    <link rel="stylesheet" th:href="@{/css/main.css}"/>
+    <link rel="stylesheet" th:href="@{/css/mainpage.css}"/>
+    <script th:src="@{/webjars/jquery/3.3.7-1/jquery.min.js}"></script>
+    <script th:src="@{/webjars/bootstrap/4.0.0-2/js/bootstrap.min.js}"></script>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="col-12">
+
+        <div class="row logo-container">
+            <div class="col-12">
+                <img class="logo" th:src="@{/img/logo_large.png}">
+            </div>
+        </div>
+
+        <div class="row heading-container">
+            <div class="col-8 offset-2 align-content-center text-center">
+                <h1 class="homepage-heading">BUCKETLIST</h1>
+            </div>
+        </div>
+
+        <div class="row big-divide-line">
+            <img class="big-rule" th:src="@{/img/big_rule_scaled.svg}">
+        </div>
+
+
+        <div class="col-8 offset-2 align-content-center text-center homepage-text">
+            <p>
+                Aplikacja została stworzona jako element procesu nauki framework'a Spring.
+            </p>
+            <p>
+                Autor : Maciej Wikira.
+            </p>
+        </div>
+
+    </div>
+</div>
+</body>
+</html>

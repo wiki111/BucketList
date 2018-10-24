@@ -5,6 +5,8 @@
     <title>Messages</title>
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css}" />
     <link rel="stylesheet" th:href="@{/css/main.css}"/>
+    <link rel="stylesheet" th:href="@{/css/form.css}">
+    <link rel="stylesheet" th:href="@{/css/bldetails.css}">
     <script th:src="@{/webjars/jquery/3.3.7-1/jquery.min.js}"></script>
     <script th:src="@{/webjars/bootstrap/4.0.0-2/js/bootstrap.min.js}"></script>
     <script th:src="@{/js/utility.js}"></script>
@@ -18,8 +20,9 @@
                 <h1 th:if="${showReceived}" th:text="'Messages Received'">Messages</h1>
                 <h1 th:unless="${showReceived}" th:text="'Messages Sent'">Messages</h1>
             </div>
-            <div class="col-2 offset-1">
-                <a class="btn btn-primary" th:href="@{/user/sent}">SHOW SENT MESSGES</a>
+            <div class="col-3 align-content-center text-center">
+                <a th:if="${showReceived}" class="bucketlist-button headline-button-positioning" th:href="@{/user/sent}">SHOW SENT MESSGES</a>
+                <a th:if="${!showReceived}" class="bucketlist-button headline-button-positioning" th:href="@{/user/received}">SHOW RECEIVED MESSGES</a>
             </div>
         </div>
         <div class="col-12">
@@ -75,7 +78,7 @@
                                     <div class="col-2">
                                         <label>TO :</label>
                                     </div>
-                                    <div class="col-3">
+                                    <div class="col-10">
                                         <input type="text" th:name="receiver" size="10"/>
                                     </div>
                                 </div>
@@ -83,8 +86,8 @@
                         </div>
                         <div class="row">
                             <div class="col-12">
-                                <div class="col-6 align-content-center text-center">
-                                    <button type="submit"> Send </button>
+                                <div class="col-10 offset-2 align-content-center text-center">
+                                    <button class="bucketlist-button send-button-positioning" type="submit"> Send </button>
                                 </div>
                             </div>
                         </div>

@@ -297,12 +297,16 @@ public class BucketlistsController {
     @PostMapping("/search")
     public String search(@RequestParam("query") String query, @RequestParam("criterium") String criterium, Model model){
 
-        if(criterium.equals("by_tags")){
+        if(query.isEmpty()){
+            return "redirect:/bucketlists";
+        }else if(criterium.equals("by_tags")){
             model.addAttribute("lists", bucketListService.getPublicBucketlistsByTag(query));
             model.addAttribute("byTags", "true");
-        }else {
+            model.addAttribute("title", "Public Bucketlists");
+        }else{
             model.addAttribute("lists", bucketListService.getPublicBucketlistsByUsername(query));
             model.addAttribute("byUser", "true");
+            model.addAttribute("title", "Public Bucketlists");
         }
 
         return SHOW_BUCKETLISTS;

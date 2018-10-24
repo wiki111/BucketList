@@ -218,8 +218,10 @@ public class BucketListServiceImpl implements BucketListService{
             User user = userOpt.get();
             List<BucketListDto> bucketListDtos = new ArrayList<>();
             for(BucketList list : user.getBucketLists()){
-                BucketListDto listDto = listMapper.bucketListToDto(list);
-                bucketListDtos.add(listDto);
+                if(!list.getIsPrivate()){
+                    BucketListDto listDto = listMapper.bucketListToDto(list);
+                    bucketListDtos.add(listDto);
+                }
             }
             return bucketListDtos;
         }
@@ -286,6 +288,9 @@ public class BucketListServiceImpl implements BucketListService{
             BucketItem item = itemOpt.get();
             Optional<User> userOpt = userRepository.findByEmail(causerUsername);
             if(userOpt.isPresent()){
+                if(!userOpt.get().getEmail().equals(item.getBucketlist().getUser().getEmail()) && !item.getBucketlist().getOpen()){
+                    return false;
+                }
                 if(!item.getMarkedByUsers().contains(userOpt.get().getNickname())){
                     item.getMarkedByUsers().add(userOpt.get().getNickname());
                     itemRepository.save(item);

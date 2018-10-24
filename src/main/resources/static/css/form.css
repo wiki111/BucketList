@@ -179,6 +179,7 @@ textarea{
     color: #273C74;
     padding: 10px;
     width: 100%;
+    height: 100%
 }
 
 ::-webkit-scrollbar{
@@ -197,6 +198,15 @@ textarea{
 
 ::-webkit-scrollbar-thumb:hover{
     background: #FFE97C;
+}
+
+.send-button-positioning{
+    margin: 0px;
+}
+
+.headline-button-positioning{
+    position: relative;
+    top: 38%;
 }
 
 
