@@ -212,7 +212,6 @@ public class BucketListServiceImpl implements BucketListService{
 
     @Override
     public List<BucketListDto> getPublicBucketlistsByUsername(String username) {
-        //todo refactor method to return only public bucketlists
         Optional<User> userOpt = userRepository.findByEmail(username);
         if(userOpt.isPresent()){
             User user = userOpt.get();

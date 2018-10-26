@@ -369,12 +369,17 @@ public class BucketlistsController {
         String filename = photoPath;
         Path imagePath;
 
-        if(!nickname.contains("@")){
-            UserDto user = userService.getUserByNickname(nickname);
-            imagePath = storageService.load(filename, user.getEmail());
+        if(filename.equals("null") || filename.isEmpty()){
+            imagePath = storageService.loadDefault();
         }else {
-            imagePath = storageService.load(filename, nickname);
+            if(!nickname.contains("@")){
+                UserDto user = userService.getUserByNickname(nickname);
+                imagePath = storageService.load(filename, user.getEmail());
+            }else {
+                imagePath = storageService.load(filename, nickname);
+            }
         }
+
 
         try{
             byte[] imageData = Files.readAllBytes(imagePath);

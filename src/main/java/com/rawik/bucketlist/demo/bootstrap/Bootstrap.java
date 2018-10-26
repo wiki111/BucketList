@@ -86,7 +86,6 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
         testItem.setName("TestItem");
         testItem.setAddedDate(new Date());
         testItem.setPrice(10L);
-        testItem.setImage("sample_blitem_img.jpg");
         testItem.setDescription("Curae, Duis sodales wisi placerat faucibus. Sed in neque quis erat. Vivamus volutpat aliquam pharetra ante euismod eget, sagittis ac, molestie a, bibendum porttitor. Aenean vel nibh. Morbi eleifend. Nulla quis quam molestie placerat, nulla nec nunc posuere ante pellentesque auctor eu, dapibus diam. Aliquam luctus pellentesque.");
 
         BucketItemDto testItem2= new BucketItemDto();
@@ -95,7 +94,6 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
         testItem2.setName("TestItem2");
         testItem2.setAddedDate(new Date());
         testItem2.setPrice(10L);
-        testItem2.setImage("sample_blitem_img.jpg");
         testItem2.setDescription("Curae, Duis sodales wisi placerat faucibus. Sed in neque quis erat. Vivamus volutpat aliquam pharetra ante euismod eget, sagittis ac, molestie a, bibendum porttitor. Aenean vel nibh. Morbi eleifend. Nulla quis quam molestie placerat, nulla nec nunc posuere ante pellentesque auctor eu, dapibus diam. Aliquam luctus pellentesque.");
 
         BucketItemDto testItem3 = new BucketItemDto();
@@ -104,7 +102,6 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
         testItem3.setName("TestItem3");
         testItem3.setAddedDate(new Date());
         testItem3.setPrice(10L);
-        testItem3.setImage("sample_blitem_img.jpg");
         testItem3.setDescription("Curae, Duis sodales wisi placerat faucibus. Sed in neque quis erat. Vivamus volutpat aliquam pharetra ante euismod eget, sagittis ac, molestie a, bibendum porttitor. Aenean vel nibh. Morbi eleifend. Nulla quis quam molestie placerat, nulla nec nunc posuere ante pellentesque auctor eu, dapibus diam. Aliquam luctus pellentesque.");
 
         BucketItemDto testItem4 = new BucketItemDto();
@@ -113,7 +110,6 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
         testItem4.setName("TestItem4");
         testItem4.setAddedDate(new Date());
         testItem4.setPrice(10L);
-        testItem4.setImage("sample_blitem_img.jpg");
         testItem4.setDescription("Curae, Duis sodales wisi placerat faucibus. Sed in neque quis erat. Vivamus volutpat aliquam pharetra ante euismod eget, sagittis ac, molestie a, bibendum porttitor. Aenean vel nibh. Morbi eleifend. Nulla quis quam molestie placerat, nulla nec nunc posuere ante pellentesque auctor eu, dapibus diam. Aliquam luctus pellentesque.");
 
         BucketListDto listDto = new BucketListDto();

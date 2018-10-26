@@ -21,9 +21,13 @@ import java.util.stream.Stream;
 public class StorageServiceImpl implements StorageService{
 
     private final Path rootLocation;
+    private final Path defaultLocation;
+    private final String defImg = "default_image.png";
+    private final String defAva = "sample_avatar.png";
 
     public StorageServiceImpl() {
         this.rootLocation = Paths.get("upload-dir");
+        this.defaultLocation = Paths.get("defaults");
     }
 
     @Override
@@ -83,6 +87,18 @@ public class StorageServiceImpl implements StorageService{
         Path location = getDirectoryForUser(username);
         return location.resolve(filename);
     }
+
+    @Override
+    public Path loadDefault() {
+        Path location = defaultLocation;
+        return location.resolve(defImg);
+    }
+
+    @Override
+    public Path loadDefaultAvatar() {
+        return defaultLocation.resolve(defAva);
+    }
+
 
     @Override
     public boolean deleteFile(String ownerUsername, String filename) {

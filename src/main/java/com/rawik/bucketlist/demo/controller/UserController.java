@@ -168,11 +168,18 @@ public class UserController {
     @ResponseBody
     public byte[] getAvatar(@PathVariable String username, HttpServletRequest request){
         String avatarFilename = service.getAvatarFilename(username);
-        if(!username.contains("@")){
-            UserDto userDto = service.getUserByNickname(username);
-            username = userDto.getEmail();
+        Path path;
+
+        if(avatarFilename==null || avatarFilename.isEmpty()){
+            path = storageService.loadDefaultAvatar();
+        }else{
+            if(!username.contains("@")){
+                UserDto userDto = service.getUserByNickname(username);
+                username = userDto.getEmail();
+            }
+            path = storageService.load(avatarFilename, username);
         }
-        Path path = storageService.load(avatarFilename, username);
+
         try{
             byte[] avatarData = Files.readAllBytes(path);
             return avatarData;
