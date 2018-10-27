@@ -50,7 +50,7 @@ function markItem(id) {
             console.log("operation ok " + id);
             showItemMark(id);
         }else if(this.status == 401){
-            //todo show message to the user
+            alert("You can't do that here ! You're not authorized to do so.")
         }
     };
     xhttp.open("POST", "/markitem/"+id);
@@ -64,7 +64,7 @@ function unmarkItem(id){
             console.log("operation unmark ok " + id);
             showUnmarkItem(id);
         }else if(this.status == 401){
-            //todo show message to the user
+            alert("You can't do that here ! You're not authorized to do so.")
         }
     };
     xhttp.open("POST", "/unmarkitem/"+id);

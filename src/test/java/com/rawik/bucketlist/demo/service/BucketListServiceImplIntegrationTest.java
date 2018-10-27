@@ -12,6 +12,7 @@ import com.rawik.bucketlist.demo.model.User;
 import com.rawik.bucketlist.demo.repository.BucketItemRepository;
 import com.rawik.bucketlist.demo.repository.BucketListRepository;
 import com.rawik.bucketlist.demo.repository.UserRepository;
+import org.hibernate.Hibernate;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,6 +21,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -145,6 +147,7 @@ public class BucketListServiceImplIntegrationTest {
     }
 
     @Test
+    @Transactional
     public void getListByIdTest(){
 
         BucketListDto listDto = bucketListService.getListById(testListId);
@@ -196,6 +199,7 @@ public class BucketListServiceImplIntegrationTest {
     }
 
     @Test
+    @Transactional
     public void getPublicBucketlistsTest() {
         List<BucketListDto> bucketlists = bucketListService.getPublicBucketlists();
         for (BucketListDto listDto : bucketlists) {
@@ -204,6 +208,7 @@ public class BucketListServiceImplIntegrationTest {
     }
 
     @Test
+    @Transactional
     public void getPublicBucketlistsByTagTest(){
         List<BucketListDto> listDtos = bucketListService.getPublicBucketlistsByTag("testTag1");
         for (BucketListDto list : listDtos) {

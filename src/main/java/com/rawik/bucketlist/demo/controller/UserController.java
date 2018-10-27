@@ -96,14 +96,7 @@ public class UserController {
 
     @GetMapping("/profile")
     public String getProfile(Model model, Principal principal){
-
-        //todo refactor to use mapper in service not in controller
-        UserDto dto = userMapper.userToUserDto(
-                service.findByUsername(
-                        principal.getName()
-                )
-        );
-
+        UserDto dto = service.getUserByUsername(principal.getName());
         model.addAttribute("user", dto);
         model.addAttribute("editable", true);
         model.addAttribute("username", principal.getName());

@@ -3,6 +3,7 @@ package com.rawik.bucketlist.demo.mapper;
 import com.rawik.bucketlist.demo.dto.BucketItemDto;
 import com.rawik.bucketlist.demo.model.BucketItem;
 import com.rawik.bucketlist.demo.model.BucketList;
+import org.hibernate.Hibernate;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ public class BucketItemMapper {
         if(item.getBucketlist() != null){
             dto.setListId(item.getBucketlist().getId());
         }
+
         if(item.getMarkedByUsers() != null){
             dto.setMarkedByUsers(markedByUsersToString(item.getMarkedByUsers()));
             dto.setNumberOfMarks(Long.valueOf(item.getMarkedByUsers().size()));

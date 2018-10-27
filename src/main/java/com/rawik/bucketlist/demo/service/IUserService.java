@@ -14,6 +14,7 @@ public interface IUserService {
     User updateUserInfo(UserDto userDto);
     void updateBucketLists(BucketList bucketList);
     User findByUsername(String username);
+    UserDto getUserByUsername(String username);
     UserDto findByUserId(Long id);
     BucketListDto getUsersListById(Long listId, String us);
     Set<BucketListDto> getUserLists(String email);

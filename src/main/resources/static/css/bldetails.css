@@ -254,6 +254,15 @@
     transition: all 0.3s ease-in-out 0s;
 }
 
+.share-row{
+    margin: 5px;
+    margin-bottom: 15px;
+}
+
+.bl-gplus{
+    margin-top: 25px;
+}
+
 @media only screen and (max-width: 1400px){
     .bl-item-card-wrap{
         height: 250px;

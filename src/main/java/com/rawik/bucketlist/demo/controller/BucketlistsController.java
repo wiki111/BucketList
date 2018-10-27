@@ -163,7 +163,7 @@ public class BucketlistsController {
                               Principal principal, @RequestParam("listImage") MultipartFile multipartFile,
                                     @RequestParam("theListId") Long listId){
 
-        String imagePath = "";
+        String imagePath;
         ModelAndView modelAndView;
 
         try{
@@ -360,7 +360,6 @@ public class BucketlistsController {
         return "redirect:/bucketlist/details/" + listId;
     }
 
-    // todo add default images 270x170px
 
     @RequestMapping(value = "/getImage/{nickname}/{photoPath:.+}")
     @ResponseBody

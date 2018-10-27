@@ -112,6 +112,11 @@ public class UserService implements IUserService {
     }
 
     @Override
+    public UserDto getUserByUsername(String username) {
+        return userMapper.userToUserDto(findByUsername(username));
+    }
+
+    @Override
     public UserDto findByUserId(Long id) {
         Optional<User> userOpt = repository.findById(id);
         if(userOpt.isPresent()){
